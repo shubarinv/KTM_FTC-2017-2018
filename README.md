@@ -1,10 +1,3 @@
-Master--> <a href="https://gitlab.com/vh_poly/ftc-app/commits/master"><img alt="pipeline status" src="https://gitlab.com/vh_poly/ftc-app/badges/master/pipeline.svg" /></a>
-
-Testing--><a href="https://gitlab.com/vh_poly/ftc-app/commits/Testing"><img alt="pipeline status" src="https://gitlab.com/vh_poly/ftc-app/badges/Testing/pipeline.svg" /></a>
-
-Development--><a href="https://gitlab.com/vh_poly/ftc-app/commits/Development"><img alt="pipeline status" src="https://gitlab.com/vh_poly/ftc-app/badges/Development/pipeline.svg" /></a>
-
-
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
