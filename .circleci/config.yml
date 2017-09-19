@@ -21,6 +21,7 @@ jobs:
       - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
+          - cp -r project-name/build/outputs $CIRCLE_ARTIFACTS
       - store_artifacts:
           path: app/build/outputs/apk
           destination: apk
