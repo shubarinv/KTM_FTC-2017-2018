@@ -96,25 +96,25 @@ public class OpMode_Linear extends LinearOpMode {
             double m3_Drive_Power;
             double m4_Drive_Power;
 
-            // POV Mode uses right stick to go forward and right to turn.
+            // POV Mode uses right stick to go forward and right to slide.
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = gamepad1.right_stick_y;
-            double turn = gamepad1.right_stick_x;
-            double rotation_left_stick = gamepad1.left_stick_x;
-            double A = rotation_left_stick + drive + turn;
+            double slide = gamepad1.right_stick_x;
+            double rotation = gamepad1.left_stick_x;
+            double A = rotation + drive + slide;
             if (A <= 1) {
-                m1_Drive_Power = Range.clip(rotation_left_stick - drive - turn, -1.0, 1.0);
-                m2_Drive_Power = Range.clip(rotation_left_stick + drive - turn, -1.0, 1.0);
-                m3_Drive_Power = Range.clip(rotation_left_stick + drive + turn, -1.0, 1.0);
-                m4_Drive_Power = Range.clip(rotation_left_stick - drive + turn, -1.0, 1.0);
+                m1_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
+                m2_Drive_Power = Range.clip(rotation + drive - slide, -1.0, 1.0);
+                m3_Drive_Power = Range.clip(rotation + drive + slide, -1.0, 1.0);
+                m4_Drive_Power = Range.clip(rotation - drive + slide, -1.0, 1.0);
             } else if (A > 1) {
-                rotation_left_stick = rotation_left_stick / A;
+                rotation = rotation / A;
                 drive = drive / A;
-                turn = turn / A;
-                m1_Drive_Power = Range.clip(rotation_left_stick - drive - turn, -1.0, 1.0);
-                m2_Drive_Power = Range.clip(rotation_left_stick - drive - turn, -1.0, 1.0);
-                m3_Drive_Power = Range.clip(rotation_left_stick - drive - turn, -1.0, 1.0);
-                m4_Drive_Power = Range.clip(rotation_left_stick - drive - turn, -1.0, 1.0);
+                slide = slide / A;
+                m1_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
+                m2_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
+                m3_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
+                m4_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
             } else {
                 m1_Drive_Power = Range.clip(0, -1.0, 1.0);
                 m2_Drive_Power = Range.clip(0, -1.0, 1.0);
