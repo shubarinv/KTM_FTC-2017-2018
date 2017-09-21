@@ -107,7 +107,7 @@ public class OpMode_Linear extends LinearOpMode {
                 m2_Drive_Power = Range.clip(rotation + drive - slide, -1.0, 1.0);
                 m3_Drive_Power = Range.clip(rotation + drive + slide, -1.0, 1.0);
                 m4_Drive_Power = Range.clip(rotation - drive + slide, -1.0, 1.0);
-            } else if (A > 1) {
+            } else{
                 rotation = rotation / A;
                 drive = drive / A;
                 slide = slide / A;
@@ -115,11 +115,6 @@ public class OpMode_Linear extends LinearOpMode {
                 m2_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
                 m3_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
                 m4_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
-            } else {
-                m1_Drive_Power = Range.clip(0, -1.0, 1.0);
-                m2_Drive_Power = Range.clip(0, -1.0, 1.0);
-                m3_Drive_Power = Range.clip(0, -1.0, 1.0);
-                m4_Drive_Power = Range.clip(0, -1.0, 1.0);
             }
             // Send calculated power to wheels
             m1_Drive.setPower(m1_Drive_Power);
