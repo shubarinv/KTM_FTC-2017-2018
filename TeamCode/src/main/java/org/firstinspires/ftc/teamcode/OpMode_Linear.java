@@ -101,20 +101,20 @@ public class OpMode_Linear extends LinearOpMode {
             double drive = gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
             double rotation = gamepad1.left_stick_x;
-            double A = rotation + drive + slide;
+            double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
-                m1_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
-                m2_Drive_Power = Range.clip(rotation + drive - slide, -1.0, 1.0);
-                m3_Drive_Power = Range.clip(rotation + drive + slide, -1.0, 1.0);
-                m4_Drive_Power = Range.clip(rotation - drive + slide, -1.0, 1.0);
+                m1_Drive_Power = rotation - drive - slide;
+                m2_Drive_Power = rotation + drive - slide;
+                m3_Drive_Power = rotation + drive + slide;
+                m4_Drive_Power = rotation - drive + slide;
             } else{
                 rotation = rotation / A;
                 drive = drive / A;
                 slide = slide / A;
-                m1_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
-                m2_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
-                m3_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
-                m4_Drive_Power = Range.clip(rotation - drive - slide, -1.0, 1.0);
+                m1_Drive_Power = rotation - drive - slide;
+                m2_Drive_Power = rotation + drive - slide;
+                m3_Drive_Power = rotation + drive + slide;
+                m4_Drive_Power = rotation - drive + slide;
             }
             // Send calculated power to wheels
             m1_Drive.setPower(m1_Drive_Power);
