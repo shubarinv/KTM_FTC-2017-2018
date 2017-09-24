@@ -15,7 +15,7 @@ jobs:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
       - store_artifacts:
-          path: FtcRobotController\build\outputs
+          path: /FtcRobotController/build/outputs
           destination: apk
       - run:
           name: Run Tests
