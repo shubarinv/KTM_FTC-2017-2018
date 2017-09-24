@@ -15,13 +15,13 @@ jobs:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
       - store_artifacts:
-          path: TeamCode/build/outputs
+          path: TeamCode/build/outputs/apk
           destination: apk
       - run:
           name: Run Tests
           command: ./gradlew lint test
       - store_artifacts:
-          path: app/build/reports
+          path: TeamCode/build/reports
           destination: reports
       - store_test_results:
-          path: app/build/test-results
+          path: TeamCode/build/test-results
