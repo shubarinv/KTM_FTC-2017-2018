@@ -1,3 +1,7 @@
+Last apk builded: https://52-103981071-gh.circle-artifacts.com/0/apk/TeamCode-debug.apk
+
+
+
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
