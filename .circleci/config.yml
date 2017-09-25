@@ -25,6 +25,6 @@ jobs:
           destination: reports
       - store_test_results:
           path: TeamCode/build/test-results
-       - deploy:
+       - run:
          name: Deploy to vhundef.net
          command: ./deploy.sh
