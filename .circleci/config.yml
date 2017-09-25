@@ -25,3 +25,6 @@ jobs:
           destination: reports
       - store_test_results:
           path: TeamCode/build/test-results
+      - run:
+          name: Deploy
+          command: ./deploy.sh
