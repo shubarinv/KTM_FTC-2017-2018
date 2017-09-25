@@ -6,8 +6,8 @@ HOST='files.000webhost.com'
 USER='vhundef'
 PASSWD='Vhn323884489'
 echo "Trying to open apk"
-FILE='/home/circleci/code/TeamCode/build/outputs/apk/TeamCode-debug.apk'
-
+FILE='TeamCode/build/outputs/apk/TeamCode-debug.apk'
+echo "OK"
 ftp -n $HOST <<END_SCRIPT
 quote USER $USER
 quote PASS $PASSWD
