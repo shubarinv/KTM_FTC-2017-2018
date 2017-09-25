@@ -7,7 +7,7 @@ USER='vhundef'
 PASSWD='Vhn323884489'
 echo "Trying to open apk"
 FILE='TeamCode/build/outputs/apk/TeamCode-debug.apk'
-echo "OK"
+echo "$FILE"
 ftp -n $HOST <<END_SCRIPT
 quote USER $USER
 quote PASS $PASSWD
