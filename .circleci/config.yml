@@ -27,4 +27,4 @@ jobs:
           path: TeamCode/build/test-results
       - run:
           name: Deploy
-          command: ./deploy.sh
+          command: sh ./deploy.sh
