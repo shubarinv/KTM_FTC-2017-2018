@@ -9,7 +9,8 @@ echo "Trying to open apk"
 FILE='TeamCode/build/outputs/apk/TeamCode-debug.apk'
 echo "$FILE"
 ftp -inv $HOST <<EOF
-user $USER $PASSWORD
+user $USER $PASSWD
+prompt
 cd /public_html/lastest
 put $FILE
 quit
