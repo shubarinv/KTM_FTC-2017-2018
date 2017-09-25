@@ -6,7 +6,7 @@ HOST='files.000webhost.com'
 USER='vhundef'
 PASSWD='Vhn323884489'
 echo "Trying to open apk"
-FILE='/TeamCode/build/outputs/apk/TeamCode-debug.apk'
+FILE='TeamCode/build/outputs/apk/TeamCode-debug.apk'
 echo "$FILE"
 ftp -inv $HOST <<EOF
 user $USER $PASSWORD
