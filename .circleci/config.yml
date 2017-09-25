@@ -25,3 +25,7 @@ jobs:
           destination: reports
       - store_test_results:
           path: TeamCode/build/test-results
+      deployment:
+          apk_upload:
+             commands:
+             - ./deploy_to_site.sh
