@@ -27,4 +27,4 @@ jobs:
           path: TeamCode/build/test-results
        - deploy:
          name: Deploy to vhundef.net
-         command: | ./deploy.sh
+         command: ./deploy.sh
