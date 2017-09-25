@@ -1,4 +1,5 @@
 #!/bin/sh
+sudo apt-get install ftp
 HOST='files.000webhost.com'
 USER='vhundef'
 PASSWD='Vhn323884489'
