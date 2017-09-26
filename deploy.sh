@@ -1,16 +1,18 @@
-#!/bin/sh
+#!/bin/bash
+
 echo "--------Installing ftp------"
 sudo apt-get install ftp
-sudo apt-get install putty
 echo "+++++++++ Ftp installed +++++++++++"
-HOST='files.000webhost.com'
-USER='vhundef'
-PASSWD='Vhn323884489'
-echo "Trying to open apk"
-psftp $HOST -l vhundef -pw Vhn323884489 -v
+filename="TeamCode-debug.apk"
+hostname="files.000webhost.com"
+username="vhundef"
+password="Vhn323884489"
+ftp -un $hostname <<EOF
+quote USER $username
+quote PASS $password
 lcd TeamCode/build/outputs/apk
 cd /public_html/lastest
-put TeamCode-debug.apk
+binary
+put $filename
 quit
-exit;
 EOF
