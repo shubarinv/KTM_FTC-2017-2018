@@ -8,7 +8,7 @@ PASSWD='Vhn323884489'
 echo "Trying to open apk"
 
 ftp -inv $HOST <<EOF
-
+passive
 user $USER $PASSWD
 
 prompt
