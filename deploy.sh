@@ -10,6 +10,7 @@ echo "Trying to open apk"
 ftp -inv $HOST <<EOF
 user $USER $PASSWD
 prompt
+quote pasv
 lcd TeamCode/build/outputs/apk
 cd /public_html/lastest
 put TeamCode-debug.apk
