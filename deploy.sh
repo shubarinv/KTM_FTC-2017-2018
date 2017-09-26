@@ -7,10 +7,10 @@ USER='vhundef'
 PASSWD='Vhn323884489'
 echo "Trying to open apk"
 
-ftp -inv -passive=on $HOST <<EOF
+ftp -inv $HOST <<EOF
 user $USER $PASSWD
 prompt
-quote epsv
+passive
 lcd TeamCode/build/outputs/apk
 cd /public_html/lastest
 put TeamCode-debug.apk
