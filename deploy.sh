@@ -3,16 +3,18 @@
 echo "--------Installing ftp------"
 sudo apt-get install ftp
 echo "+++++++++ Ftp installed +++++++++++"
-filename="TeamCode-debug.apk"
-hostname="files.000webhost.com"
-username="vhundef"
-password="Vhn323884489"
-ftp $hostname <<EOF
-quote USER $username
-quote PASS $password
+$HOST='files.000webhost.com'
+$USER='vhundef'
+$PASSWD='Vhn323884489'
+$FILEtoPut='TeamCode-debug.apk'
+
+ftp -n $HOST <<END_SCRIPT
+quote USER $USER
+quote PASS $PASSWD
 lcd TeamCode/build/outputs/apk
 cd /public_html/lastest
-binary
-put $filename
+put $FILEtoPut
+
 quit
-EOF
+END_SCRIPT
+exit 0
