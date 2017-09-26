@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "--------Installing ftp------"
 sudo apt-get install ftp
-apt-get install putty
+sudo apt-get install putty
 echo "+++++++++ Ftp installed +++++++++++"
 HOST='files.000webhost.com'
 USER='vhundef'
