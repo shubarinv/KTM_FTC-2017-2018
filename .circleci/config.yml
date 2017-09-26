@@ -18,13 +18,5 @@ jobs:
           path: TeamCode/build/outputs/apk
           destination: apk
       - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_artifacts:
-          path: TeamCode/build/reports
-          destination: reports
-      - store_test_results:
-          path: TeamCode/build/test-results
-      - run:
           name: Deploy
           command: sh ./deploy.sh
