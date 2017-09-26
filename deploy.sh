@@ -14,5 +14,5 @@ lcd TeamCode/build/outputs/apk
 cd /public_html/lastest
 put TeamCode-debug.apk
 quit
-END_SCRIPT
-exit 0
+exit;
+EOF
