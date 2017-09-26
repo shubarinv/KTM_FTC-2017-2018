@@ -7,7 +7,7 @@ filename="TeamCode-debug.apk"
 hostname="files.000webhost.com"
 username="vhundef"
 password="Vhn323884489"
-ftp -un $hostname <<EOF
+ftp $hostname <<EOF
 quote USER $username
 quote PASS $password
 lcd TeamCode/build/outputs/apk
