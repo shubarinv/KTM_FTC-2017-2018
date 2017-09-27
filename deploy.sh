@@ -9,7 +9,6 @@ USER='vhundef'
 PASS='Vhn323884489'
 DESTINATION='public_html/lastest'
 ftp -p -d -inv $IP<< !EOF
-passive
 user $USER $PASS
 lcd TeamCode/build/outputs/apk
 cd $DESTINATION
