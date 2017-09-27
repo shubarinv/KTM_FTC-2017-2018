@@ -9,6 +9,7 @@ PASSWD='Vhn323884489'
 FILEtoPut='TeamCode-debug.apk'
 
 ftp -n $HOST <<END_SCRIPT
+echo "+++++++++ Login Trying +++++++++++"
 quote USER $USER
 quote PASS $PASSWD
 echo "+++++++++ Login OK +++++++++++"
