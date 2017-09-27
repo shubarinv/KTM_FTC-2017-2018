@@ -8,11 +8,12 @@ IP='files.000webhost.com'
 USER='vhundef'
 PASS='Vhn323884489'
 DESTINATION='public_html/lastest'
-ftp -n -inv $IP<< !EOF
+ftp -n -d -inv $IP<< !EOF
 user $USER $PASS
 lcd TeamCode/build/outputs/apk
 cd $DESTINATION
 prompt
+passive
 asc
 put $FILE
 quit
