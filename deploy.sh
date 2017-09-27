@@ -11,9 +11,13 @@ FILEtoPut='TeamCode-debug.apk'
 ftp -n $HOST <<END_SCRIPT
 quote USER $USER
 quote PASS $PASSWD
+echo "+++++++++ Login OK +++++++++++"
 lcd TeamCode/build/outputs/apk
 cd /public_html/lastest
+echo "+++++++++ Dir changed +++++++++++"
 put $FILEtoPut
+echo "+++++++++ File uploaded +++++++++++"
 quit
-END_SCRIPT
+END_CRIPT
+echo "+++++++++ EOF +++++++++++"
 exit 0
