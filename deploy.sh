@@ -13,8 +13,7 @@ passive
 user $USER $PASS
 lcd TeamCode/build/outputs/apk
 cd $DESTINATION
-prompt
 asc
-put $FILE
+mput $FILE
 quit
 !EOF
