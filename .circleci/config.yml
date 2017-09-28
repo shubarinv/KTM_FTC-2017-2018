@@ -20,4 +20,3 @@ jobs:
       - run:
           name: Deploy
           command: sh ./deploy.sh
-
