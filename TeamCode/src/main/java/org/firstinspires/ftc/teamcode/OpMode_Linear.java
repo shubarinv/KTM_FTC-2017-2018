@@ -87,8 +87,8 @@ public class OpMode_Linear extends LinearOpMode {
             // Send calculated power to wheels
             m1_Drive.setPower(m1_Drive_Power);
             m2_Drive.setPower(m2_Drive_Power);
-            m2_Drive.setPower(m3_Drive_Power);
-            m2_Drive.setPower(m4_Drive_Power);
+            m3_Drive.setPower(m3_Drive_Power);
+            m4_Drive.setPower(m4_Drive_Power);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
