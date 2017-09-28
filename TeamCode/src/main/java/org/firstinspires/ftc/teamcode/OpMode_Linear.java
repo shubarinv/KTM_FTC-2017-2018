@@ -39,10 +39,10 @@ public class OpMode_Linear extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         // m2
-        m1_Drive = hardwareMap.get(DcMotor.class, "m1_drive");
-        m2_Drive = hardwareMap.get(DcMotor.class, "m2_drive");
-        m3_Drive = hardwareMap.get(DcMotor.class, "m3_drive");
-        m4_Drive = hardwareMap.get(DcMotor.class, "m4_drive");
+        m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+        m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+        m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+        m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
