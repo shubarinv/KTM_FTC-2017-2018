@@ -19,17 +19,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "Basic: Linear OpMode", group = "Linear Opmode")
+@TeleOp(name = "KTM TeleOp" group = "Linear Opmode")
 //@Disabled
 public class OpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    //Chassis
     private DcMotor m1_Drive = null;
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
-
+    //-------
+    
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -38,12 +40,14 @@ public class OpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        // m2
+        
+        // Chassis
         m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-
+        //-------
+        
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
