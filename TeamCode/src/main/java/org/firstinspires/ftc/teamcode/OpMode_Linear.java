@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "KTM TeleOp" group = "Linear Opmode")
+@TeleOp(name = "KTM TeleOp", group = "Linear Opmode")
 //@Disabled
 public class OpMode_Linear extends LinearOpMode {
 
