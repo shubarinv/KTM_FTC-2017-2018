@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -25,13 +26,14 @@ public class OpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+  
     //Chassis
     private DcMotor m1_Drive = null;
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     //-------
-    
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -47,7 +49,7 @@ public class OpMode_Linear extends LinearOpMode {
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         //-------
-        
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -80,6 +82,7 @@ public class OpMode_Linear extends LinearOpMode {
                 m3_Drive_Power = rotation + drive + slide;
                 m4_Drive_Power = rotation - drive + slide;
             } else {
+
                 rotation = rotation / A;
                 drive = drive / A;
                 slide = slide / A;
