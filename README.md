@@ -1,10 +1,14 @@
+
 ## Branches
 
-Development-Код который ещё не проверен , самые последние изменения всегда происходят здесь.
+[![CircleCI](https://img.shields.io/circleci/token/660655ed873f245de93b04d614bb996885509260/project/github/vhundef/FTC_APP/Development.svg)]()     Development-Код который ещё не проверен , самые последние изменения всегда происходят здесь.
 
-Testing-Тут находится то что надо протестировать.
+[![CircleCI](https://img.shields.io/circleci/token/660655ed873f245de93b04d614bb996885509260/project/github/vhundef/FTC_APP/Testing.svg)]()Testing-Тут находится то что надо протестировать.
 
-Master- Здесь находится то что успешно протестировано 
+[![CircleCI](https://img.shields.io/circleci/token/660655ed873f245de93b04d614bb996885509260/project/github/vhundef/FTC_APP/master.svg)]()Master- Здесь находится то что успешно протестировано.
+
+Last apk builded: vhundef.net
+ -------
 
 
 ## Welcome!
@@ -26,4 +30,3 @@ It is important to note that this repository is large and can take a long time a
 * Or, if you prefer, you can use the "Download Zip" button available through the main repository page.  Downloading the project as a .ZIP file will keep the size of the download manageable.
 
 * You can also download the project folder (as a .zip or .tar.gz archive file) from the Downloads subsection of the Releases page for this repository.
-    
