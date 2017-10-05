@@ -33,7 +33,7 @@ public class OpMode_Linear extends LinearOpMode {
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     //-------
-
+    double magic(double input){return Math.signum(input)*Math.pov(Math.abs(input),2);}
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -92,10 +92,10 @@ public class OpMode_Linear extends LinearOpMode {
                 m4_Drive_Power = rotation - drive + slide;
             }
             // Send calculated power to wheels
-            m1_Drive.setPower(m1_Drive_Power);
-            m2_Drive.setPower(m2_Drive_Power);
-            m3_Drive.setPower(m3_Drive_Power);
-            m4_Drive.setPower(m4_Drive_Power);
+            m1_Drive.setPower(magic(m1_Drive_Power));
+            m2_Drive.setPower(magic(m2_Drive_Power));
+            m3_Drive.setPower(magic(m3_Drive_Power));
+            m4_Drive.setPower(magic(m4_Drive_Power));
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
