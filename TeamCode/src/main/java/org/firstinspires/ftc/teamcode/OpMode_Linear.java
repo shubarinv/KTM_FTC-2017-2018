@@ -33,7 +33,7 @@ public class OpMode_Linear extends LinearOpMode {
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     //-------
-    double magic(double input){return Math.signum(input)*Math.pov(Math.abs(input),2);}
+    double magic(double input){return Math.signum(input)*Math.pow(Math.abs(input),2);}
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
