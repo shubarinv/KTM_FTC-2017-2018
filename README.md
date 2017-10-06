@@ -12,10 +12,12 @@ Last apk builded: http://vhundef.net
 
  -------
 
-##Сокращения названия файлов к коммитах
+## Сокращения названия файлов к коммитах
 
 VuforiaNavigation.java -> VuNav.java
+
 VuMarkIdentification.java -> VuID.java
+
 OpMode_Linear.java -> OpMode
 
 ---------
