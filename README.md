@@ -7,9 +7,18 @@
 
 [![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=master)]()  Master- Здесь находится то что успешно протестировано.
 
-Last apk builded: vhundef.net
+
+Last apk builded: http://vhundef.net
+
  -------
 
+##Сокращения названия файлов к коммитах
+
+VuforiaNavigation.java -> VuNav.java
+VuMarkIdentification.java -> VuID.java
+OpMode_Linear.java -> OpMode
+
+---------
 
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
