@@ -1,11 +1,26 @@
+
 ## Branches
 
-Development-Код который ещё не проверен , самые последние изменения всегда происходят здесь.
+[![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=Development)]()     Development-Код который ещё не проверен , самые последние изменения всегда происходят здесь.
 
-Testing-Тут находится то что надо протестировать.
+[![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=Testing)]()  Testing-Тут находится то что надо протестировать.
 
-Master- Здесь находится то что успешно протестировано 
+[![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=master)]()  Master- Здесь находится то что успешно протестировано.
 
+
+Last apk builded: http://vhundef.net
+
+ -------
+
+## Сокращения названия файлов к коммитах
+
+VuforiaNavigation.java -> VuNav.java
+
+VuMarkIdentification.java -> VuID.java
+
+OpMode_Linear.java -> OpMode
+
+---------
 
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
@@ -26,4 +41,3 @@ It is important to note that this repository is large and can take a long time a
 * Or, if you prefer, you can use the "Download Zip" button available through the main repository page.  Downloading the project as a .ZIP file will keep the size of the download manageable.
 
 * You can also download the project folder (as a .zip or .tar.gz archive file) from the Downloads subsection of the Releases page for this repository.
-    
