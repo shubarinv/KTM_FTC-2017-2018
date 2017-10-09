@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name = "KTM TeleOp", group = "Linear Opmode")
+
 //@Disabled
 public class OpMode_Linear extends LinearOpMode {
 
@@ -34,6 +35,9 @@ public class OpMode_Linear extends LinearOpMode {
     private DcMotor m4_Drive = null;
     //-------
 
+    double magic(double input){return Math.signum(input)*Math.pow(Math.abs(input),2);}
+
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -42,14 +46,13 @@ public class OpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        
         // Chassis
+
         m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         //-------
-
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -82,7 +85,6 @@ public class OpMode_Linear extends LinearOpMode {
                 m3_Drive_Power = rotation + drive + slide;
                 m4_Drive_Power = rotation - drive + slide;
             } else {
-
                 rotation = rotation / A;
                 drive = drive / A;
                 slide = slide / A;
@@ -92,10 +94,10 @@ public class OpMode_Linear extends LinearOpMode {
                 m4_Drive_Power = rotation - drive + slide;
             }
             // Send calculated power to wheels
-            m1_Drive.setPower(m1_Drive_Power);
-            m2_Drive.setPower(m2_Drive_Power);
-            m3_Drive.setPower(m3_Drive_Power);
-            m4_Drive.setPower(m4_Drive_Power);
+            m1_Drive.setPower(magic(m1_Drive_Power));
+            m2_Drive.setPower(magic(m2_Drive_Power));
+            m3_Drive.setPower(magic(m3_Drive_Power));
+            m4_Drive.setPower(magic(m4_Drive_Power));
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
