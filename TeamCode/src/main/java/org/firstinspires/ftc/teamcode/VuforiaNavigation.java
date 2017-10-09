@@ -76,7 +76,7 @@ import java.util.List;
 */
 
 @Autonomous(name="KTM Vuforia Navigation", group ="WIP")
-@Disabled
+//@Disabled
 public class VuforiaNavigation extends LinearOpMode {
 
     public static final String TAG = "Vuforia Navigation Sample";
