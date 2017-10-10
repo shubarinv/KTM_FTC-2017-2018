@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -26,17 +27,16 @@ public class OpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-
     //Chassis
     private DcMotor m1_Drive = null;
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     //-------
-
     double magic(double input) {
         return Math.signum(input) * Math.pow(Math.abs(input), 2);
     }
+
 
 
     @Override
@@ -99,12 +99,7 @@ public class OpMode_Linear extends LinearOpMode {
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
             m4_Drive.setPower(magic(m4_Drive_Power));
-            if (gamepad1.x) {
-                m1_Drive_Power = 0.5;
-                m2_Drive_Power = -0.5;
-                m3_Drive_Power = 0.5;
-                m4_Drive_Power = -0.5;
-            }
+          
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
