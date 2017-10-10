@@ -1,4 +1,7 @@
 version: 2
+machine:
+  environment:
+  Branch:$CIRCLE_BRANCH
 jobs:
   build:
     working_directory: ~/code
@@ -19,5 +22,5 @@ jobs:
           destination: apk
       - run:
           name: Deploy
-          command: Branch=CIRCLE_BRANCH sh ./deploy.sh
+          command: Branch=$Branch sh ./deploy.sh
 
