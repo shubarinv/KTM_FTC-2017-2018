@@ -19,5 +19,5 @@ jobs:
           destination: apk
       - run:
           name: Deploy
-          command: sh ./deploy.sh
+          command: Branch=CIRCLE_BRANCH sh ./deploy.sh
 
