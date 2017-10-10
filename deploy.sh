@@ -14,6 +14,6 @@ lcd TeamCode/build/outputs/apk
 cd $DESTINATION
 asc
 mput $FILE
-rename $FILE $1$FILE
+rename $FILE $1-$FILE
 quit
 !EOF
