@@ -1,7 +1,6 @@
 version: 2
 machine:
-  environment:
-    Branch: ${CIRCLE_BRANCH}
+  timezone: Europe/Moscow
 jobs:
   build:
     working_directory: ~/code
