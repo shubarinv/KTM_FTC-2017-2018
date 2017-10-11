@@ -1,11 +1,16 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: bitriseio/docker-android
     working_directory: ~/code
+    docker:
+      - image: circleci/android:api-25-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
       - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
