@@ -12,9 +12,11 @@ jobs:
           command: sudo cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
       - checkout
       - run:
+          name: Accept-licenses
+          command: sdkmanager --update && yes | sdkmanager --licenses
+      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
-          command: sdkmanager --update && yes | sdkmanager --licenses
       - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
