@@ -1,5 +1,4 @@
 version: 2
-
 jobs:
   build:
     working_directory: ~/code
@@ -8,14 +7,13 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-
-      - run:
-          name: Switch timezone to Moscow
-          command: sudo cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
       - checkout
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+      - run:
+          name: Switch timezone to Moscow
+          command: sudo cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
       - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
