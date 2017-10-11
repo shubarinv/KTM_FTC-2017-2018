@@ -12,7 +12,7 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - run:
-          name:Lccepting licenses
+          name: Accepting licenses
           command: yes | sudo sdkmanager --licenses 
       - run:
           name: Build assembleDebug
