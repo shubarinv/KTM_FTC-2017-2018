@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: bitriseio/docker-android
-    working_directory: ~/OceanLife
+    working_directory: ~/code
     steps:
       - checkout
       - run:
