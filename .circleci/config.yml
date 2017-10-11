@@ -1,7 +1,7 @@
 version: 2
-machine:
-  timezone:
-    Europe/Moscow
+
+
+
 jobs:
   build:
     working_directory: ~/code
@@ -10,6 +10,10 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+
+- run:
+    name: Switch timezone to Moscow
+    command: sudo cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
       - checkout
       - run:
           name: Download Dependencies
