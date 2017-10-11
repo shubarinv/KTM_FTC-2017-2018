@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -19,10 +18,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "KTM TeleOp", group = "Linear Opmode")
+
+@TeleOp(name = "KTM AUTO_OP", group = "Linear Auto Opmode")
 
 //@Disabled
-public class OpMode_Linear extends LinearOpMode {
+public class Auto_OP_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -66,69 +66,43 @@ public class OpMode_Linear extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            /*
-            ++
-               ##Chassis movement
-            ++
-            */
-            //Setup a variable for each drive wheel to save power level for telemetry
-            double m1_Drive_Power;
-            double m2_Drive_Power;
-            double m3_Drive_Power;
-            double m4_Drive_Power;
-
-            // POV Mode uses right stick to go forward and right to slide.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.right_stick_y;
-            double slide = gamepad1.right_stick_x;
-            double rotation = -gamepad1.left_stick_x;
-            double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
-            if (A <= 1) {
-                m1_Drive_Power = rotation - drive - slide;
-                m2_Drive_Power = rotation + drive - slide;
-                m3_Drive_Power = rotation + drive + slide;
-                m4_Drive_Power = rotation - drive + slide;
-            } else {
-                rotation = rotation / A;
-                drive = drive / A;
-                slide = slide / A;
-                m1_Drive_Power = rotation - drive - slide;
-                m2_Drive_Power = rotation + drive - slide;
-                m3_Drive_Power = rotation + drive + slide;
-                m4_Drive_Power = rotation - drive + slide;
-            }
-            // Send calculated power to wheels
-            m1_Drive.setPower(magic(m1_Drive_Power));
-            m2_Drive.setPower(magic(m2_Drive_Power));
-            m3_Drive.setPower(magic(m3_Drive_Power));
-            m4_Drive.setPower(magic(m4_Drive_Power));
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
-            telemetry.update();
-
-            /*
-            ++
-               ##Box grabbing and movement
-            ++
-            */
-
-            // TODO: 10.10.2017 Grab box
-            // TODO: 10.10.2017 Rotate box if needed
-            // TODO: 10.10.2017 Grab another box
-            // TODO: 10.10.2017 Place box to shelf
-
-            /*
-            ++
-               ##Relic related
-            ++
-            */
-            // TODO: 10.10.2017 Grab relic
-            // TODO: 10.10.2017 Extend grabbing component
-            // TODO: 10.10.2017 Retract grabbing component
-
+            assert true;
+            //Autonomous period starts
+            // TODO: 10.10.2017 Determine color of opposite team
+            // TODO: 10.10.2017 Kick the ball that have color of opposite team
+            // TODO: 10.10.2017 Scan Vumark
+            // TODO: 10.10.2017 Determine shelf location
+            // TODO: 10.10.2017 Move to shelf
+            // TODO: 10.10.2017 Place cube in required location
+            // TODO: 10.10.2017 Determine location of starting point
+            // TODO: 10.10.2017 Return to starting point
 
         }
     }
+
+    void chassis_move(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
+        // Send power to wheels
+        m1_Drive.setPower(D1_power);
+        m2_Drive.setPower(D2_power);
+        m3_Drive.setPower(D3_power);
+        m4_Drive.setPower(D4_power);
+    }
+
+    void chassis_timed_move(double D1_power, double D2_power, double D3_power, double D4_power, long seconds) {
+        m1_Drive.setPower(D1_power);
+        m2_Drive.setPower(D2_power);
+        m3_Drive.setPower(D3_power);
+        m4_Drive.setPower(D4_power);
+        sleep(seconds * 1000);
+        chassis_stop_movement();
+    }
+
+    void chassis_stop_movement() {
+        m1_Drive.setPower(0);
+        m2_Drive.setPower(0);
+        m3_Drive.setPower(0);
+        m4_Drive.setPower(0);
+    }
+
 }
+
