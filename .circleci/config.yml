@@ -13,7 +13,8 @@ jobs:
       - checkout
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies | sdkmanager --update && yes | sdkmanager --licenses
+          command: ./gradlew androidDependencies
+          command: sdkmanager --update && yes | sdkmanager --licenses
       - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
