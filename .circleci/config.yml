@@ -13,10 +13,6 @@ jobs:
       - checkout:
           post:  
              - cp -r licenses/. $ANDROID_HOME/licenses
-      
-      - run:
-          name: Accept-licenses
-          command: sdkmanager --update && yes | sdkmanager --licenses
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
