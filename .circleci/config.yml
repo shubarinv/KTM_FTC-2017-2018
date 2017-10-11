@@ -1,19 +1,20 @@
 version: 2
+
 jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-26-alpha
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - run:
+          name: Switch timezone to Moscow
+          command: sudo cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
       - checkout
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
-      - run:
-          name: Accepting licenses
-          command: yes | sudo sdkmanager --licenses 
       - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
@@ -22,4 +23,4 @@ jobs:
           destination: apk
       - run:
           name: Deploy
-          command: sh ./deploy.sh
+          command: sh ./deploy.sh $CIRCLE_BRANCH
