@@ -67,7 +67,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name="Concept: VuMark Id", group ="Concept")
-@Disabled
 public class VuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
@@ -162,11 +161,15 @@ public class VuMarkIdentification extends LinearOpMode {
                     double tX = trans.get(0);
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
+                    telemetry.addData("Vumark Location :","X:",tX,"Y:",tY,"Z:",tZ );
+                    telemetry.update();
 
                     // Extract the rotational components of the target relative to the robot
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
+                    telemetry.addData("Vumark Rotation :","rX:",rX,"rY:",rY,"rZ:",rZ );
+                    telemetry.update();
                 }
             }
             else {
