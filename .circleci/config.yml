@@ -12,9 +12,6 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - run:
-          name: Switch timezone to Moscow
-          command: sudo cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-      - run:
           name: Build assembleDebug
           command: ./gradlew assembleDebug
       - store_artifacts:
