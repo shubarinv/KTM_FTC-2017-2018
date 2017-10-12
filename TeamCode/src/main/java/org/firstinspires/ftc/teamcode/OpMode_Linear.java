@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
+//game pad 2   x-rotation     lb/rb -claw 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -36,6 +36,7 @@ public class OpMode_Linear extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
+    boolean claw_flipped = false;
 
     //-------
     double magic(double input) {
@@ -57,7 +58,7 @@ public class OpMode_Linear extends LinearOpMode {
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        m5_Lift = hardwareMap.get(DcMotor.class, "m5 drive");
+        m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation= hardwareMap.get(Servo.class, "s3 rotation");
@@ -93,6 +94,7 @@ public class OpMode_Linear extends LinearOpMode {
             double drive = -gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x;
+            double claw_rotation= gamepad2.x;
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
                 m1_Drive_Power = rotation - drive - slide;
@@ -113,7 +115,9 @@ public class OpMode_Linear extends LinearOpMode {
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
             m4_Drive.setPower(magic(m4_Drive_Power));
-
+            if (claw_rotation!=0){
+                rotate_claw();
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
@@ -127,6 +131,15 @@ public class OpMode_Linear extends LinearOpMode {
 
             // TODO: 10.10.2017 Grab box
             // TODO: 10.10.2017 Rotate box if needed
+            void rotate_claw(){
+                if (claw_flipped==false){
+                    s3_rotation.setPosition(180);
+                }
+                else{
+                    s3_rotation.setPosition(-180);
+                }
+                claw_lipped=!claw_lipped;
+            }
             // TODO: 10.10.2017 Grab another box
             // TODO: 10.10.2017 Place box to shelf
 
