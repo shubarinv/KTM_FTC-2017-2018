@@ -122,6 +122,8 @@ public class OpMode_Linear extends LinearOpMode {
                 else{
                     s3_rotation.setPosition(-180);
                 }
+                sleep(CYCLE_MS);
+                idle();
                 claw_flipped=!claw_flipped;
             }
             // Show the elapsed game time and wheel power.
