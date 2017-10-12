@@ -37,6 +37,7 @@ public class OpMode_Linear extends LinearOpMode {
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
     boolean claw_flipped = false;
+    static final int CYCLE_MS = 50; // period of each cyclestatic final int CYCLE_MS = 50; // period of each cycle
 
     //-------
     double magic(double input) {
