@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -31,6 +32,9 @@ public class OpMode_Linear extends LinearOpMode {
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
+    private DcMotor m5_Lift = null;
+    private Servo s1_top_Claw = null;
+    private Servo s2_bottom_Claw = null;
 
     //-------
     double magic(double input) {
