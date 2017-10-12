@@ -56,9 +56,9 @@ public class OpMode_Linear extends LinearOpMode {
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        m5_lift = hardwareMap.get(DcMotor.class, "m5 drive");
+        m5_Lift = hardwareMap.get(DcMotor.class, "m5 drive");
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
-        s1_bottom_Claw = hardwareMap.get(Servo.class, "s1 bottom claw");
+        s2_bottom_Claw = hardwareMap.get(Servo.class, "s1 bottom claw");
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -66,7 +66,7 @@ public class OpMode_Linear extends LinearOpMode {
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
         m3_Drive.setDirection(DcMotor.Direction.FORWARD);
         m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m5_lift.setDirection(DcMotor.Direction.FORWARD);
+        m5_Lift.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
