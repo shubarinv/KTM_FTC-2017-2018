@@ -116,7 +116,13 @@ public class OpMode_Linear extends LinearOpMode {
             m3_Drive.setPower(magic(m3_Drive_Power));
             m4_Drive.setPower(magic(m4_Drive_Power));
             if (claw_rotation!=0){
-                rotate_claw();
+                if (claw_flipped==false){
+                    s3_rotation.setPosition(180);
+                }
+                else{
+                    s3_rotation.setPosition(-180);
+                }
+                claw_flipped=!claw_flipped;
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -146,7 +152,7 @@ public class OpMode_Linear extends LinearOpMode {
 
 
         }
-         private void rotate_claw(){
+         /*void rotate_claw(){
                 if (claw_flipped==false){
                     s3_rotation.setPosition(180);
                 }
@@ -154,6 +160,6 @@ public class OpMode_Linear extends LinearOpMode {
                     s3_rotation.setPosition(-180);
                 }
                 claw_flipped=!claw_flipped;
-            }
+            }*/
     }
 }
