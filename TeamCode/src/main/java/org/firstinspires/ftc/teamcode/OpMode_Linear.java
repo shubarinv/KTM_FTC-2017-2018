@@ -125,7 +125,7 @@ public class OpMode_Linear extends LinearOpMode {
                     s3_rotation.setPosition(180);
                 }
                 else{
-                    s3_rotation.setPosition(-180);
+                    s3_rotation.setPosition(0);
                 }
                 claw_flipped=!claw_flipped;
             }
