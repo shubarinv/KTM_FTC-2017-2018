@@ -131,14 +131,14 @@ public class OpMode_Linear extends LinearOpMode {
 
             // TODO: 10.10.2017 Grab box
             // TODO: 10.10.2017 Rotate box if needed
-            void rotate_claw(){
+            private void rotate_claw(){
                 if (claw_flipped==false){
                     s3_rotation.setPosition(180);
                 }
                 else{
                     s3_rotation.setPosition(-180);
                 }
-                claw_lipped=!claw_lipped;
+                claw_flipped=!claw_flipped;
             }
             // TODO: 10.10.2017 Grab another box
             // TODO: 10.10.2017 Place box to shelf
