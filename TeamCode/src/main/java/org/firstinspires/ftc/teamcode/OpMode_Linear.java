@@ -35,6 +35,7 @@ public class OpMode_Linear extends LinearOpMode {
     private DcMotor m5_Lift = null;
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
+    private Servo s3_rotation = null;
 
     //-------
     double magic(double input) {
@@ -58,7 +59,8 @@ public class OpMode_Linear extends LinearOpMode {
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 drive");
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
-        s2_bottom_Claw = hardwareMap.get(Servo.class, "s1 bottom claw");
+        s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
+        s3_rotation= hardwareMap.get(Servo.class, "s3 rotation");
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
