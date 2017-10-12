@@ -94,7 +94,7 @@ public class OpMode_Linear extends LinearOpMode {
             double drive = -gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x;
-            double claw_rotation= gamepad2.x;
+            boolean claw_rotation= gamepad2.x;
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
                 m1_Drive_Power = rotation - drive - slide;
@@ -115,7 +115,7 @@ public class OpMode_Linear extends LinearOpMode {
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
             m4_Drive.setPower(magic(m4_Drive_Power));
-            if (claw_rotation!=0){
+            if (claw_rotation==true){
                 if (claw_flipped==false){
                     s3_rotation.setPosition(180);
                 }
