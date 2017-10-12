@@ -38,6 +38,7 @@ public class OpMode_Linear extends LinearOpMode {
     private Servo s3_rotation = null;
     boolean claw_flipped = false;
     static final int CYCLE_MS = 50; // period of each cyclestatic final int CYCLE_MS = 50; // period of each cycle
+    boolean claw_rot_previous=false;
 
     //-------
     double magic(double input) {
@@ -47,6 +48,7 @@ public class OpMode_Linear extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -116,16 +118,17 @@ public class OpMode_Linear extends LinearOpMode {
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
             m4_Drive.setPower(magic(m4_Drive_Power));
+            if(claw_rot_previous!=claw_rotation){
             if (claw_rotation==true){
                 if (claw_flipped==false){
+                    
                     s3_rotation.setPosition(180);
                 }
                 else{
                     s3_rotation.setPosition(-180);
                 }
-                sleep(CYCLE_MS);
-                idle();
                 claw_flipped=!claw_flipped;
+            }
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
