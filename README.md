@@ -2,11 +2,13 @@
 
 ## Branches
 
-[![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=Development)]()     Development-Код который ещё не проверен , самые последние изменения всегда происходят здесь.
+Development-Код который ещё не проверен , самые последние изменения всегда происходят здесь.
 
-[![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=Testing)]()  Testing-Тут находится то что надо протестировать.
 
-[![bitrise.io](https://www.bitrise.io/app/f9f7ee832225949b/status.svg?token=5bFV4dl5l9fj6wSEKa5eow&branch=master)]()  Master- Здесь находится то что успешно протестировано.
+Testing-Тут находится то что надо протестировать.
+
+
+Master- Здесь находится то что успешно протестировано.
 
 
 Last apk builded: http://vhundef.net
