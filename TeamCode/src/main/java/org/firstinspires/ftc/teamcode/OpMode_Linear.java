@@ -47,6 +47,21 @@ public class OpMode_Linear extends LinearOpMode {
     */
 
     // TODO: 10.10.2017 Grab box
+    void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
+        if (top_clamp) {
+            s1_top_Claw.setPosition(40);
+        }
+        if (top_release) {
+            s1_top_Claw.setPosition(0);
+        }
+        if (bottom_clamp) {
+            s2_bottom_Claw.setPosition(40);
+        }
+        if (bottom_release) {
+            s2_bottom_Claw.setPosition(0);
+        }
+    }
+
     // TODO: 15.10.2017 Lift claw
     void lift_claw(double lift_power) {
         m5_Lift.setPower(lift_power);
@@ -124,8 +139,12 @@ public class OpMode_Linear extends LinearOpMode {
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x;
             double claw_lift = gamepad2.left_stick_y;
-            boolean claw_rotation_l = gamepad2.left_bumper;
-            boolean claw_rotation_r = gamepad2.right_bumper;
+            float claw_clamp_top = gamepad2.left_trigger;
+            float claw_clamp_bottom = gamepad2.right_trigger;
+            boolean claw_release_top = gamepad2.left_bumper;
+            boolean claw_release_bottom = gamepad2.right_bumper;
+            boolean claw_rotation_l = gamepad2.dpad_left;
+            boolean claw_rotation_r = gamepad2.dpad_right;
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
                 m1_Drive_Power = rotation - drive - slide;
@@ -157,14 +176,29 @@ public class OpMode_Linear extends LinearOpMode {
             * Begin Claw related code
              */
 
-            //Claw rotation
+            // Grab box
+            if (claw_clamp_top > 0.2) {
+                grab_box(true, false, false, false);
+            }
+            if (claw_clamp_bottom > 0.2) {
+                grab_box(false, false, true, false);
+            }
+            if (claw_release_top) {
+                grab_box(false, true, false, false);
+            }
+            if (claw_release_bottom) {
+                grab_box(false, false, false, true);
+            }
+
+            // Claw rotation
             if (claw_rotation_l) {
                 rotate_claw(true); // Rotate claw to left
             }
             if (claw_rotation_r) {
                 rotate_claw(false); // Rotate claw to right
             }
-            //Claw lift
+
+            // Claw lift
             lift_claw(magic(claw_lift));
 
         }
