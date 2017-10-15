@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //game pad 2   x-rotation     lb/rb -claw 
+
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -25,6 +26,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class OpMode_Linear extends LinearOpMode {
 
+    static final int CYCLE_MS = 50; // period of each cyclestatic final int CYCLE_MS = 50; // period of each cycle
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     //Chassis
@@ -36,19 +38,43 @@ public class OpMode_Linear extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
-    boolean claw_flipped = false;
-    static final int CYCLE_MS = 50; // period of each cyclestatic final int CYCLE_MS = 50; // period of each cycle
-    boolean claw_rot_previous=false;
 
     //-------
     double magic(double input) {
         return Math.signum(input) * Math.pow(Math.abs(input), 2);
     }
 
+    /*
+      * Functions declaration
+    */
+
+    // TODO: 10.10.2017 Grab box
+
+    // TODO: 10.10.2017 Rotate claw if needed
+    void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
+        if (rotate) {
+            s3_rotation.setPosition(180);
+        } else {
+            s3_rotation.setPosition(0);
+        }
+    }
+    // TODO: 10.10.2017 Grab another box
+    // TODO: 10.10.2017 Place box to shelf
+
+    /*
+       *Relic related
+    */
+    // TODO: 10.10.2017 Grab relic
+    // TODO: 10.10.2017 Extend grabbing component
+    // TODO: 10.10.2017 Retract grabbing component
+
+    /**
+     * End of functions declaration
+     */
 
     @Override
     public void runOpMode() {
-        
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -64,7 +90,7 @@ public class OpMode_Linear extends LinearOpMode {
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
-        s3_rotation= hardwareMap.get(Servo.class, "s3 rotation");
+        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -81,9 +107,7 @@ public class OpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             /*
-            ++
-               ##Chassis movement
-            ++
+               * Chassis movement
             */
             //Setup a variable for each drive wheel to save power level for telemetry
             double m1_Drive_Power;
@@ -97,7 +121,8 @@ public class OpMode_Linear extends LinearOpMode {
             double drive = -gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x;
-            boolean claw_rotation= gamepad2.x;
+            boolean claw_rotation_l = gamepad2.left_bumper;
+            boolean claw_rotation_r = gamepad2.right_bumper;
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
                 m1_Drive_Power = rotation - drive - slide;
@@ -118,54 +143,25 @@ public class OpMode_Linear extends LinearOpMode {
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
             m4_Drive.setPower(magic(m4_Drive_Power));
-            if(claw_rot_previous!=claw_rotation){
-            if (claw_rotation==true){
-                if (claw_flipped==false){
-                    
-                    s3_rotation.setPosition(180);
-                }
-                else{
-                    s3_rotation.setPosition(0);
-                }
-                claw_flipped=!claw_flipped;
-            }
-            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
             telemetry.update();
 
             /*
-            ++
-               ##Box grabbing and movement
-            ++
-            */
+            * End of chassis related code.
 
-            // TODO: 10.10.2017 Grab box
-            // TODO: 10.10.2017 Rotate box if needed
-           
-            // TODO: 10.10.2017 Grab another box
-            // TODO: 10.10.2017 Place box to shelf
+            * Begin Claw related code
+             */
 
-            /*
-            ++
-               ##Relic related
-            ++
-            */
-            // TODO: 10.10.2017 Grab relic
-            // TODO: 10.10.2017 Extend grabbing component
-            // TODO: 10.10.2017 Retract grabbing component
-
-
+            //Claw rotation
+            if (claw_rotation_l) {
+                rotate_claw(true); // Rotate claw to left
+            }
+            if (claw_rotation_r) {
+                rotate_claw(false); // Rotate claw to right
+            }
+            
         }
-         /*void rotate_claw(){
-                if (claw_flipped==false){
-                    s3_rotation.setPosition(180);
-                }
-                else{
-                    s3_rotation.setPosition(-180);
-                }
-                claw_flipped=!claw_flipped;
-            }*/
     }
 }
