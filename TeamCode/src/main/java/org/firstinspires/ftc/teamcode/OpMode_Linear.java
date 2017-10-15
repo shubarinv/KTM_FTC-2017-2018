@@ -49,6 +49,10 @@ public class OpMode_Linear extends LinearOpMode {
     */
 
     // TODO: 10.10.2017 Grab box
+    // TODO: 15.10.2017 Lift claw
+    void lift_claw(double lift_power) {
+        m5_Lift.setPower(lift_power);
+    }
 
     // TODO: 10.10.2017 Rotate claw if needed
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
@@ -121,6 +125,7 @@ public class OpMode_Linear extends LinearOpMode {
             double drive = -gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x;
+            double claw_lift = gamepad2.left_stick_y;
             boolean claw_rotation_l = gamepad2.left_bumper;
             boolean claw_rotation_r = gamepad2.right_bumper;
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
@@ -161,7 +166,9 @@ public class OpMode_Linear extends LinearOpMode {
             if (claw_rotation_r) {
                 rotate_claw(false); // Rotate claw to right
             }
-            
+            //Claw lift
+            lift_claw(magic(claw_lift));
+
         }
     }
 }
