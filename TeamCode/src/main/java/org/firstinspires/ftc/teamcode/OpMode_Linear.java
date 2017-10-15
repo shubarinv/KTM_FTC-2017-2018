@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-//game pad 2   x-rotation     lb/rb -claw 
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -26,7 +25,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class OpMode_Linear extends LinearOpMode {
 
-    static final int CYCLE_MS = 50; // period of each cyclestatic final int CYCLE_MS = 50; // period of each cycle
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     //Chassis
@@ -57,7 +55,7 @@ public class OpMode_Linear extends LinearOpMode {
     // TODO: 10.10.2017 Rotate claw if needed
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
         if (rotate) {
-            s3_rotation.setPosition(180);
+            s3_rotation.setPosition(210);
         } else {
             s3_rotation.setPosition(0);
         }
