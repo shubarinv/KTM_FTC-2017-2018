@@ -36,7 +36,6 @@ public class OpMode_Linear extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
-    boolean swap_claw_rotation=false;
 
     //-------
     double magic(double input) {
@@ -70,7 +69,6 @@ public class OpMode_Linear extends LinearOpMode {
 
     // TODO: 10.10.2017 Rotate claw if needed
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
-        swap_claw_rotation=!swap_claw_rotation;
         if (rotate) {
             s3_rotation.setPosition(1);
         } else {
@@ -110,6 +108,7 @@ public class OpMode_Linear extends LinearOpMode {
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+        boolean swap_claws= false;
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -137,20 +136,22 @@ public class OpMode_Linear extends LinearOpMode {
 
             // POV Mode uses right stick to go forward and right to slide.
             // - This uses basic math to combine motions and is easier to drive straight.
-            
             double drive = -gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x/2;
             double claw_lift = gamepad2.left_stick_y;
-            float claw_clamp_top = gamepad2.left_trigger;
-            float claw_clamp_bottom = gamepad2.right_trigger;
-            if(!swap_claw_rotation){
-                boolean claw_release_top = gamepad2.left_bumper;
-                boolean claw_release_bottom = gamepad2.right_bumper;
-            }
-            else{
+            
+            if (swap_claws){
+                float claw_clamp_top = gamepad2.right_trigger;
+                float claw_clamp_bottom = gamepad2.left_trigger;
                 boolean claw_release_top = gamepad2.right_bumper;
                 boolean claw_release_bottom = gamepad2.left_bumper;
+            }
+            else{
+                float claw_clamp_top = gamepad2.left_trigger;
+                float claw_clamp_bottom = gamepad2.right_trigger;
+                boolean claw_release_top = gamepad2.left_bumper;
+                boolean claw_release_bottom = gamepad2.right_bumper;
             }
             boolean claw_rotation_l = gamepad2.dpad_left;
             boolean claw_rotation_r = gamepad2.dpad_right;
@@ -201,9 +202,11 @@ public class OpMode_Linear extends LinearOpMode {
 
             // Claw rotation
             if (claw_rotation_l) {
+                swap_claws=false;
                 rotate_claw(true); // Rotate claw to left
             }
             if (claw_rotation_r) {
+                swap_claws=true;
                 rotate_claw(false); // Rotate claw to right
             }
 
