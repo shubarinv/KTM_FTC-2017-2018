@@ -137,7 +137,7 @@ public class OpMode_Linear extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.right_stick_y;
             double slide = gamepad1.right_stick_x;
-            double rotation = -gamepad1.left_stick_x;
+            double rotation = -gamepad1.left_stick_x/2;
             double claw_lift = gamepad2.left_stick_y;
             float claw_clamp_top = gamepad2.left_trigger;
             float claw_clamp_bottom = gamepad2.right_trigger;
