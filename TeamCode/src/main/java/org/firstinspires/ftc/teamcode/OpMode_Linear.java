@@ -108,7 +108,6 @@ public class OpMode_Linear extends LinearOpMode {
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
-        boolean swap_claws= false;
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -140,19 +139,10 @@ public class OpMode_Linear extends LinearOpMode {
             double slide = gamepad1.right_stick_x;
             double rotation = -gamepad1.left_stick_x/2;
             double claw_lift = gamepad2.left_stick_y;
-            
-            if (swap_claws){
-                float claw_clamp_top = gamepad2.right_trigger;
-                float claw_clamp_bottom = gamepad2.left_trigger;
-                boolean claw_release_top = gamepad2.right_bumper;
-                boolean claw_release_bottom = gamepad2.left_bumper;
-            }
-            else{
-                float claw_clamp_top = gamepad2.left_trigger;
-                float claw_clamp_bottom = gamepad2.right_trigger;
-                boolean claw_release_top = gamepad2.left_bumper;
-                boolean claw_release_bottom = gamepad2.right_bumper;
-            }
+            float claw_clamp_top = gamepad2.left_trigger;
+            float claw_clamp_bottom = gamepad2.right_trigger;
+            boolean claw_release_top = gamepad2.left_bumper;
+            boolean claw_release_bottom = gamepad2.right_bumper;
             boolean claw_rotation_l = gamepad2.dpad_left;
             boolean claw_rotation_r = gamepad2.dpad_right;
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
@@ -182,7 +172,6 @@ public class OpMode_Linear extends LinearOpMode {
 
             /*
             * End of chassis related code.
-
             * Begin Claw related code
              */
 
@@ -202,11 +191,9 @@ public class OpMode_Linear extends LinearOpMode {
 
             // Claw rotation
             if (claw_rotation_l) {
-                swap_claws=false;
                 rotate_claw(true); // Rotate claw to left
             }
             if (claw_rotation_r) {
-                swap_claws=true;
                 rotate_claw(false); // Rotate claw to right
             }
 
