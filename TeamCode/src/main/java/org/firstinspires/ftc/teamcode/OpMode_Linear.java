@@ -135,9 +135,9 @@ public class OpMode_Linear extends LinearOpMode {
 
             // POV Mode uses right stick to go forward and right to slide.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
-            double slide = gamepad1.right_stick_x / 2;
-            double rotation = -gamepad1.left_stick_x / 2;
+            double drive = -gamepad1.right_stick_y;
+            double slide = gamepad1.left_stick_x / 2;
+            double rotation = -gamepad1.right_stick_x / 2;
             double claw_lift = gamepad2.left_stick_y;
             float claw_clamp_top = gamepad2.left_trigger;
             float claw_clamp_bottom = gamepad2.right_trigger;
