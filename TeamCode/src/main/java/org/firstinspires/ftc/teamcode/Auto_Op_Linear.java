@@ -77,12 +77,6 @@ public class Auto_Op_Linear extends LinearOpMode {
      * Functions
      */
 
-    /**
-     * @param top_clamp      - close top claw
-     * @param top_release    - open top claw
-     * @param bottom_clamp   - close bottom claw
-     * @param bottom_release - open bottom claw
-     */
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
             s1_top_Claw.setPosition(0.30);
@@ -98,17 +92,11 @@ public class Auto_Op_Linear extends LinearOpMode {
         }
     }
 
-    /**
-     * @param lift_power - amount of power from 0 to 1
-     */
     // Lift claw
     void lift_claw(double lift_power) {
         m5_Lift.setPower(lift_power);
     }
 
-    /**
-     * @param rotate - weather to rotate to the right(if statement is true), or to the left if statement is false
-     */
     // Rotate claw
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
         if (rotate) {
@@ -118,12 +106,6 @@ public class Auto_Op_Linear extends LinearOpMode {
         }
     }
 
-    /**
-     * @param D1_power
-     * @param D2_power
-     * @param D3_power
-     * @param D4_power
-     */
     void set_Motors_Power(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
         // Send power to wheels
         m1_Drive.setPower(D1_power);
@@ -132,13 +114,6 @@ public class Auto_Op_Linear extends LinearOpMode {
         m4_Drive.setPower(D4_power);
     }
 
-    /**
-     * @param m1_power
-     * @param m2_power
-     * @param m3_power
-     * @param m4_power
-     * @param seconds
-     */
     void set_Motors_Power_timed(double m1_power, double m2_power, double m3_power, double m4_power, long seconds) {
         m1_Drive.setPower(m1_power);
         m2_Drive.setPower(m2_power);
