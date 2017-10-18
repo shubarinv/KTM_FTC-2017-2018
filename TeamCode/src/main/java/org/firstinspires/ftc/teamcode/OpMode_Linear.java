@@ -46,7 +46,7 @@ public class OpMode_Linear extends LinearOpMode {
       * Functions declaration
     */
 
-    // Grab box
+    // TODO: 10.10.2017 Grab box
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
             s1_top_Claw.setPosition(0.30);
@@ -62,12 +62,12 @@ public class OpMode_Linear extends LinearOpMode {
         }
     }
 
-    // Lift claw
+    // TODO: 15.10.2017 Lift claw
     void lift_claw(double lift_power) {
         m5_Lift.setPower(lift_power);
     }
 
-    // Rotate claw if needed
+    // TODO: 10.10.2017 Rotate claw if needed
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
         if (rotate) {
             s3_rotation.setPosition(1);
@@ -78,12 +78,14 @@ public class OpMode_Linear extends LinearOpMode {
     // Grab another box
     // Place box to shelf
 
+
     /*
        *Relic related
     */
     // Grab relic
     // Extend grabbing component
     // Retract grabbing component
+
 
     /**
      * End of functions declaration
