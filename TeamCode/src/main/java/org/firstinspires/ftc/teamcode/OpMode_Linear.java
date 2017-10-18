@@ -75,15 +75,17 @@ public class OpMode_Linear extends LinearOpMode {
             s3_rotation.setPosition(0);
         }
     }
-    // TODO: 10.10.2017 Grab another box
-    // TODO: 10.10.2017 Place box to shelf
+    // Grab another box
+    // Place box to shelf
+
 
     /*
        *Relic related
     */
-    // TODO: 10.10.2017 Grab relic
-    // TODO: 10.10.2017 Extend grabbing component
-    // TODO: 10.10.2017 Retract grabbing component
+    // Grab relic
+    // Extend grabbing component
+    // Retract grabbing component
+
 
     /**
      * End of functions declaration
