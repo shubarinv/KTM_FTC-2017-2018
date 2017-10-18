@@ -161,6 +161,9 @@ public class Auto_Op_Linear extends LinearOpMode {
         // Step through the path, ensuring that the Auto mode has not been stopped along the way
 
         // Step 1:  Drive forward, backward, rotate for one second
+        lift_claw(0.1);
+        sleep(100);
+        lift_claw(0);
         set_Motors_Power_timed(1, 0, 1, 0, 1);//move forward
         set_Motors_Power_timed(0, 1, 0, 1, 1);//move backward
         set_Motors_Power_timed(1, -1, 1, -1, 1);//Rotate to left
