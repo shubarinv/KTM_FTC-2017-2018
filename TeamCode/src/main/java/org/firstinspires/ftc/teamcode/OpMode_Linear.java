@@ -49,13 +49,13 @@ public class OpMode_Linear extends LinearOpMode {
     // Grab box
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
-            s1_top_Claw.setPosition(0.25);
+            s1_top_Claw.setPosition(0.30);
         }
         if (top_release) {
             s1_top_Claw.setPosition(0);
         }
         if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0.25);
+            s2_bottom_Claw.setPosition(0.30);
         }
         if (bottom_release) {
             s2_bottom_Claw.setPosition(0);
@@ -75,20 +75,15 @@ public class OpMode_Linear extends LinearOpMode {
             s3_rotation.setPosition(0);
         }
     }
-    /* TODO
-     * Grab another box
-     * Place box to shelf
-     */
-    
+    // Grab another box
+    // Place box to shelf
+
     /*
        *Relic related
     */
-    
-    /* TODO
-     * Grab relic
-     * Extend grabbing component
-     * Retract grabbing component
-     */
+    // Grab relic
+    // Extend grabbing component
+    // Retract grabbing component
 
     /**
      * End of functions declaration
@@ -141,8 +136,8 @@ public class OpMode_Linear extends LinearOpMode {
             // POV Mode uses right stick to go forward and right to slide.
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.right_stick_y;
-            double slide = gamepad1.right_stick_x;
-            double rotation = -gamepad1.left_stick_x;
+            double slide = gamepad1.left_stick_x / 2;
+            double rotation = -gamepad1.right_stick_x / 2;
             double claw_lift = gamepad2.left_stick_y;
             float claw_clamp_top = gamepad2.left_trigger;
             float claw_clamp_bottom = gamepad2.right_trigger;
@@ -177,7 +172,6 @@ public class OpMode_Linear extends LinearOpMode {
 
             /*
             * End of chassis related code.
-
             * Begin Claw related code
              */
 
