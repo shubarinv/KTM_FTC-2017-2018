@@ -100,8 +100,8 @@ public class OpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
+        
         // Chassis
-
         m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
@@ -147,6 +147,7 @@ public class OpMode_Linear extends LinearOpMode {
             boolean claw_release_bottom = gamepad2.right_bumper;
             boolean claw_rotation_l = gamepad2.dpad_left;
             boolean claw_rotation_r = gamepad2.dpad_right;
+
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
                 m1_Drive_Power = rotation - drive - slide;
@@ -154,6 +155,7 @@ public class OpMode_Linear extends LinearOpMode {
                 m3_Drive_Power = rotation + drive + slide;
                 m4_Drive_Power = rotation - drive + slide;
             } else {
+
                 rotation = rotation / A;
                 drive = drive / A;
                 slide = slide / A;
@@ -163,6 +165,7 @@ public class OpMode_Linear extends LinearOpMode {
                 m4_Drive_Power = rotation - drive + slide;
             }
             // Send calculated power to wheels
+
             m1_Drive.setPower(magic(m1_Drive_Power));
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
