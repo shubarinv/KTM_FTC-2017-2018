@@ -35,6 +35,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import java.util.Objects;
+
 /**
  * This file illustrates the concept of driving a path based on time.
  * It uses the common Pushbot hardware class to define the drive on the robot.
@@ -59,6 +75,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name = "KTM autonomous", group = "WIP")
 //@Disabled
 public class Auto_Op_Linear extends LinearOpMode {
+    OpenGLMatrix lastLocation = null;
+    /**
+     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+     * localization engine.
+     */
+    VuforiaLocalizer vuforia;
+    double tX_previous;
+    double tZ_previous;
+    String move_to_target_X;
+    String move_to_target_Z;
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -133,7 +159,31 @@ public class Auto_Op_Linear extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        /*
+         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
+         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
+         */
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        //Vuforia API key
+        parameters.vuforiaLicenseKey = "AfQcHkL/////AAAAGd5Auzk+t0CxnAw8xKONnjke+r6gFs0KfKK8LsB35FsX6bnhXZmEN+0f3blTVk7nI4xjKNob63Ps1Jpp/JS25hHc083okOZzcTsBlA5qz2hJK3LFNWyZv59kjCUyqbc3qS7dTXJ4i4/JD9t+IeyvGH9G9xPwV7DNmcuNeT7o+YDn3cI7zgUcVcrdFM8t22/wGkmiCz5TfY5A0BMETyriYX6BzlVuwGtMfXdp9CYDQ+ZhZTRNjPfvKlNyLLxVycIiM1p4nprW2UnySO11fmTkUZR9Ofqr+gbHj0VNm7gUEz77s/cHTl+swX84pxpOhm1QJeO0wuNw4c5siQpizcWHPMhJCDRFqRmTQ3LBpcMJWjTx";
+        /*
+         * We also indicate which camera on the RC that we wish to use.
+         * Here we chose the back (HiRes) camera (for greater range), but
+         * for a competition robot, the front camera might be more convenient.
+         */
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
+        /**
+         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
+         * in this data set: all three of the VuMarks in the game were created from this one template,
+         * but differ in their instance id information.
+         * @see VuMarkInstanceId
+         */
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -151,59 +201,87 @@ public class Auto_Op_Linear extends LinearOpMode {
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
         m3_Drive.setDirection(DcMotor.Direction.FORWARD);
         m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");    //
-        telemetry.update();
 
-        // Wait for the game to start (driver presses PLAY)
+        telemetry.addData(">", "Press Play to start");
+        telemetry.update();
         waitForStart();
 
-        // Step through the path, ensuring that the Auto mode has not been stopped along the way
+        relicTrackables.activate();
 
-        // Step 1:  Drive forward, backward, rotate for one second
-        lift_claw(0.1);
-        sleep(100);
-        lift_claw(0);
-        set_Motors_Power_timed(1, 0, 1, 0, 1);//move forward
-        set_Motors_Power_timed(0, 1, 0, 1, 1);//move backward
-        set_Motors_Power_timed(1, -1, 1, -1, 1);//Rotate to left
-        set_Motors_Power_timed(-1, 1, -1, 1, 1);//Rotate to right
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-            telemetry.addData("Running step ", "1");
-            telemetry.update();
+        while (opModeIsActive()) {
+            sleep(4000);
+
+            /**
+             * See if any of the instances of {@link relicTemplate} are currently visible.
+             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
+             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+             */
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+
+                /* We further illustrate how to decompose the pose into useful rotational and
+                 * translational components */
+                if (pose != null) {
+                    VectorF trans = pose.getTranslation();
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
+                    double tX = trans.get(0);
+                    double tY = trans.get(1);
+                    double tZ = trans.get(2);
+
+                    if (tX_previous == 0.0d) { //Это действие выполняется 1 раз
+                        tX_previous = tX;
+                    }
+                    if (tZ_previous == 0.0d) {//Это действие выполняется 1 раз
+                        tZ_previous = tY;
+                    }
+                    if (move_to_target_X == null || move_to_target_Z == null) {//Это действие выполняется 1 раз и нужно для того чтобы понять в какую сторону нужно двигаться для приближения к цели
+                        set_Motors_Power_timed(1, 0, 1, 0, 1); //move forward
+
+                        if (tZ_previous != tZ) {
+                            if (tZ_previous > tZ) { //which means we moved towards the target
+                                move_to_target_Z = "forward";
+                            } else {
+                                move_to_target_Z = "backward";
+                            }
+                            tZ_previous = tZ;
+                        }
+                        set_Motors_Power_timed(0, 1, 0, 1, 1);//move left
+                        if (tX_previous != tX) {
+                            if (tX_previous > tX) { //which means we moved towards the target
+                                move_to_target_X = "left";
+                            } else {
+                                move_to_target_X = "right";
+                            }
+                            tX_previous = tX;
+                        }
+                    } else {
+                        if (tX > 200) {
+                            if (Objects.equals(move_to_target_X, "forward")) {
+                                set_Motors_Power(0.5, 0, 0.5, 0);
+                            } else {
+                                set_Motors_Power(-0.5, 0, -0.5, 0);
+                            }
+                        }
+
+                        if (tY > 200) {
+                            if (Objects.equals(move_to_target_X, "left")) {
+                                set_Motors_Power(0, 0.5, 0, 0.5);
+                            } else {
+                                set_Motors_Power(0, -0.5, 0, -0.5);
+                            }
+                        }
+                    }
+                }
+            }
         }
-
-        // Step 2:  Grab box and release it
-        grab_box(true, false, true, false);
-        sleep(1000);
-        grab_box(false, true, false, true);
-
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
-            telemetry.addData("Running step ", "2");
-            telemetry.update();
-        }
-
-        // Step 3:  rotate claw
-        rotate_claw(true);
-        sleep(2000);
-        rotate_claw(false);
-
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-            telemetry.addData("Running step ", "3");
-            telemetry.update();
-        }
-
-        // Step 4:  test lifting claw
-        lift_claw(0.2);
-        sleep(1000);
-        lift_claw(-0.2);
-        sleep(1000);
-        lift_claw(0);
-        telemetry.addData("All steps ", "Complete");
-        telemetry.update();
-        sleep(1000);
     }
 }
