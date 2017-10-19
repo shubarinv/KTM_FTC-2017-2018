@@ -75,9 +75,9 @@ public class VuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark";
     double tX_previous;
-    double tY_previous;
+    double tZ_previous;
     String move_to_target_X;
-    String move_to_target_Y;
+    String move_to_target_Z;
     OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -240,6 +240,7 @@ public class VuMarkIdentification extends LinearOpMode {
         relicTrackables.activate();
 
         while (opModeIsActive()) {
+            sleep(4000);
 
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
@@ -272,37 +273,38 @@ public class VuMarkIdentification extends LinearOpMode {
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
 
-                    if (tX_previous == 0.0d) {
+                    if (tX_previous == 0.0d) { //Это действие выполняется 1 раз
                         tX_previous = tX;
                     }
-                    if (tY_previous == 0.0d) {
-                        tY_previous = tY;
+                    if (tZ_previous == 0.0d) {//Это действие выполняется 1 раз
+                        tZ_previous = tY;
                     }
-                    if (move_to_target_X == null || move_to_target_Y == null) {
+                    if (move_to_target_X == null || move_to_target_Z == null) {//Это действие выполняется 1 раз и нужно для того чтобы понять в какую сторону нужно двигаться для приближения к цели
                         move_timed("forward", 1);
 
+                        if (tZ_previous != tZ) {
+                            if (tZ_previous > tZ) { //which means we moved towards the target
+                                move_to_target_Z = "forward";
+                            } else {
+                                move_to_target_Z = "backward";
+                            }
+                            tZ_previous = tZ;
+                        }
+                        move_timed("left", 1);
                         if (tX_previous != tX) {
                             if (tX_previous > tX) { //which means we moved towards the target
-                                move_to_target_X = "forward";
+                                move_to_target_X = "left";
                             } else {
-                                move_to_target_X = "backward";
+                                move_to_target_X = "right";
                             }
                             tX_previous = tX;
                         }
-                        move_timed("left", 1);
-                        if (tY_previous != tY) {
-                            if (tY_previous > tY) { //which means we moved towards the target
-                                move_to_target_Y = "left";
-                            } else {
-                                move_to_target_Y = "right";
-                            }
-                        }
                     } else {
-                        if (tX > 5) {
+                        if (tX > 200) {
                             move_timed(move_to_target_X, 1);
                         }
-                        if (tY > 5) {
-                            move_timed(move_to_target_Y, 1);
+                        if (tY > 200) {
+                            move_timed(move_to_target_Z, 1);
                         }
                     }
 
