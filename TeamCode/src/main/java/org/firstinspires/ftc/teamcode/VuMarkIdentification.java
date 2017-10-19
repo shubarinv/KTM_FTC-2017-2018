@@ -29,6 +29,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -71,6 +72,7 @@ import java.util.Objects;
  */
 
 @Autonomous(name = "Concept: VuMark Id", group = "Concept")
+@Disabled
 public class VuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark";
@@ -307,7 +309,6 @@ public class VuMarkIdentification extends LinearOpMode {
                             move_timed(move_to_target_Z, 1);
                         }
                     }
-
 
 
                     // Extract the rotational components of the target relative to the robot
