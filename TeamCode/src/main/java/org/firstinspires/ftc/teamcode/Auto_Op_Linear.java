@@ -219,6 +219,7 @@ public class Auto_Op_Linear extends LinearOpMode {
              */
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+<<<<<<< HEAD
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
@@ -297,5 +298,71 @@ public class Auto_Op_Linear extends LinearOpMode {
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+=======
+
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+
+                /* We further illustrate how to decompose the pose into useful rotational and
+                 * translational components */
+                if (pose != null) {
+                    VectorF trans = pose.getTranslation();
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
+                    double tX = trans.get(0);
+                    double tY = trans.get(1);
+                    double tZ = trans.get(2);
+
+                    if (tX_previous == 0.0d) { //Это действие выполняется 1 раз
+                        tX_previous = tX;
+                    }
+                    if (tZ_previous == 0.0d) {//Это действие выполняется 1 раз
+                        tZ_previous = tY;
+                    }
+                    if (move_to_target_X == null || move_to_target_Z == null) {//Это действие выполняется 1 раз и нужно для того чтобы понять в какую сторону нужно двигаться для приближения к цели
+                        set_Motors_Power_timed(1, 0, 1, 0, 1); //move forward
+
+                        if (tZ_previous != tZ) {
+                            if (tZ_previous > tZ) { //which means we moved towards the target
+                                move_to_target_Z = "forward";
+                            } else {
+                                move_to_target_Z = "backward";
+                            }
+                            tZ_previous = tZ;
+                        }
+                        set_Motors_Power_timed(0, 1, 0, 1, 1);//move left
+                        if (tX_previous != tX) {
+                            if (tX_previous > tX) { //which means we moved towards the target
+                                move_to_target_X = "left";
+                            } else {
+                                move_to_target_X = "right";
+                            }
+                            tX_previous = tX;
+                        }
+                    } else {
+                        if (tX > 200) {
+                            if (Objects.equals(move_to_target_X, "forward")) {
+                                set_Motors_Power(0.5, 0, 0.5, 0);
+                            } else {
+                                set_Motors_Power(-0.5, 0, -0.5, 0);
+                            }
+                        }
+
+                        if (tY > 200) {
+                            if (Objects.equals(move_to_target_X, "left")) {
+                                set_Motors_Power(0, 0.5, 0, 0.5);
+                            } else {
+                                set_Motors_Power(0, -0.5, 0, -0.5);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+>>>>>>> origin/Development
     }
 }
