@@ -49,8 +49,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-import java.util.Objects;
-
 /**
  * This file illustrates the concept of driving a path based on time.
  * It uses the common Pushbot hardware class to define the drive on the robot.
@@ -81,10 +79,6 @@ public class Auto_Op_Linear extends LinearOpMode {
      * localization engine.
      */
     VuforiaLocalizer vuforia;
-    double tX_previous;
-    double tZ_previous;
-    String move_to_target_X;
-    String move_to_target_Z;
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -242,56 +236,24 @@ public class Auto_Op_Linear extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
                     telemetry.update();
-
-                    if (tX_previous == 0.0d) { //Это действие выполняется 1 раз
-                        tX_previous = tX;
-                    }
-                    if (tZ_previous == 0.0d) {//Это действие выполняется 1 раз
-                        tZ_previous = tY;
-                    }
-                    if (move_to_target_X == null || move_to_target_Z == null) {//Это действие выполняется 1 раз и нужно для того чтобы понять в какую сторону нужно двигаться для приближения к цели
-                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1); //move forward
-
-                        if (tZ_previous != tZ) {
-                            if (tZ_previous > tZ) { //which means we moved towards the target
-                                move_to_target_Z = "forward";
-                            } else {
-                                move_to_target_Z = "backward";
-                            }
-                            tZ_previous = tZ;
-                        }
-                        set_Motors_Power_timed(0.2, 0.2, -0.2, -0.2, 1);//move left
-                        if (tX_previous != tX) {
-                            if (tX_previous > tX) { //which means we moved towards the target
-                                move_to_target_X = "left";
-                            } else {
-                                move_to_target_X = "right";
-                            }
-                            tX_previous = tX;
-                        }
+                    if (tX < -100) {
+                        set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
+                    } else if (-100 < tX && tX < 100) {
+                        set_Motors_Power(0, 0, 0, 0);
                     } else {
-                        if (tX > 200) {
-                            if (Objects.equals(move_to_target_X, "forward")) {
-                                set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
-                            } else {
-                                set_Motors_Power(0.1, -0.1, -0.1, 0.1);
-                            }
-                        }
-
-                        if (tY > 200) {
-                            if (Objects.equals(move_to_target_X, "left")) {
-                                set_Motors_Power(0.1, 0.1, -0.1, -0.1);
-                            } else {
-                                set_Motors_Power(-0.1, -0.1, 0.1, 0.1);
-                            }
-                        }
+                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);
                     }
+                    /* if (tY > 100) {
+                    if (Objects.equals(move_to_target_X, "left")) {
+                        set_Motors_Power(0.1, 0.1, -0.1, -0.1);
+                    } else {
+                        set_Motors_Power(-0.1, -0.1, 0.1, 0.1);
+                    }*/
+                } else {
+                    telemetry.addData("VuMark", "not visible");
                 }
-
-            } else {
-                telemetry.addData("VuMark", "not visible");
+                telemetry.update();
             }
-            telemetry.update();
         }
     }
 
