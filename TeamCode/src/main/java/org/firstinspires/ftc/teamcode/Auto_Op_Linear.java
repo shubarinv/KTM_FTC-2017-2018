@@ -203,7 +203,6 @@ public class Auto_Op_Linear extends LinearOpMode {
         relicTrackables.activate();
 
         while (opModeIsActive()) {
-            sleep(4000);
 
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
