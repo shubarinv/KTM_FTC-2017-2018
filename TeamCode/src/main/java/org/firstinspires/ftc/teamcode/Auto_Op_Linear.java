@@ -92,6 +92,8 @@ public class Auto_Op_Linear extends LinearOpMode {
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
 
+     boolean wasExecuted= false;
+
 
     /*
      * Functions
@@ -203,10 +205,10 @@ public class Auto_Op_Linear extends LinearOpMode {
         waitForStart();
 
         relicTrackables.activate();
-
+        wasExecuted=false;
         while (opModeIsActive()) {
-            grab_box(true,false,false,false);
-            lift_claw_timed(0.2,500);
+            grab_box(true, false, false, false);
+            lift_claw_timed(0.2, 500);
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
              * {@link RelicRecoveryVuMark} is an enum which can have the following values:
@@ -238,26 +240,35 @@ public class Auto_Op_Linear extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
                     telemetry.update();
-                    if(vuMark == RelicRecoveryVuMark.LEFT){telemetry.addData("Vumark"," LEFT");
-                        telemetry.update();}
-                    if(vuMark == RelicRecoveryVuMark.RIGHT){telemetry.addData("Vumark"," RIGHT");
-                        telemetry.update();}
-                    if(vuMark == RelicRecoveryVuMark.CENTER){telemetry.addData("Vumark"," CENTER");
-                        telemetry.update();}
+                    if (vuMark == RelicRecoveryVuMark.LEFT) {
+                        telemetry.addData("Vumark", " LEFT");
+                        telemetry.update();
+                    }
+                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                        telemetry.addData("Vumark", " RIGHT");
+                        telemetry.update();
+                    }
+                    if (vuMark == RelicRecoveryVuMark.CENTER) {
+                        telemetry.addData("Vumark", " CENTER");
+                        telemetry.update();
+                    }
                     if (tX < -100) {
                         set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
                     } else if (-100 < tX && tX < 100) {
-                        set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2);
-                        lift_claw_timed(-0.2,500);
-                        grab_box(false,true,false,false);
-                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2);
+                        if (!wasExecuted) {
+                            set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2);
+                            lift_claw_timed(-0.2, 500);
+                            grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2);
+                            wasExecuted=true;
+                        }
                     } else {
                         set_Motors_Power(0.1, -0.1, -0.1, 0.1);
                     }
 
 
-
                 } else {
+                    set_Motors_Power(0, 0, 0, 0);
                     telemetry.addData("VuMark", "not visible");
                 }
                 telemetry.update();
