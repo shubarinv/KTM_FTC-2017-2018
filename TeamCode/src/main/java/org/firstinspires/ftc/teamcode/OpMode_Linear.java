@@ -49,16 +49,16 @@ public class OpMode_Linear extends LinearOpMode {
     // TODO: 10.10.2017 Grab box
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
-            s1_top_Claw.setPosition(0.30);
-        }
-        if (top_release) {
             s1_top_Claw.setPosition(0);
         }
+        if (top_release) {
+            s1_top_Claw.setPosition(0.50);
+        }
         if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0.30);
+            s2_bottom_Claw.setPosition(0);
         }
         if (bottom_release) {
-            s2_bottom_Claw.setPosition(0);
+            s2_bottom_Claw.setPosition(0.50);
         }
     }
 
@@ -100,7 +100,7 @@ public class OpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        
+
         // Chassis
         m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");

@@ -101,16 +101,16 @@ public class Auto_Op_Linear extends LinearOpMode {
 
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
-            s1_top_Claw.setPosition(0.30);
-        }
-        if (top_release) {
             s1_top_Claw.setPosition(0);
         }
+        if (top_release) {
+            s1_top_Claw.setPosition(0.50);
+        }
         if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0.30);
+            s2_bottom_Claw.setPosition(0);
         }
         if (bottom_release) {
-            s2_bottom_Claw.setPosition(0);
+            s2_bottom_Claw.setPosition(0.50);
         }
     }
 
