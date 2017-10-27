@@ -267,8 +267,7 @@ public class Auto_Op_Linear extends LinearOpMode {
                     }
 
 
-                } else {
-                    set_Motors_Power(0, 0, 0, 0);
+                } else{
                     telemetry.addData("VuMark", "not visible");
                 }
                 telemetry.update();
