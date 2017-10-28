@@ -208,6 +208,9 @@ public class Auto_Op_Linear extends LinearOpMode {
         relicTrackables.activate();
         //wasExecuted=false;
         while (opModeIsActive()) {
+            if(wasExecuted){
+                break;
+            }
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
              * {@link RelicRecoveryVuMark} is an enum which can have the following values:
@@ -263,10 +266,10 @@ public class Auto_Op_Linear extends LinearOpMode {
                             set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                             lift_claw(-0.3, 1250);
                             sleep(1250);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                             grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                             sleep(100);
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 150);//движение вперед
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
                             wasExecuted=true;
                         }
                     } else {
