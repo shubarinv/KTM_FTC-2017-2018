@@ -115,7 +115,7 @@ public class Auto_Op_Linear extends LinearOpMode {
     }
 
     // Lift claw
-    void lift_claw_timed(double lift_power, long ms) {
+    void lift_claw(double lift_power, long ms) {
         m5_Lift.setPower(lift_power);
         sleep(ms);
         m5_Lift.setPower(0);
@@ -207,8 +207,6 @@ public class Auto_Op_Linear extends LinearOpMode {
         relicTrackables.activate();
         //wasExecuted=false;
         while (opModeIsActive()) {
-            grab_box(true, false, false, false);
-            lift_claw_timed(0.2, 500);
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
              * {@link RelicRecoveryVuMark} is an enum which can have the following values:
@@ -256,8 +254,9 @@ public class Auto_Op_Linear extends LinearOpMode {
                         set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
                     } else if (-100 < tX && tX < 100) {
                         if (!wasExecuted) {
+                            lift_claw(0.1, 500);
                             set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2);//поворот по часовой
-                            lift_claw_timed(-0.1, 1);
+                            lift_claw(-0.1, 500);
                             grab_box(false, true, false, false);
                             set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1);//движение вперед
                             wasExecuted=true;
