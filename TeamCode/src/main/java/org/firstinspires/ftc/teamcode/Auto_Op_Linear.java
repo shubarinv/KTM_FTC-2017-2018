@@ -144,7 +144,7 @@ public class Auto_Op_Linear extends LinearOpMode {
         m2_Drive.setPower(m2_power);
         m3_Drive.setPower(m3_power);
         m4_Drive.setPower(m4_power);
-        sleep(ms * 1000);
+        sleep(ms);
         chassis_stop_movement();
     }
 
@@ -257,10 +257,10 @@ public class Auto_Op_Linear extends LinearOpMode {
                         if (!wasExecuted) {
                             grab_box(true,false,false,true);
                             lift_claw(0.1, 100);
-                            set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2);//поворот по часовой
+                            set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1000);//поворот по часовой
                             lift_claw(-0.1, 100);
                             grab_box(false, true, false, false);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1);//движение вперед
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперед
                             wasExecuted=true;
                         }
                     } else {
