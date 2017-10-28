@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.sun.tools.javac.api.ClientCodeWrapper;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -50,28 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-/**
- * This file illustrates the concept of driving a path based on time.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- * <p>
- * The code assumes that you do NOT have encoders on the wheels,
- * otherwise you would use: PushbotAutoDriveByEncoder;
- * <p>
- * The desired path in this example is:
- * - Drive forward for 3 seconds
- * - Spin right for 1.3 seconds
- * - Drive Backwards for 1 Second
- * - Stop and close the claw.
- * <p>
- * The code is written in a simple form with no optimizations.
- * However, there are several ways that this type of sequence could be streamlined,
- * <p>
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
-@Autonomous(name = "KTM autonomous", group = "WIP")
+@Autonomous(name = "RED_LEFT", group = "WIP")
 //@Disabled
 public class Auto_Op_Linear extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
@@ -80,10 +58,9 @@ public class Auto_Op_Linear extends LinearOpMode {
      * localization engine.
      */
     VuforiaLocalizer vuforia;
-
+    boolean wasExecuted = false;
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-
     private DcMotor m1_Drive = null;
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
@@ -92,8 +69,6 @@ public class Auto_Op_Linear extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
-
-    boolean wasExecuted = false;
 
 
     /*
@@ -242,15 +217,28 @@ public class Auto_Op_Linear extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
                     telemetry.update();
-                    if (vuMark == RelicRecoveryVuMark.LEFT) {
-                        telemetry.addData("Vumark", " LEFT");
-                        telemetry.update();
-                    }
 
                     if (tX < -100) {
                         set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
                     } else if (-100 < tX && tX < 100) {
                         if (!wasExecuted) {
+                            if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                                telemetry.addData("Vumark", " RIGHT");
+                                telemetry.update();
+                                grab_box(true, false, false, true);
+                                sleep(100);
+                                lift_claw(0.3, 1250);
+                                sleep(100);
+                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
+                                lift_claw(-0.3, 1250);
+                                sleep(100);
+                                grab_box(false, true, false, false);
+                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                                sleep(100);
+                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                                wasExecuted = true;
+                            }
                             if (vuMark == RelicRecoveryVuMark.CENTER) {
                                 telemetry.addData("Vumark", " CENTER");
                                 telemetry.update();
@@ -258,28 +246,28 @@ public class Auto_Op_Linear extends LinearOpMode {
                                 grab_box(true, false, false, true);
                                 sleep(500);
                                 lift_claw(0.3, 1250);
-                                sleep(1250);
+                                sleep(100);
                                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
                                 set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                                 lift_claw(-0.3, 1250);
-                                sleep(1250);
+                                sleep(100);
                                 grab_box(false, true, false, false);
                                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                                 sleep(100);
                                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
                                 wasExecuted = true;
                             }
-                            if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                                telemetry.addData("Vumark", " RIGHT");
+                            if (vuMark == RelicRecoveryVuMark.LEFT) {
+                                telemetry.addData("Vumark", " LEFT");
                                 telemetry.update();
                                 grab_box(true, false, false, true);
-                                sleep(500);
+                                sleep(100);
                                 lift_claw(0.3, 1250);
-                                sleep(1250);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2200);//движение вперед
-                                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
+                                sleep(100);
+                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3000);//движение вперед
+                                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
                                 lift_claw(-0.3, 1250);
-                                sleep(1250);
+                                sleep(100);
                                 grab_box(false, true, false, false);
                                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                                 sleep(100);
