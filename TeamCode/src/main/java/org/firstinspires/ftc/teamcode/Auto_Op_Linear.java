@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.sun.tools.javac.api.ClientCodeWrapper;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -254,9 +255,10 @@ public class Auto_Op_Linear extends LinearOpMode {
                         set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
                     } else if (-100 < tX && tX < 100) {
                         if (!wasExecuted) {
-                            lift_claw(0.1, 500);
+                            grab_box(true,false,false,true);
+                            lift_claw(0.1, 100);
                             set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2);//поворот по часовой
-                            lift_claw(-0.1, 500);
+                            lift_claw(-0.1, 100);
                             grab_box(false, true, false, false);
                             set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1);//движение вперед
                             wasExecuted=true;
