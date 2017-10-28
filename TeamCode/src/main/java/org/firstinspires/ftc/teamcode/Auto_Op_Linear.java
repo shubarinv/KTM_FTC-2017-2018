@@ -200,9 +200,9 @@ public class Auto_Op_Linear extends LinearOpMode {
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
         m3_Drive.setDirection(DcMotor.Direction.FORWARD);
         m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-
+/*
         telemetry.addData(">", "Press Play to start");
-        telemetry.update();
+        telemetry.update();*/
         waitForStart();
 
         relicTrackables.activate();
