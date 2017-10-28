@@ -205,7 +205,7 @@ public class Auto_Op_Linear extends LinearOpMode {
         waitForStart();
 
         relicTrackables.activate();
-        wasExecuted=false;
+        //wasExecuted=false;
         while (opModeIsActive()) {
             grab_box(true, false, false, false);
             lift_claw_timed(0.2, 500);
