@@ -276,7 +276,7 @@ public class Auto_Op_Linear extends LinearOpMode {
                                 sleep(500);
                                 lift_claw(0.3, 1250);
                                 sleep(1250);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2375);//движение вперед
+                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2200);//движение вперед
                                 set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                                 lift_claw(-0.3, 1250);
                                 sleep(1250);
