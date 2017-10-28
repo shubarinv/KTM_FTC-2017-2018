@@ -256,10 +256,10 @@ public class Auto_Op_Linear extends LinearOpMode {
                         set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
                     } else if (-100 < tX && tX < 100) {
                         if (!wasExecuted) {
-                            set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2);
-                            lift_claw_timed(-0.2, 500);
+                            set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1);//поворот по часовой
+                            lift_claw_timed(-0.1, 250);
                             grab_box(false, true, false, false);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1);//движение вперед
                             wasExecuted=true;
                         }
                     } else {
