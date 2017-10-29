@@ -1,7 +1,7 @@
 #!/bin/bash
 {
   echo $1
-  echo 'git log --format=oneline -n 5 $CIRCLE_SHA1'
+  echo $2
 } >changelog.txt
 FILE='changelog.txt'
 IP='vhundef.net'
