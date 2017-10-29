@@ -217,70 +217,62 @@ public class Auto_Blue_Right extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
                     telemetry.update();
-
-                    if (tX < -100) {
-                        set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
-                    } else if (-100 < tX && tX < 100) {
-                        if (!wasExecuted) {
-                            if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                                telemetry.addData("Vumark", " RIGHT");
-                                telemetry.update();
-                                grab_box(true, false, false, true);
-                                sleep(100);
-                                lift_claw(0.3, 1250);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
-                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
-                                lift_claw(-0.3, 1250);
-                                sleep(100);
-                                grab_box(false, true, false, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                                wasExecuted = true;
-                            }
-                            if (vuMark == RelicRecoveryVuMark.CENTER) {
-                                telemetry.addData("Vumark", " CENTER");
-                                telemetry.update();
-
-                                grab_box(true, false, false, true);
-                                sleep(500);
-                                lift_claw(0.3, 1250);
-                                sleep(100);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
-                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
-                                lift_claw(-0.3, 1250);
-                                sleep(100);
-                                grab_box(false, true, false, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                                wasExecuted = true;
-                            }
-                            if (vuMark == RelicRecoveryVuMark.LEFT) {
-                                telemetry.addData("Vumark", " LEFT");
-                                telemetry.update();
-                                grab_box(true, false, false, true);
-                                sleep(500);
-                                lift_claw(0.3, 1250);
-                                sleep(100);
-
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
-                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
-                                lift_claw(-0.3, 1250);
-                                sleep(100);
-                                grab_box(false, true, false, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                                wasExecuted = true;
-                            }
+                    if (!wasExecuted) {
+                        if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                            telemetry.addData("Vumark", " RIGHT");
+                            telemetry.update();
+                            grab_box(true, false, false, true);
+                            sleep(100);
+                            lift_claw(0.3, 1250);
+                            sleep(100);
+                            set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
+                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
+                            lift_claw(-0.3, 1250);
+                            sleep(100);
+                            grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                            sleep(100);
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                            wasExecuted = true;
                         }
-                    } else {
-                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);
-                    }
+                        if (vuMark == RelicRecoveryVuMark.CENTER) {
+                            telemetry.addData("Vumark", " CENTER");
+                            telemetry.update();
 
+                            grab_box(true, false, false, true);
+                            sleep(500);
+                            lift_claw(0.3, 1250);
+                            sleep(100);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
+                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
+                            lift_claw(-0.3, 1250);
+                            sleep(100);
+                            grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                            sleep(100);
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                            wasExecuted = true;
+                        }
+                        if (vuMark == RelicRecoveryVuMark.LEFT) {
+                            telemetry.addData("Vumark", " LEFT");
+                            telemetry.update();
+                            grab_box(true, false, false, true);
+                            sleep(500);
+                            lift_claw(0.3, 1250);
+                            sleep(100);
+
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
+                            lift_claw(-0.3, 1250);
+                            sleep(100);
+                            grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                            sleep(100);
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                            wasExecuted = true;
+                        }
+                    }
 
                 } else {
                     telemetry.addData("VuMark", "not visible");

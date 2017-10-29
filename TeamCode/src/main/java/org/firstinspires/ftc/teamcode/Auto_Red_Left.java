@@ -217,10 +217,6 @@ public class Auto_Red_Left extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
                     telemetry.update();
-
-                    if (tX < -100) {
-                        set_Motors_Power(-0.1, 0.1, 0.1, -0.1);
-                    } else if (-100 < tX && tX < 100) {
                         if (!wasExecuted) {
                             if (vuMark == RelicRecoveryVuMark.RIGHT) {
                                 telemetry.addData("Vumark", " RIGHT");
@@ -275,9 +271,6 @@ public class Auto_Red_Left extends LinearOpMode {
                                 wasExecuted = true;
                             }
                         }
-                    } else {
-                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);
-                    }
 
 
                 } else {
