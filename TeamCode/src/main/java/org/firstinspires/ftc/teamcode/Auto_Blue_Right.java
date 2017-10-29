@@ -178,6 +178,8 @@ public class Auto_Blue_Right extends LinearOpMode {
 /*
         telemetry.addData(">", "Press Play to start");
         telemetry.update();*/
+        s1_top_Claw.setPosition(0);
+        s2_bottom_Claw.setPosition(0);
         waitForStart();
 
         relicTrackables.activate();
