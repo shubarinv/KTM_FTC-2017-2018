@@ -192,15 +192,15 @@ public class Auto_Blue_Right extends LinearOpMode {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+           // RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
           //  if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
                  * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
+           //     telemetry.addData("VuMark", "%s visible", vuMark);
+           //     OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+           //     telemetry.addData("Pose", format(pose));
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
                 /*if (pose != null) {
@@ -218,9 +218,9 @@ public class Auto_Blue_Right extends LinearOpMode {
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
                     telemetry.update();*/
                 if (!wasExecuted) {
-                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                        telemetry.addData("Vumark", " RIGHT");
-                        telemetry.update();
+                   // if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                     //   telemetry.addData("Vumark", " RIGHT");
+                    //    telemetry.update();
                         grab_box(true, false, false, true);
                         sleep(100);
                         lift_claw(0.3, 1250);
@@ -281,7 +281,7 @@ public class Auto_Blue_Right extends LinearOpMode {
             }*/
             }
         }
-    }
+    
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
