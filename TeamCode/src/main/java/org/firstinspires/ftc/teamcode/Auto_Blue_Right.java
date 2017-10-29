@@ -193,7 +193,7 @@ public class Auto_Blue_Right extends LinearOpMode {
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+          //  if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
@@ -203,7 +203,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Pose", format(pose));
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
-                if (pose != null) {
+                /*if (pose != null) {
                     VectorF trans = pose.getTranslation();
                     Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
@@ -216,26 +216,26 @@ public class Auto_Blue_Right extends LinearOpMode {
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
-                    telemetry.update();
-                    if (!wasExecuted) {
-                        if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                            telemetry.addData("Vumark", " RIGHT");
-                            telemetry.update();
-                            grab_box(true, false, false, true);
-                            sleep(100);
-                            lift_claw(0.3, 1250);
-                            sleep(100);
-                            set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
-                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
-                            lift_claw(-0.3, 1250);
-                            sleep(100);
-                            grab_box(false, true, false, false);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                            sleep(100);
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                            wasExecuted = true;
-                        }
+                    telemetry.update();*/
+                if (!wasExecuted) {
+                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                        telemetry.addData("Vumark", " RIGHT");
+                        telemetry.update();
+                        grab_box(true, false, false, true);
+                        sleep(100);
+                        lift_claw(0.3, 1250);
+                        sleep(100);
+                        set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
+                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
+                        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
+                        lift_claw(-0.3, 1250);
+                        sleep(100);
+                        grab_box(false, true, false, false);
+                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                        sleep(100);
+                        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                        wasExecuted = true;
+                    }/*
                         if (vuMark == RelicRecoveryVuMark.CENTER) {
                             telemetry.addData("Vumark", " CENTER");
                             telemetry.update();
@@ -271,13 +271,14 @@ public class Auto_Blue_Right extends LinearOpMode {
                             sleep(100);
                             set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
                             wasExecuted = true;
-                        }
-                    }
+                        }*/
+               // }
 
-                } else {
+             /*   } else {
                     telemetry.addData("VuMark", "not visible");
                 }
                 telemetry.update();
+            }*/
             }
         }
     }
