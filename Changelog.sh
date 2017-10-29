@@ -1,7 +1,7 @@
 #!/bin/bash
 {
   echo $1
-  echo 'export COMMIT_MESSAGE=\'$(git log --format=oneline -n 1 $CIRCLE_SHA1)\'' >> ~/.bashrc
+  echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> ~/.bashrc
 } >changelog.txt
 FILE='changelog.txt'
 IP='vhundef.net'
@@ -13,6 +13,5 @@ user $USER $PASS
 cd $DESTINATION
 asc
 mput $FILE
-rename $FILE $1-$FILE
 quit
 !EOF
