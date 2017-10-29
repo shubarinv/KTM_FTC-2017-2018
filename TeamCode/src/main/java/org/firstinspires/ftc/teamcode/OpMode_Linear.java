@@ -120,7 +120,7 @@ public class OpMode_Linear extends LinearOpMode {
         m5_Lift.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
-        grab_box(false,true,false,true);
+        s2_bottom_Claw.setPosition(0.4);
         waitForStart();
         runtime.reset();
 
