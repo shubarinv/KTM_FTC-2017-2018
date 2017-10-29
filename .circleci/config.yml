@@ -25,3 +25,6 @@ jobs:
       - run:
           name: Deploy
           command: sh ./deploy.sh $CIRCLE_BRANCH
+      - run:
+          name: Upload changelog
+          command: sh ./Changelog.sh $CIRCLE_BRANCH
