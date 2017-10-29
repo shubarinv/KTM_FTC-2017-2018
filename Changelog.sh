@@ -1,7 +1,7 @@
 #!/bin/bash
 {
   echo $1
-  echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> ~/.bashrc
+  echo git log --format=oneline -n 5 $CIRCLE_SHA1
 } >changelog.txt
 FILE='changelog.txt'
 IP='vhundef.net'
