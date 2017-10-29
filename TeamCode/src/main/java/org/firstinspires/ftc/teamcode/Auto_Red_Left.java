@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name = "RED_LEFT", group = "WIP")
 //@Disabled
-public class Auto_Op_Linear extends LinearOpMode {
+public class Auto_Red_Left extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
