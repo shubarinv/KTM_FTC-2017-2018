@@ -26,16 +26,15 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -50,42 +49,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-import java.util.Objects;
-
-/**
- * This OpMode illustrates the basics of using the Vuforia engine to determine
- * the identity of Vuforia VuMarks encountered on the field. The code is structured as
- * a LinearOpMode. It shares much structure with {@link ConceptVuforiaNavigation}; we do not here
- * duplicate the core Vuforia documentation found there, but rather instead focus on the
- * differences between the use of Vuforia for navigation vs VuMark identification.
- *
- * @see ConceptVuforiaNavigation
- * @see VuforiaLocalizer
- * @see VuforiaTrackableDefaultListener
- * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
- * <p>
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- * <p>
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained in {@link ConceptVuforiaNavigation}.
- */
-
-@Autonomous(name = "Concept: VuMark Id", group = "Concept")
-@Disabled
-public class VuMarkIdentification extends LinearOpMode {
-
-    public static final String TAG = "Vuforia VuMark";
-    double tX_previous;
-    double tZ_previous;
-    String move_to_target_X;
-    String move_to_target_Z;
+@Autonomous(name = "Blue_RIGHT", group = "WIP")
+//@Disabled
+public class Auto_Blue_Right extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
     VuforiaLocalizer vuforia;
+    boolean wasExecuted = false;
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor m1_Drive = null;
@@ -94,31 +67,34 @@ public class VuMarkIdentification extends LinearOpMode {
     private DcMotor m4_Drive = null;
     private DcMotor m5_Lift = null;
     private Servo s1_top_Claw = null;
+    private Servo s2_bottom_Claw = null;
+    private Servo s3_rotation = null;
+
 
     /*
      * Functions
      */
-    private Servo s2_bottom_Claw = null;
-    private Servo s3_rotation = null;
 
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
-            s1_top_Claw.setPosition(0.30);
-        }
-        if (top_release) {
             s1_top_Claw.setPosition(0);
         }
+        if (top_release) {
+            s1_top_Claw.setPosition(0.50);
+        }
         if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0.30);
+            s2_bottom_Claw.setPosition(0);
         }
         if (bottom_release) {
-            s2_bottom_Claw.setPosition(0);
+            s2_bottom_Claw.setPosition(0.50);
         }
     }
 
     // Lift claw
-    void lift_claw(double lift_power) {
+    void lift_claw(double lift_power, long ms) {
         m5_Lift.setPower(lift_power);
+        sleep(ms);
+        m5_Lift.setPower(0);
     }
 
     // Rotate claw
@@ -138,48 +114,12 @@ public class VuMarkIdentification extends LinearOpMode {
         m4_Drive.setPower(D4_power);
     }
 
-    void set_Motors_Power_timed(double m1_power, double m2_power, double m3_power, double m4_power, long seconds) {
+    void set_Motors_Power_timed(double m1_power, double m2_power, double m3_power, double m4_power, long ms) {
         m1_Drive.setPower(m1_power);
         m2_Drive.setPower(m2_power);
         m3_Drive.setPower(m3_power);
         m4_Drive.setPower(m4_power);
-        sleep(seconds * 1000);
-        chassis_stop_movement();
-    }
-
-    void move_timed(String direction, long seconds) {
-        /* Default directions
-         * forward
-         * backward
-         * left
-         * right
-         */
-        if (Objects.equals(direction, "forward")) {
-            m1_Drive.setPower(0.5);
-            m2_Drive.setPower(0);
-            m3_Drive.setPower(0.5);
-            m4_Drive.setPower(0);
-        }
-        if (Objects.equals(direction, "backward")) {
-            m1_Drive.setPower(-0.5);
-            m2_Drive.setPower(0);
-            m3_Drive.setPower(-0.5);
-            m4_Drive.setPower(0);
-        }
-        if (Objects.equals(direction, "left")) {
-            m1_Drive.setPower(0);
-            m2_Drive.setPower(0.5);
-            m3_Drive.setPower(0);
-            m4_Drive.setPower(0.5);
-        }
-        if (Objects.equals(direction, "right")) {
-            m1_Drive.setPower(0);
-            m2_Drive.setPower(-0.5);
-            m3_Drive.setPower(0);
-            m4_Drive.setPower(-0.5);
-        }
-
-        sleep(seconds * 1000);
+        sleep(ms);
         chassis_stop_movement();
     }
 
@@ -190,39 +130,23 @@ public class VuMarkIdentification extends LinearOpMode {
         m4_Drive.setPower(0);
     }
 
+
     @Override
     public void runOpMode() {
-
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        // OR...  Do Not Activate the Camera Monitor View, to save power
-        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        /*
-         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-         * web site at https://developer.vuforia.com/license-manager.
-         *
-         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-         * random data. As an example, here is a example of a fragment of a valid key:
-         *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-         * Once you've obtained a license key, copy the string from the Vuforia web site
-         * and paste it in to your code onthe next line, between the double quotes.
-         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        //Vuforia API key
         parameters.vuforiaLicenseKey = "AfQcHkL/////AAAAGd5Auzk+t0CxnAw8xKONnjke+r6gFs0KfKK8LsB35FsX6bnhXZmEN+0f3blTVk7nI4xjKNob63Ps1Jpp/JS25hHc083okOZzcTsBlA5qz2hJK3LFNWyZv59kjCUyqbc3qS7dTXJ4i4/JD9t+IeyvGH9G9xPwV7DNmcuNeT7o+YDn3cI7zgUcVcrdFM8t22/wGkmiCz5TfY5A0BMETyriYX6BzlVuwGtMfXdp9CYDQ+ZhZTRNjPfvKlNyLLxVycIiM1p4nprW2UnySO11fmTkUZR9Ofqr+gbHj0VNm7gUEz77s/cHTl+swX84pxpOhm1QJeO0wuNw4c5siQpizcWHPMhJCDRFqRmTQ3LBpcMJWjTx";
-
         /*
          * We also indicate which camera on the RC that we wish to use.
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**
@@ -234,39 +158,52 @@ public class VuMarkIdentification extends LinearOpMode {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        /*
+         * Initialize the drive system variables.
+         * The init() method of the hardware class does all the work here
+         */
+        m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+        m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+        m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+        m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+        m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+        s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
+        s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
+        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
 
+        m1_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m2_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m3_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m4_Drive.setDirection(DcMotor.Direction.FORWARD);
+/*
         telemetry.addData(">", "Press Play to start");
-        telemetry.update();
+        telemetry.update();*/
         waitForStart();
 
         relicTrackables.activate();
-
+        //wasExecuted=false;
         while (opModeIsActive()) {
-            sleep(4000);
-
+            if (wasExecuted) {
+                break;
+            }
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
              * {@link RelicRecoveryVuMark} is an enum which can have the following values:
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+           // RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+          //  if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
                  * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
-                 * it is perhaps unlikely that you will actually need to act on this pose information, but
-                 * we illustrate it nevertheless, for completeness. */
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
-
+           //     telemetry.addData("VuMark", "%s visible", vuMark);
+           //     OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+           //     telemetry.addData("Pose", format(pose));
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
-                if (pose != null) {
+                /*if (pose != null) {
                     VectorF trans = pose.getTranslation();
                     Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
@@ -274,57 +211,77 @@ public class VuMarkIdentification extends LinearOpMode {
                     double tX = trans.get(0);
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
-
-                    if (tX_previous == 0.0d) { //Это действие выполняется 1 раз
-                        tX_previous = tX;
-                    }
-                    if (tZ_previous == 0.0d) {//Это действие выполняется 1 раз
-                        tZ_previous = tY;
-                    }
-                    if (move_to_target_X == null || move_to_target_Z == null) {//Это действие выполняется 1 раз и нужно для того чтобы понять в какую сторону нужно двигаться для приближения к цели
-                        move_timed("forward", 1);
-
-                        if (tZ_previous != tZ) {
-                            if (tZ_previous > tZ) { //which means we moved towards the target
-                                move_to_target_Z = "forward";
-                            } else {
-                                move_to_target_Z = "backward";
-                            }
-                            tZ_previous = tZ;
-                        }
-                        move_timed("left", 1);
-                        if (tX_previous != tX) {
-                            if (tX_previous > tX) { //which means we moved towards the target
-                                move_to_target_X = "left";
-                            } else {
-                                move_to_target_X = "right";
-                            }
-                            tX_previous = tX;
-                        }
-                    } else {
-                        if (tX > 200) {
-                            move_timed(move_to_target_X, 1);
-                        }
-                        if (tY > 200) {
-                            move_timed(move_to_target_Z, 1);
-                        }
-                    }
-
-
                     // Extract the rotational components of the target relative to the robot
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
                     telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
-                    telemetry.update();
-                }
-            } else {
-                telemetry.addData("VuMark", "not visible");
-            }
+                    telemetry.update();*/
+                if (!wasExecuted) {
+                   // if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                     //   telemetry.addData("Vumark", " RIGHT");
+                    //    telemetry.update();
+                        grab_box(true, false, false, true);
+                        sleep(100);
+                        lift_claw(0.3, 1250);
+                        sleep(100);
+                        set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
+                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
+                        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
+                        lift_claw(-0.3, 1250);
+                        sleep(100);
+                        grab_box(false, true, false, false);
+                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                        sleep(100);
+                        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                        wasExecuted = true;
+                    }/*
+                        if (vuMark == RelicRecoveryVuMark.CENTER) {
+                            telemetry.addData("Vumark", " CENTER");
+                            telemetry.update();
 
-            telemetry.update();
+                            grab_box(true, false, false, true);
+                            sleep(500);
+                            lift_claw(0.3, 1250);
+                            sleep(100);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
+                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
+                            lift_claw(-0.3, 1250);
+                            sleep(100);
+                            grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                            sleep(100);
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                            wasExecuted = true;
+                        }
+                        if (vuMark == RelicRecoveryVuMark.LEFT) {
+                            telemetry.addData("Vumark", " LEFT");
+                            telemetry.update();
+                            grab_box(true, false, false, true);
+                            sleep(500);
+                            lift_claw(0.3, 1250);
+                            sleep(100);
+
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
+                            lift_claw(-0.3, 1250);
+                            sleep(100);
+                            grab_box(false, true, false, false);
+                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                            sleep(100);
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                            wasExecuted = true;
+                        }*/
+               // }
+
+             /*   } else {
+                    telemetry.addData("VuMark", "not visible");
+                }
+                telemetry.update();
+            }*/
+            }
         }
-    }
+    
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";

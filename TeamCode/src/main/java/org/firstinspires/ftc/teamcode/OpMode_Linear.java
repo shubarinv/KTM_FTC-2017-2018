@@ -46,28 +46,28 @@ public class OpMode_Linear extends LinearOpMode {
       * Functions declaration
     */
 
-    // Grab box
+    // TODO: 10.10.2017 Grab box
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
-            s1_top_Claw.setPosition(0.30);
+            s1_top_Claw.setPosition(0.10);
         }
         if (top_release) {
-            s1_top_Claw.setPosition(0);
+            s1_top_Claw.setPosition(0.50);
         }
         if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0.30);
+            s2_bottom_Claw.setPosition(0.10);
         }
         if (bottom_release) {
-            s2_bottom_Claw.setPosition(0);
+            s2_bottom_Claw.setPosition(0.60);
         }
     }
 
-    // Lift claw
+    // TODO: 15.10.2017 Lift claw
     void lift_claw(double lift_power) {
         m5_Lift.setPower(lift_power);
     }
 
-    // Rotate claw if needed
+    // TODO: 10.10.2017 Rotate claw if needed
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
         if (rotate) {
             s3_rotation.setPosition(1);
@@ -78,12 +78,14 @@ public class OpMode_Linear extends LinearOpMode {
     // Grab another box
     // Place box to shelf
 
+
     /*
        *Relic related
     */
     // Grab relic
     // Extend grabbing component
     // Retract grabbing component
+
 
     /**
      * End of functions declaration
@@ -98,8 +100,8 @@ public class OpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        // Chassis
 
+        // Chassis
         m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
@@ -118,6 +120,7 @@ public class OpMode_Linear extends LinearOpMode {
         m5_Lift.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
+        s2_bottom_Claw.setPosition(0.4);
         waitForStart();
         runtime.reset();
 
@@ -145,6 +148,7 @@ public class OpMode_Linear extends LinearOpMode {
             boolean claw_release_bottom = gamepad2.right_bumper;
             boolean claw_rotation_l = gamepad2.dpad_left;
             boolean claw_rotation_r = gamepad2.dpad_right;
+
             double A = Math.abs(rotation) + Math.abs(drive) + Math.abs(slide);
             if (A <= 1) {
                 m1_Drive_Power = rotation - drive - slide;
@@ -152,6 +156,7 @@ public class OpMode_Linear extends LinearOpMode {
                 m3_Drive_Power = rotation + drive + slide;
                 m4_Drive_Power = rotation - drive + slide;
             } else {
+
                 rotation = rotation / A;
                 drive = drive / A;
                 slide = slide / A;
@@ -161,6 +166,7 @@ public class OpMode_Linear extends LinearOpMode {
                 m4_Drive_Power = rotation - drive + slide;
             }
             // Send calculated power to wheels
+
             m1_Drive.setPower(magic(m1_Drive_Power));
             m2_Drive.setPower(magic(m2_Drive_Power));
             m3_Drive.setPower(magic(m3_Drive_Power));
