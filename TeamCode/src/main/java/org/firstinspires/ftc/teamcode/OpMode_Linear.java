@@ -58,7 +58,7 @@ public class OpMode_Linear extends LinearOpMode {
             s2_bottom_Claw.setPosition(0.10);
         }
         if (bottom_release) {
-            s2_bottom_Claw.setPosition(0.50);
+            s2_bottom_Claw.setPosition(0.60);
         }
     }
 
