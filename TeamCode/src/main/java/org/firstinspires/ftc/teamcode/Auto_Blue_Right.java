@@ -229,7 +229,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                                 sleep(100);
                                 lift_claw(0.3, 1250);
                                 sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 3500);//по часовой
+                                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
                                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
                                 set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
                                 lift_claw(-0.3, 1250);
@@ -249,7 +249,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                                 lift_claw(0.3, 1250);
                                 sleep(100);
                                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
-                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
+                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
                                 lift_claw(-0.3, 1250);
                                 sleep(100);
                                 grab_box(false, true, false, false);
@@ -267,7 +267,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                                 sleep(100);
 
                                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
-                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
+                                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
                                 lift_claw(-0.3, 1250);
                                 sleep(100);
                                 grab_box(false, true, false, false);
