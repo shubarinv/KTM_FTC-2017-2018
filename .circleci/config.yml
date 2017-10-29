@@ -6,7 +6,7 @@ jobs:
       - image: circleci/android:api-23-alpha
     environment:
       JVM_OPTS: -Xmx3200m
-      GIT_COMMIT_DESC: $(git log --format=oneline -n 1 $CIRCLE_SHA1)
+      GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
     steps:
       - run:
           name: Switch timezone to Moscow
