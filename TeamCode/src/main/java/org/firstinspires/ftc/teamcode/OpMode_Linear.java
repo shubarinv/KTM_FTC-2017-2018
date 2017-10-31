@@ -46,7 +46,7 @@ public class OpMode_Linear extends LinearOpMode {
       * Functions declaration
     */
 
-    // TODO: 10.10.2017 Grab box
+    // Grab box
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
             s1_top_Claw.setPosition(0.10);
