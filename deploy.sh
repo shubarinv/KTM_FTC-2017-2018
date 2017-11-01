@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo $2 '\n' $3 >Build.info
 echo "--------Installing ftp------"
 sudo apt-get install ftp
 echo "+++++++++ Ftp installed +++++++++++"
@@ -13,7 +12,7 @@ ftp -p -d -inv $IP<< !EOF
 user $USER $PASS
 cd $DESTINATION
 asc
-mput Build.info
+mput CHANGELOG.md
 lcd TeamCode/build/outputs/apk
 mput $FILE
 rename $FILE $1-$FILE
