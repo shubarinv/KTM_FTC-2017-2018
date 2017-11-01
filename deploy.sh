@@ -13,7 +13,7 @@ ftp -p -d -inv $IP<< !EOF
 user $USER $PASS
 cd $DESTINATION
 asc
-mput build.info
+mput Build.info
 lcd TeamCode/build/outputs/apk
 mput $FILE
 rename $FILE $1-$FILE
