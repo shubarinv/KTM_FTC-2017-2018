@@ -1,4 +1,3 @@
-
 # Change Log
 
 ## [Unreleased](https://github.com/vhundef/FTC_APP/tree/HEAD)
