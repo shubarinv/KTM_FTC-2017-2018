@@ -292,7 +292,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                 } else {
-                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                    telemetry.addData("AdaFruit", "ERROR");
                 }
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
