@@ -6,7 +6,9 @@
 
 **Implemented enhancements:**
 
+
 - Remove old code that is related to claw   [\#44](https://github.com/vhundef/FTC_APP/issues/44)
+
 - AutoOP mode [\#35](https://github.com/vhundef/FTC_APP/issues/35)
 
 ## [v1.0.0-RTM](https://github.com/vhundef/FTC_APP/tree/v1.0.0-RTM) (2017-10-29)

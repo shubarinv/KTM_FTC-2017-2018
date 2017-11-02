@@ -29,29 +29,36 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import java.util.Objects;
+
 
 @Autonomous(name = "Blue_RIGHT", group = "WIP")
 //@Disabled
 public class Auto_Blue_Right extends LinearOpMode {
+    /* ADAFRUIT */
+    // we assume that the LED pin of the RGB sensor is connected to
+    // digital port 5 (zero indexed).
+    static final int LED_CHANNEL = 5;
     OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -59,6 +66,21 @@ public class Auto_Blue_Right extends LinearOpMode {
      */
     VuforiaLocalizer vuforia;
     boolean wasExecuted = false;
+    ColorSensor sensorRGB;
+    DeviceInterfaceModule cdim;
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F, 0F, 0F};
+    // values is a reference to the hsvValues array.
+    final float values[] = hsvValues;
+    // get a reference to the RelativeLayout so we can change the background
+    // color of the Robot Controller app to match the hue detected by the RGB sensor.
+    int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+    final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+    // bPrevState and bCurrState represent the previous and current state of the button.
+    boolean bPrevState = false;
+    boolean bCurrState = false;
+    // bLedOn represents the state of the LED.
+    boolean bLedOn = true;
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor m1_Drive = null;
@@ -70,7 +92,6 @@ public class Auto_Blue_Right extends LinearOpMode {
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
 
-
     /*
      * Functions
      */
@@ -78,15 +99,36 @@ public class Auto_Blue_Right extends LinearOpMode {
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
             s1_top_Claw.setPosition(0);
+            if (s1_top_Claw.getPosition() != 0) {
+                telemetry.addData("TopClawClamp", "[X]");
+            } else {
+                telemetry.addData("TopClawClamp", "[OK]");
+            }
+            telemetry.update();
         }
         if (top_release) {
             s1_top_Claw.setPosition(0.50);
+            if (s1_top_Claw.getPosition() != 0.50) {
+                telemetry.addData("TopClawRelease", "[X]");
+            } else {
+                telemetry.addData("TopClawRelease", "[OK]");
+            }
         }
         if (bottom_clamp) {
             s2_bottom_Claw.setPosition(0);
+            if (s2_bottom_Claw.getPosition() != 0) {
+                telemetry.addData("BottomClawClamp", "[X]");
+            } else {
+                telemetry.addData("BottomClawClamp", "[OK]");
+            }
         }
         if (bottom_release) {
             s2_bottom_Claw.setPosition(0.50);
+            if (s2_bottom_Claw.getPosition() != 0.50) {
+                telemetry.addData("BottomClawRelease", "[X]");
+            } else {
+                telemetry.addData("BottomClawRelease", "[OK]");
+            }
         }
     }
 
@@ -101,8 +143,27 @@ public class Auto_Blue_Right extends LinearOpMode {
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
         if (rotate) {
             s3_rotation.setPosition(1);
+            if (s3_rotation.getPosition() != 1) {
+                telemetry.addData("Claw_ROT", "Stuck, retrying");
+                s3_rotation.setPosition(1);
+                if (s3_rotation.getPosition() != 1) {
+                    telemetry.addData("Claw_ROT", "Stuck! , and disabled");
+                    s3_rotation = null;
+                }
+
+            }
+
         } else {
             s3_rotation.setPosition(0);
+            if (s3_rotation.getPosition() != 0) {
+                telemetry.addData("Claw_ROT", "Stuck, retrying");
+                s3_rotation.setPosition(0);
+                if (s3_rotation.getPosition() != 0) {
+                    telemetry.addData("Claw_ROT", "Stuck! , and disabled");
+                    s3_rotation = null;
+                }
+
+            }
         }
     }
 
@@ -130,6 +191,31 @@ public class Auto_Blue_Right extends LinearOpMode {
         m4_Drive.setPower(0);
     }
 
+    String get_color() {
+        // check the status of the x button on gamepad.
+        bCurrState = gamepad1.x;
+
+        // check for button-press state transitions.
+        if ((bCurrState == true) && (bCurrState != bPrevState)) {
+
+            // button is transitioning to a pressed state. Toggle the LED.
+            bLedOn = !bLedOn;
+            cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+        }
+
+        // update previous state variable.
+        bPrevState = bCurrState;
+
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+        if (sensorRGB.red() > sensorRGB.blue()) {
+            return "Red";
+        } else if (sensorRGB.red() < sensorRGB.blue()) {
+            return "Blue";
+        }
+        return "Error";
+    }
+
 
     @Override
     public void runOpMode() {
@@ -149,12 +235,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
-        /**
-         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
-         * in this data set: all three of the VuMarks in the game were created from this one template,
-         * but differ in their instance id information.
-         * @see VuMarkInstanceId
-         */
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
@@ -175,113 +255,135 @@ public class Auto_Blue_Right extends LinearOpMode {
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
         m3_Drive.setDirection(DcMotor.Direction.FORWARD);
         m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-/*
-        telemetry.addData(">", "Press Play to start");
-        telemetry.update();*/
+        /* AdaFruit */
+
+        // get a reference to our DeviceInterfaceModule object.
+        cdim = hardwareMap.deviceInterfaceModule.get("dim");
+
+        // set the digital channel to output mode.
+        // remember, the Adafruit sensor is actually two devices.
+        // It's an I2C sensor and it's also an LED that can be turned on or off.
+        cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
+
+        // get a reference to our ColorSensor object.
+        sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+
+        // turn the LED on in the beginning, just so user will know that the sensor is active.
+        cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+        telemetry.addData("AdaFruit", "OK");
+        telemetry.update();
         waitForStart();
 
         relicTrackables.activate();
         //wasExecuted=false;
         while (opModeIsActive()) {
             if (wasExecuted) {
-                break;
+                telemetry.addData("Autonomous: ", "DONE");
             }
-            /**
-             * See if any of the instances of {@link relicTemplate} are currently visible.
-             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
-             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
-             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
-             */
-           // RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-          //  if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-           //     telemetry.addData("VuMark", "%s visible", vuMark);
-           //     OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-           //     telemetry.addData("Pose", format(pose));
-                /* We further illustrate how to decompose the pose into useful rotational and
-                 * translational components */
-                /*if (pose != null) {
-                    VectorF trans = pose.getTranslation();
-                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                    double tX = trans.get(0);
-                    double tY = trans.get(1);
-                    double tZ = trans.get(2);
-                    // Extract the rotational components of the target relative to the robot
-                    double rX = rot.firstAngle;
-                    double rY = rot.secondAngle;
-                    double rZ = rot.thirdAngle;
-                    telemetry.addData("Vumark Rotation :", "rX:", rX, "rY:", rY, "rZ:", rZ);
-                    telemetry.update();*/
-                if (!wasExecuted) {
-                   // if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                     //   telemetry.addData("Vumark", " RIGHT");
-                    //    telemetry.update();
-                        grab_box(true, false, false, true);
-                        sleep(100);
-                        lift_claw(0.3, 1250);
-                        sleep(100);
-                        set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);//по часовой
-                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
-                        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот по против часовой
-                        lift_claw(-0.3, 1250);
-                        sleep(100);
-                        grab_box(false, true, false, false);
-                        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                        sleep(100);
-                        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                        wasExecuted = true;
-                    }/*
-                        if (vuMark == RelicRecoveryVuMark.CENTER) {
-                            telemetry.addData("Vumark", " CENTER");
-                            telemetry.update();
-
-                            grab_box(true, false, false, true);
-                            sleep(500);
-                            lift_claw(0.3, 1250);
-                            sleep(100);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
-                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
-                            lift_claw(-0.3, 1250);
-                            sleep(100);
-                            grab_box(false, true, false, false);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                            sleep(100);
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                            wasExecuted = true;
-                        }
-                        if (vuMark == RelicRecoveryVuMark.LEFT) {
-                            telemetry.addData("Vumark", " LEFT");
-                            telemetry.update();
-                            grab_box(true, false, false, true);
-                            sleep(500);
-                            lift_claw(0.3, 1250);
-                            sleep(100);
-
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
-                            set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 200);//поворот по против часовой
-                            lift_claw(-0.3, 1250);
-                            sleep(100);
-                            grab_box(false, true, false, false);
-                            set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                            sleep(100);
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                            wasExecuted = true;
-                        }*/
-               // }
-
-             /*   } else {
-                    telemetry.addData("VuMark", "not visible");
-                }
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (!wasExecuted) {
+                telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-            }*/
+                //Trying to kick jewel
+                if (Objects.equals(get_color(), "Blue")) {
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
+                } else if (Objects.equals(get_color(), "Red")) {
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
+                } else {
+                    telemetry.addData("AdaFruit", "ERROR");
+                }
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    telemetry.addData("Vumark", " RIGHT");
+                    telemetry.update();
+                    grab_box(true, false, false, true);
+                    sleep(100);
+                    lift_claw(0.3, 1250);
+                    sleep(100);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
+                    lift_claw(-0.3, 1250);
+                    sleep(100);
+                    grab_box(false, true, false, false);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    sleep(100);
+                    //Trying to get another box
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(true, false, true, false);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    lift_claw(0.5, 500);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(false, true, false, true);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+
+                    wasExecuted = true;
+                }
+                if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    telemetry.addData("Vumark", " CENTER");
+                    telemetry.update();
+
+                    grab_box(true, false, false, true);
+                    sleep(500);
+                    lift_claw(0.3, 1250);
+                    sleep(100);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
+                    lift_claw(-0.3, 1250);
+                    sleep(100);
+                    grab_box(false, true, false, false);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    sleep(100);
+                    //Trying to get another box
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(true, false, true, false);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    lift_claw(0.5, 500);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(false, true, false, true);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    wasExecuted = true;
+                }
+                if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    telemetry.addData("Vumark", " LEFT");
+                    telemetry.update();
+                    grab_box(true, false, false, true);
+                    sleep(500);
+                    lift_claw(0.3, 1250);
+                    sleep(100);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3400);//движение вперед
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
+                    lift_claw(-0.3, 1250);
+                    sleep(100);
+                    grab_box(false, true, false, false);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    sleep(100);
+                    //Trying to get another box
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(true, false, true, false);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    lift_claw(0.5, 500);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(false, true, false, true);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    wasExecuted = true;
+                }
+
+                wasExecuted = true;
             }
+            telemetry.update();
         }
-    
+    }
+
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
