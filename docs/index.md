@@ -6,7 +6,19 @@
 
 **Implemented enhancements:**
 
+- Remove old code that is related to claw   [\#44](https://github.com/vhundef/FTC_APP/issues/44)
 - AutoOP mode [\#35](https://github.com/vhundef/FTC_APP/issues/35)
+
+**Closed issues:**
+
+- Write code for attempting to get more than 1 box in AutoOP [\#50](https://github.com/vhundef/FTC_APP/issues/50)
+- Realign robot after kicking Jewel [\#47](https://github.com/vhundef/FTC_APP/issues/47)
+- Kick the Jewel of opposite alliance  [\#46](https://github.com/vhundef/FTC_APP/issues/46)
+- Get collor of Jewel  using AdaFruit [\#45](https://github.com/vhundef/FTC_APP/issues/45)
+
+**Merged pull requests:**
+
+- V1.4 [\#51](https://github.com/vhundef/FTC_APP/pull/51) ([vhundef](https://github.com/vhundef))
 
 ## [v1.0.0-RTM](https://github.com/vhundef/FTC_APP/tree/v1.0.0-RTM) (2017-10-29)
 
