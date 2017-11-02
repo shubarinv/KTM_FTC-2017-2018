@@ -285,9 +285,12 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.update();
                 //Trying to kick jewel
                 if (Objects.equals(get_color(), "Blue")) {
-                    assert true;
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
                 } else if (Objects.equals(get_color(), "Red")) {
-                    assert true;
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
+
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                 }
