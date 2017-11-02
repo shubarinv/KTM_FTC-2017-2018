@@ -115,7 +115,7 @@ public class Auto_Red_Left extends LinearOpMode {
         }
         if (bottom_clamp) {
             s2_bottom_Claw.setPosition(0);
-            if (s2_bottom_Claw.getPosition() != 0.50) {
+            if (s2_bottom_Claw.getPosition() != 0) {
                 telemetry.addData("BottomClawClamp", "[X]");
             } else {
                 telemetry.addData("BottomClawClamp", "[OK]");
