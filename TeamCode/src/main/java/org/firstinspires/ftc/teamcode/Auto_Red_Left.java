@@ -29,9 +29,16 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -42,10 +49,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.util.Objects;
+
 
 @Autonomous(name = "AUTO_Red_Left", group = "WIP")
 //@Disabled
 public class Auto_Red_Left extends LinearOpMode {
+    /* ADAFRUIT */
+    // we assume that the LED pin of the RGB sensor is connected to
+    // digital port 5 (zero indexed).
+    static final int LED_CHANNEL = 5;
     OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -53,7 +66,21 @@ public class Auto_Red_Left extends LinearOpMode {
      */
     VuforiaLocalizer vuforia;
     boolean wasExecuted = false;
-
+    ColorSensor sensorRGB;
+    DeviceInterfaceModule cdim;
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F, 0F, 0F};
+    // values is a reference to the hsvValues array.
+    final float values[] = hsvValues;
+    // get a reference to the RelativeLayout so we can change the background
+    // color of the Robot Controller app to match the hue detected by the RGB sensor.
+    int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+    final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+    // bPrevState and bCurrState represent the previous and current state of the button.
+    boolean bPrevState = false;
+    boolean bCurrState = false;
+    // bLedOn represents the state of the LED.
+    boolean bLedOn = true;
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor m1_Drive = null;
@@ -64,7 +91,6 @@ public class Auto_Red_Left extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
-
     /*
      * Functions
      */
@@ -164,6 +190,31 @@ public class Auto_Red_Left extends LinearOpMode {
         m4_Drive.setPower(0);
     }
 
+    String get_color() {
+        // check the status of the x button on gamepad.
+        bCurrState = gamepad1.x;
+
+        // check for button-press state transitions.
+        if ((bCurrState == true) && (bCurrState != bPrevState)) {
+
+            // button is transitioning to a pressed state. Toggle the LED.
+            bLedOn = !bLedOn;
+            cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+        }
+
+        // update previous state variable.
+        bPrevState = bCurrState;
+
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+        if (sensorRGB.red() > sensorRGB.blue()) {
+            return "Red";
+        } else if (sensorRGB.red() < sensorRGB.blue()) {
+            return "Blue";
+        }
+        return "Error";
+    }
+
 
     @Override
     public void runOpMode() {
@@ -203,7 +254,22 @@ public class Auto_Red_Left extends LinearOpMode {
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
         m3_Drive.setDirection(DcMotor.Direction.FORWARD);
         m4_Drive.setDirection(DcMotor.Direction.FORWARD);
+        /* AdaFruit */
 
+        // get a reference to our DeviceInterfaceModule object.
+        cdim = hardwareMap.deviceInterfaceModule.get("dim");
+
+        // set the digital channel to output mode.
+        // remember, the Adafruit sensor is actually two devices.
+        // It's an I2C sensor and it's also an LED that can be turned on or off.
+        cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
+
+        // get a reference to our ColorSensor object.
+        sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+
+        // turn the LED on in the beginning, just so user will know that the sensor is active.
+        cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+        telemetry.addData("AdaFruit", "OK");
         telemetry.update();
         waitForStart();
 
@@ -217,6 +283,14 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
+                //Trying to kick jewel
+                if (Objects.equals(get_color(), "Blue")) {
+                    assert true;
+                } else if (Objects.equals(get_color(), "Red")) {
+                    assert true;
+                } else {
+                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                }
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
