@@ -196,7 +196,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         bCurrState = gamepad1.x;
 
         // check for button-press state transitions.
-        if ((bCurrState == true) && (bCurrState != bPrevState)) {
+        if (bCurrState != bPrevState) {
 
             // button is transitioning to a pressed state. Toggle the LED.
             bLedOn = !bLedOn;
@@ -284,7 +284,11 @@ public class Auto_Blue_Right extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-                //Trying to kick jewel
+                /*
+                STEP 1 -Trying to kick jewel
+                */
+                telemetry.addData("Step-1", "Running");
+                telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
@@ -292,8 +296,14 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                 } else {
-                    telemetry.addData("AdaFruit", "ERROR");
+                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                    telemetry.addData("Step-1", "FAILED");
                 }
+                telemetry.addData("Step-1", "DONE");
+                telemetry.update();
+                /*
+                STEP 2 -Cryptobox related
+                */
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
