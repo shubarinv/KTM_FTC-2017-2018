@@ -193,7 +193,7 @@ public class Auto_Red_Left extends LinearOpMode {
 
     String get_color() {
         // check the status of the x button on gamepad.
-        bCurrState = gamepad1.x;
+        bCurrState = true;
 
         // check for button-press state transitions.
         if (bCurrState != bPrevState) {
