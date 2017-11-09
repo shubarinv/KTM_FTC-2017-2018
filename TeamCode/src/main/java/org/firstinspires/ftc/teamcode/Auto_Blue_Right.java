@@ -91,6 +91,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
+    private Servo s4_kicker = null;
 
     /*
      * Functions
@@ -215,8 +216,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         }
         return "Error";
     }
-
-
     @Override
     public void runOpMode() {
         /*
@@ -250,6 +249,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -289,6 +289,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 */
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
+                s4_kicker.setPosition(0.8);
                 if (Objects.equals(get_color(), "Blue")) {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
@@ -299,6 +300,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
                 }
+                s4_kicker.setPosition(0);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
@@ -311,7 +313,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     sleep(100);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперед
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
@@ -340,7 +342,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     sleep(500);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2750);//движение вперед
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
@@ -367,7 +369,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     sleep(500);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3400);//движение вперед
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 3400);//движение вперед
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
                     lift_claw(-0.3, 1250);
                     sleep(100);

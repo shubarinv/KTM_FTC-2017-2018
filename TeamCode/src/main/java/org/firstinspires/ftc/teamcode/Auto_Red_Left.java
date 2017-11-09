@@ -92,6 +92,7 @@ public class Auto_Red_Left extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
+    private Servo s4_kicker = null;
     /*
      * Functions
      */
@@ -250,6 +251,7 @@ public class Auto_Red_Left extends LinearOpMode {
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -284,6 +286,7 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
+                s4_kicker.setPosition(0.8);
                 /*
                 STEP 1 -Trying to kick jewel
                 */
@@ -299,6 +302,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1","FAILED");
                 }
+                s4_kicker.setPosition(0);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
