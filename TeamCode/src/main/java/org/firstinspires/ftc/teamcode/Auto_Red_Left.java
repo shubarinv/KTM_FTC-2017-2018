@@ -203,6 +203,11 @@ public class Auto_Red_Left extends LinearOpMode {
 
         // convert the RGB values to HSV values.
         Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+
+        telemetry.addData("Blue", sensorRGB.blue());
+        telemetry.addData("Red", sensorRGB.red());
+        telemetry.update();
+        sleep(2000);
         if (sensorRGB.red() > sensorRGB.blue()) {
             return "Red";
         } else if (sensorRGB.red() < sensorRGB.blue()) {
@@ -281,7 +286,7 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-                s4_kicker.setPosition(0.8);
+                s4_kicker.setPosition(0);
                 /*
                 STEP 1 -Trying to kick jewel
                 */
@@ -297,7 +302,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1","FAILED");
                 }
-                s4_kicker.setPosition(0);
+                s4_kicker.setPosition(0.5);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
