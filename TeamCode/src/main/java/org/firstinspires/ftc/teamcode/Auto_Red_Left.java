@@ -293,10 +293,10 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                 } else if (Objects.equals(get_color(), "Red")) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
