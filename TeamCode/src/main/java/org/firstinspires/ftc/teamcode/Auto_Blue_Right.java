@@ -289,11 +289,11 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.update();
                 s4_kicker.setPosition(0);
                 if (Objects.equals(get_color(), "Blue")) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
                 } else if (Objects.equals(get_color(), "Red")) {
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
