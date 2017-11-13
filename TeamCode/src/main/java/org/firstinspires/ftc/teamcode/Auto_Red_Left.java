@@ -208,9 +208,9 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.addData("Red", sensorRGB.red());
         telemetry.update();
         sleep(2000);
-        if (sensorRGB.red() > sensorRGB.blue()) {
+        if (0 < hsvValues[0] || hsvValues[0] < 50) {
             return "Red";
-        } else if (sensorRGB.red() < sensorRGB.blue()) {
+        } else if (200 < hsvValues[0] || hsvValues[0] < 250) {
             return "Blue";
         }
         return "Error";
@@ -300,7 +300,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-                    telemetry.addData("Step-1","FAILED");
+                    telemetry.addData("Step-1", "FAILED");
                 }
                 s4_kicker.setPosition(0.5);
                 telemetry.addData("Step-1", "DONE");
