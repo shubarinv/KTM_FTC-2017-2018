@@ -194,7 +194,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         if (bCurrState != bPrevState) {
 
             // button is transitioning to a pressed state. Toggle the LED.
-            bLedOn = !bLedOn;
             cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         }
 
