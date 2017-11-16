@@ -208,9 +208,9 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.addData("Red", sensorRGB.red());
         telemetry.update();
         sleep(2000);
-        if (0 < hsvValues[0] || hsvValues[0] < 50) {
+        if (0 < hsvValues[0] || hsvValues[0] < 25) {
             return "Red";
-        } else if (200 < hsvValues[0] || hsvValues[0] < 250) {
+        } else if (180 < hsvValues[0] || hsvValues[0] < 250) {
             return "Blue";
         }
         return "Error";
@@ -294,6 +294,7 @@ public class Auto_Red_Left extends LinearOpMode {
                 */
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
+                String jewel_color=get_color()
                 if (Objects.equals(get_color(), "Blue")) {
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
