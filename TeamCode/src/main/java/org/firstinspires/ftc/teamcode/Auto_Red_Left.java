@@ -287,6 +287,8 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
                 s4_kicker.setPosition(0);
+                telemetry.addData("AdaFruit", get_color());
+                telemetry.update();
                 /*
                 STEP 1 -Trying to kick jewel
                 */
