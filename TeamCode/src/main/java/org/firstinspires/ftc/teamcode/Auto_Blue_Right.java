@@ -210,7 +210,7 @@ public class Auto_Blue_Right extends LinearOpMode {
             telemetry.addData("Red", sensorRGB.red());
             telemetry.update();
             return "Red";
-        } else if (200 < hsvValues[0] || hsvValues[0] < 250) {
+        } else if (200 < hsvValues[0] || hsvValues[0] < 300) {
             telemetry.addData("Blue", sensorRGB.blue());
             telemetry.update();
             return "Blue";
@@ -291,6 +291,8 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 s4_kicker.setPosition(0);
+                telemetry.addData("AdaFruit", get_color());
+                telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот против часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
