@@ -294,7 +294,7 @@ public class Auto_Red_Left extends LinearOpMode {
                 */
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
-                String jewel_color=get_color()
+                String jewel_color=get_color();
                 if (Objects.equals(get_color(), "Blue")) {
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
