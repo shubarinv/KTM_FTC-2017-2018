@@ -200,10 +200,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         // update previous state variable.
         bPrevState = bCurrState;
 
-        // convert the RGB values to HSV values.
-        Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-
-
         sleep(2000);
         double hue = Utils.hue(sensorRGB);
         if (hue > 200 && hue < 260) {
@@ -290,11 +286,12 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот против часовой
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот против часовой
+
                 } else if (Objects.equals(get_color(), "Red")) {
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот против часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");

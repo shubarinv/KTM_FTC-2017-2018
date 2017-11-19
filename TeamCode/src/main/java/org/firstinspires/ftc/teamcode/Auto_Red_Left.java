@@ -294,11 +294,11 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.update();
                 String jewel_color=get_color();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
                 } else if (Objects.equals(jewel_color, "Red")) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
