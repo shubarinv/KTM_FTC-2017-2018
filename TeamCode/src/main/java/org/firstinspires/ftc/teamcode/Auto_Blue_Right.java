@@ -205,10 +205,11 @@ public class Auto_Blue_Right extends LinearOpMode {
 
 
         sleep(2000);
-        if (hsvValues[0] < 50 || hsvValues[0] > 330) {
-            return "Red";
-        } else if (hsvValues[0]  > 200 && hsvValues[0]  < 260) {
+        double hue = Utils.hue(sensorRGB);
+        if (hue > 200 && hue < 260) {
             return "Blue";
+        } else if (hue < 50 || hue > 330) {
+            return "Red";
         }
         return "Error";
     }
