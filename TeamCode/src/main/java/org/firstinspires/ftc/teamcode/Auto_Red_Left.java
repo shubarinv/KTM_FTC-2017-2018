@@ -304,7 +304,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
                 }
-                s4_kicker.setPosition(0.5);
+                s4_kicker.setPosition(1);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
