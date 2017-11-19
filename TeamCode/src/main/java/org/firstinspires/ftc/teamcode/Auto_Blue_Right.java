@@ -287,7 +287,6 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 s4_kicker.setPosition(0);
-                /*
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
@@ -299,10 +298,10 @@ public class Auto_Blue_Right extends LinearOpMode {
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
-                }*/
-                s4_kicker.setPosition(1);/*
+                }
+                s4_kicker.setPosition(1);
                 telemetry.addData("Step-1", "DONE");
-                telemetry.update();*/
+                telemetry.update();
                 /*
                 STEP 2 -Cryptobox related
                 */
@@ -321,6 +320,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     //Trying to get another box
+                    /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
@@ -331,7 +331,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-
+*/
                     wasExecuted = true;
                 }
                else if (vuMark == RelicRecoveryVuMark.CENTER) {
@@ -350,6 +350,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     //Trying to get another box
+                    /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
@@ -360,6 +361,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    */
                     wasExecuted = true;
                 }
                else if (vuMark == RelicRecoveryVuMark.LEFT) {
@@ -377,6 +379,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     //Trying to get another box
+                    /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
@@ -387,6 +390,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    */
                     wasExecuted = true;
                 }
                 else{
