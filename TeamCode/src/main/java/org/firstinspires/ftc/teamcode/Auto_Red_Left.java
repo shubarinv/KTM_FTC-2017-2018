@@ -201,8 +201,6 @@ public class Auto_Red_Left extends LinearOpMode {
         bPrevState = bCurrState;
 
         // convert the RGB values to HSV values.
-        Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-
         telemetry.addData("Blue", sensorRGB.blue());
         telemetry.addData("Red", sensorRGB.red());
         telemetry.update();
@@ -295,10 +293,10 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 String jewel_color=get_color();
-                if (Objects.equals(get_color(), "Blue")) {
+                if (Objects.equals(jewel_color, "Blue")) {
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
-                } else if (Objects.equals(get_color(), "Red")) {
+                } else if (Objects.equals(jewel_color, "Red")) {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот по часовой
                 } else {
