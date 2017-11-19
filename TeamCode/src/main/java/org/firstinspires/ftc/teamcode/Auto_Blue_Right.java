@@ -282,7 +282,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 */
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
-                s4_kicker.setPosition(0);
+                s4_kicker.setPosition(1);
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
@@ -295,7 +295,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
                 }
-                s4_kicker.setPosition(1);
+                s4_kicker.setPosition(0);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*

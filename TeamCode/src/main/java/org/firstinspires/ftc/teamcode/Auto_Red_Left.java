@@ -284,7 +284,7 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-                s4_kicker.setPosition(0);
+                s4_kicker.setPosition(1);
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
                 /*
@@ -303,7 +303,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
                 }
-                s4_kicker.setPosition(1);
+                s4_kicker.setPosition(0);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
