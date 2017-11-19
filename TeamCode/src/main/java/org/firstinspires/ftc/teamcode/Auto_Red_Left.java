@@ -286,13 +286,13 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-                s4_kicker.setPosition(0);
+                /*s4_kicker.setPosition(0);
                 telemetry.addData("AdaFruit", get_color());
-                telemetry.update();
+                telemetry.update();*/
                 /*
                 STEP 1 -Trying to kick jewel
                 */
-                telemetry.addData("Step-1", "Running");
+              /*  telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 String jewel_color=get_color();
                 if (Objects.equals(get_color(), "Blue")) {
@@ -304,10 +304,10 @@ public class Auto_Red_Left extends LinearOpMode {
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
-                }
-                s4_kicker.setPosition(1);
+                }*/
+                s4_kicker.setPosition(1);/*
                 telemetry.addData("Step-1", "DONE");
-                telemetry.update();
+                telemetry.update();*/
                 /*
                 STEP 2 -Cryptobox related
                 */
