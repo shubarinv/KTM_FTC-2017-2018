@@ -205,13 +205,9 @@ public class Auto_Blue_Right extends LinearOpMode {
 
 
         sleep(2000);
-        if (0 < hsvValues[0] || hsvValues[0] < 50) {
-            telemetry.addData("Red", sensorRGB.red());
-            telemetry.update();
+        if (hsvValues[0] < 50 || hsvValues[0] > 330) {
             return "Red";
-        } else if (200 < hsvValues[0] || hsvValues[0] < 300) {
-            telemetry.addData("Blue", sensorRGB.blue());
-            telemetry.update();
+        } else if (hsvValues[0]  > 200 && hsvValues[0]  < 260) {
             return "Blue";
         }
         return "Error";

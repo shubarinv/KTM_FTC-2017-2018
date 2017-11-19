@@ -207,9 +207,9 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.addData("Red", sensorRGB.red());
         telemetry.update();
         sleep(2000);
-        if (0 < hsvValues[0] || hsvValues[0] < 25) {
+        if (hsvValues[0] < 50 || hsvValues[0] > 330) {
             return "Red";
-        } else if (180 < hsvValues[0] || hsvValues[0] < 250) {
+        } else if (hsvValues[0]  > 200 && hsvValues[0]  < 260) {
             return "Blue";
         }
         return "Error";
