@@ -283,6 +283,8 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 s4_kicker.setPosition(1);
+                grab_box(true,false,true,false);
+                lift_claw(0.1,250);
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
                 if (Objects.equals(get_color(), "Blue")) {
