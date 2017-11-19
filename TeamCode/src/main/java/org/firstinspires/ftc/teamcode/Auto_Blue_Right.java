@@ -408,6 +408,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     //Trying to get another box
+                    /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
@@ -418,6 +419,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    */
                     wasExecuted = true;
                 }
 
