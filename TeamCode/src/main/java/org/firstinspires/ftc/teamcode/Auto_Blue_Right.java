@@ -283,7 +283,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 s4_kicker.setPosition(1);
-                grab_box(true,false,true,false);
+               /* grab_box(true,false,true,false);
                 lift_claw(0.1,250);
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
@@ -299,7 +299,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 }
                 s4_kicker.setPosition(0);
                 telemetry.addData("Step-1", "DONE");
-                telemetry.update();
+                telemetry.update();*/
                 /*
                 STEP 2 -Cryptobox related
                 */
