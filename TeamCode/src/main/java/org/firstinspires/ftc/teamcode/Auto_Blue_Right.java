@@ -317,6 +317,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     //Trying to get another box
                     /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
@@ -347,6 +348,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     //Trying to get another box
                     /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
@@ -376,6 +378,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     //Trying to get another box
                     /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
@@ -398,13 +401,14 @@ public class Auto_Blue_Right extends LinearOpMode {
                     sleep(500);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 3400);//движение вперед
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2750);//движение вперед
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     //Trying to get another box
                     /*
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
