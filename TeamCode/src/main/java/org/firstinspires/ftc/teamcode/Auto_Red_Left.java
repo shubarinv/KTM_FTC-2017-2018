@@ -29,9 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -55,6 +53,7 @@ import java.util.Objects;
 @Autonomous(name = "AUTO_Red_Left", group = "WIP")
 //@Disabled
 public class Auto_Red_Left extends LinearOpMode {
+
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
@@ -72,10 +71,6 @@ public class Auto_Red_Left extends LinearOpMode {
     float hsvValues[] = {0F, 0F, 0F};
     // values is a reference to the hsvValues array.
     final float values[] = hsvValues;
-    // get a reference to the RelativeLayout so we can change the background
-    // color of the Robot Controller app to match the hue detected by the RGB sensor.
-    int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-    final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
     // bPrevState and bCurrState represent the previous and current state of the button.
     boolean bPrevState = false;
     boolean bCurrState = false;
@@ -91,6 +86,7 @@ public class Auto_Red_Left extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
+    private Servo s4_kicker = null;
     /*
      * Functions
      */
@@ -192,13 +188,12 @@ public class Auto_Red_Left extends LinearOpMode {
 
     String get_color() {
         // check the status of the x button on gamepad.
-        bCurrState = gamepad1.x;
+        bCurrState = true;
 
         // check for button-press state transitions.
-        if ((bCurrState == true) && (bCurrState != bPrevState)) {
+        if (bCurrState != bPrevState) {
 
             // button is transitioning to a pressed state. Toggle the LED.
-            bLedOn = !bLedOn;
             cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         }
 
@@ -206,11 +201,15 @@ public class Auto_Red_Left extends LinearOpMode {
         bPrevState = bCurrState;
 
         // convert the RGB values to HSV values.
-        Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-        if (sensorRGB.red() > sensorRGB.blue()) {
-            return "Red";
-        } else if (sensorRGB.red() < sensorRGB.blue()) {
+        telemetry.addData("Blue", sensorRGB.blue());
+        telemetry.addData("Red", sensorRGB.red());
+        telemetry.update();
+        sleep(2000);
+        double hue = Utils.hue(sensorRGB);
+        if (hue > 200 && hue < 260) {
             return "Blue";
+        } else if (hue < 50 || hue > 330) {
+            return "Red";
         }
         return "Error";
     }
@@ -249,6 +248,8 @@ public class Auto_Red_Left extends LinearOpMode {
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -283,17 +284,33 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-                //Trying to kick jewel
-                if (Objects.equals(get_color(), "Blue")) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
-                } else if (Objects.equals(get_color(), "Red")) {
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 250);//поворот против часовой
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 250);//поворот по часовой
-
+                s4_kicker.setPosition(1);
+                grab_box(true,false,true,false);
+                lift_claw(0.1,250);
+                telemetry.addData("AdaFruit", get_color());
+                telemetry.update();
+                /*
+                STEP 1 -Trying to kick jewel
+                */
+                telemetry.addData("Step-1", "Running");
+                telemetry.update();
+                String jewel_color=get_color();
+                if (Objects.equals(jewel_color, "Blue")) {
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+                } else if (Objects.equals(jewel_color, "Red")) {
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                    telemetry.addData("Step-1", "FAILED");
                 }
+                s4_kicker.setPosition(0);
+                telemetry.addData("Step-1", "DONE");
+                telemetry.update();
+                /*
+                STEP 2 -Cryptobox related
+                */
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
@@ -301,7 +318,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     sleep(100);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2200);//движение вперед
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
@@ -309,8 +326,9 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     //Trying to get another box
+
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                  /*  set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(true, false, true, false);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
@@ -319,10 +337,10 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-
+*/
                     wasExecuted = true;
                 }
-                if (vuMark == RelicRecoveryVuMark.CENTER) {
+               else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
 
@@ -330,7 +348,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     sleep(500);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2850);//движение вперед
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
@@ -339,7 +357,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     sleep(100);
                     //Trying to get another box
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                  /*  set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(true, false, true, false);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
@@ -348,10 +366,40 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    */
                     wasExecuted = true;
                 }
-                if (vuMark == RelicRecoveryVuMark.LEFT) {
+               else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("Vumark", " LEFT");
+                    telemetry.update();
+                    grab_box(true, false, false, true);
+                    sleep(500);
+                    lift_claw(0.3, 1250);
+                    sleep(100);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3500);//движение вперед
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
+                    lift_claw(-0.3, 1250);
+                    sleep(100);
+                    grab_box(false, true, false, false);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    sleep(100);
+                    //Trying to get another box
+
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                 /*   set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(true, false, true, false);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                    lift_claw(0.5, 500);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
+                    grab_box(false, true, false, true);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    */
+                    wasExecuted = true;
+                }
+                else{
+                    telemetry.addData("Vumark", " NOPE");
                     telemetry.update();
                     grab_box(true, false, false, true);
                     sleep(500);
@@ -365,8 +413,9 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     //Trying to get another box
+
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
+                   /* set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(true, false, true, false);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
@@ -375,9 +424,9 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
                     grab_box(false, true, false, true);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+                    */
                     wasExecuted = true;
                 }
-
                 wasExecuted = true;
             }
             telemetry.update();

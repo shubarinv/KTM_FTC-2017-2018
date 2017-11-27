@@ -36,6 +36,7 @@ public class OpMode_Linear extends LinearOpMode {
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
+    private Servo s4_kicker = null;
 
     //-------
     double magic(double input) {
@@ -58,9 +59,10 @@ public class OpMode_Linear extends LinearOpMode {
             s2_bottom_Claw.setPosition(0.10);
         }
         if (bottom_release) {
-            s2_bottom_Claw.setPosition(0.60);
+            s2_bottom_Claw.setPosition(0.50);
         }
     }
+
 
     // TODO: 15.10.2017 Lift claw
     void lift_claw(double lift_power) {
@@ -73,6 +75,13 @@ public class OpMode_Linear extends LinearOpMode {
             s3_rotation.setPosition(1);
         } else {
             s3_rotation.setPosition(0);
+        }
+    }
+    void lift_stick(boolean lift) { //if rotate true then rotate to  180 . else to 0
+        if (lift) {
+            s4_kicker.setPosition(1);
+        } else {
+            s4_kicker.setPosition(0);
         }
     }
     // Grab another box
@@ -110,6 +119,7 @@ public class OpMode_Linear extends LinearOpMode {
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -118,6 +128,7 @@ public class OpMode_Linear extends LinearOpMode {
         m3_Drive.setDirection(DcMotor.Direction.FORWARD);
         m4_Drive.setDirection(DcMotor.Direction.FORWARD);
         m5_Lift.setDirection(DcMotor.Direction.FORWARD);
+        boolean stick_lifted=false;
 
         // Wait for the game to start (driver presses PLAY)
         s2_bottom_Claw.setPosition(0.4);
@@ -194,7 +205,10 @@ public class OpMode_Linear extends LinearOpMode {
             if (claw_release_bottom) {
                 grab_box(false, false, false, true);
             }
-
+            if (gamepad2.y==true){
+                lift_stick(stick_lifted);
+                stick_lifted=!stick_lifted;
+            }
             // Claw rotation
             if (claw_rotation_l) {
                 rotate_claw(true); // Rotate claw to left

@@ -29,16 +29,15 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+
+import java.util.Objects;
 
 /*
  *
@@ -68,7 +67,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name = "Sensor: AdafruitRGB", group = "Sensor")
-@Disabled                            // Comment this out to add to the opmode list
+// Comment this out to add to the opmode list
 public class SensorAdafruitRGB extends LinearOpMode {
 
     // we assume that the LED pin of the RGB sensor is connected to
@@ -85,11 +84,6 @@ public class SensorAdafruitRGB extends LinearOpMode {
 
         // values is a reference to the hsvValues array.
         final float values[] = hsvValues;
-
-        // get a reference to the RelativeLayout so we can change the background
-        // color of the Robot Controller app to match the hue detected by the RGB sensor.
-        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         // bPrevState and bCurrState represent the previous and current state of the button.
         boolean bPrevState = false;
@@ -133,34 +127,27 @@ public class SensorAdafruitRGB extends LinearOpMode {
             // update previous state variable.
             bPrevState = bCurrState;
 
-            // convert the RGB values to HSV values.
-            Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
 
             // send the info back to driver station using telemetry function.
-            telemetry.addData("LED", bLedOn ? "On" : "Off");
-            telemetry.addData("Clear", sensorRGB.alpha());
-            telemetry.addData("Red  ", sensorRGB.red());
-            telemetry.addData("Green", sensorRGB.green());
-            telemetry.addData("Blue ", sensorRGB.blue());
-            telemetry.addData("Hue", hsvValues[0]);
-
-            // change the background color to match the color detected by the RGB sensor.
-            // pass a reference to the hue, saturation, and value array as an argument
-            // to the HSVToColor method.
-            relativeLayout.post(new Runnable() {
-                public void run() {
-                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-                }
-            });
+            double hue = Utils.hue(sensorRGB);
+            if (hue > 200 && hue < 260) {
+                String jewel_color = "Blue";
+            } else if (hue < 50 || hue > 330) {
+                String jewel_color = "Red";
+            }
+            String jewel_color = "Error";
+            if (Objects.equals(jewel_color, "Blue")) {
+                telemetry.addData("AdaFruit", "BLUE");
+                telemetry.addData("Step-1", "BLUE");
+            } else if (Objects.equals(jewel_color, "Red")) {
+                telemetry.addData("AdaFruit", "RED");
+                telemetry.addData("Step-1", "RED");
+            } else {
+                telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                telemetry.addData("Step-1", "FAILED");
+            }
 
             telemetry.update();
         }
-
-        // Set the panel back to the default color
-        relativeLayout.post(new Runnable() {
-            public void run() {
-                relativeLayout.setBackgroundColor(Color.WHITE);
-            }
-        });
     }
 }
