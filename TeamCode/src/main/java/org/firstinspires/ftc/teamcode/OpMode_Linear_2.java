@@ -150,9 +150,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
             // POV Mode uses right stick to go forward and right to slide.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive_L = -gamepad1.right_stick_y;
-            double drive_R = -gamepad1.left_stick_y;
-            double rotation = -gamepad1.right_stick_x / 2;
+            double drive_L = -gamepad1.left_stick_y;
+            double drive_R = -gamepad1.right_stick_y;
             double claw_lift = gamepad2.left_stick_y;
             float claw_clamp_top = gamepad2.left_trigger;
             float claw_clamp_bottom = gamepad2.right_trigger;
@@ -162,29 +161,29 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean claw_rotation_r = gamepad2.dpad_right;
             //Slide Related
             double slide;
-            double slide_L = gamepad1.left_trigger;
-            double slide_R = gamepad1.right_trigger;
+            double slide_L = gamepad1.right_trigger;
+            double slide_R = gamepad1.left_trigger;
             if (slide_L < slide_R) {
                 slide = slide_R * -1;
             } else {
                 slide = slide_L;
             }
-            double A = Math.abs(rotation) + Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
+            double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
             if (A <= 1) {
-                m1_Drive_Power = rotation - drive_L - slide;
-                m2_Drive_Power = rotation + drive_R - slide;
-                m3_Drive_Power = rotation + drive_R + slide;
-                m4_Drive_Power = rotation - drive_L + slide;
+                m1_Drive_Power = drive_L - slide;
+                m2_Drive_Power = drive_R - slide;
+                m3_Drive_Power = drive_R + slide;
+                m4_Drive_Power = drive_L + slide;
             } else {
 
-                rotation = rotation / A;
+
                 drive_L = drive_L / A;
                 drive_R = drive_R / A;
                 slide = slide / A;
-                m1_Drive_Power = rotation - drive_L - slide;
-                m2_Drive_Power = rotation + drive_R - slide;
-                m3_Drive_Power = rotation + drive_R + slide;
-                m4_Drive_Power = rotation - drive_L + slide;
+                m1_Drive_Power = drive_L - slide;
+                m2_Drive_Power = drive_R - slide;
+                m3_Drive_Power = drive_R + slide;
+                m4_Drive_Power = drive_L + slide;
             }
             // Send calculated power to wheels
 
