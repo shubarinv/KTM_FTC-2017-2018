@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -33,8 +34,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     private DcMotor m5_Lift = null;
-    private Servo s1_top_Claw = null;
-    private Servo s2_bottom_Claw = null;
+    private CRServo s1_top_Claw = null;
+    private CRServo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
     private Servo s4_kicker = null;
 
@@ -50,16 +51,22 @@ public class OpMode_Linear_2 extends LinearOpMode {
     // Grab box
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
-            s1_top_Claw.setPosition(0.10);
-        }
-        if (top_release) {
-            s1_top_Claw.setPosition(0.50);
+            s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
+            s1_top_Claw.setPower(0.8);
+        } else if (top_release) {
+            s1_top_Claw.setDirection(CRServo.Direction.REVERSE);
+            s1_top_Claw.setPower(0.2);
+        } else {
+            s1_top_Claw.setPower(0.5);
         }
         if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0.10);
-        }
-        if (bottom_release) {
-            s2_bottom_Claw.setPosition(0.50);
+            s2_bottom_Claw.setDirection(CRServo.Direction.FORWARD);
+            s2_bottom_Claw.setPower(0.8);
+        } else if (bottom_release) {
+            s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
+            s2_bottom_Claw.setPower(0.2);
+        } else {
+            s2_bottom_Claw.setPower(0.5);
         }
     }
 
@@ -117,8 +124,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
-        s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
+        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+        s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
         //-------
@@ -132,7 +139,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         boolean stick_lifted = false;
 
         // Wait for the game to start (driver presses PLAY)
-        s2_bottom_Claw.setPosition(0.4);
+        s2_bottom_Claw.setPower(0.5);
         waitForStart();
         runtime.reset();
 
