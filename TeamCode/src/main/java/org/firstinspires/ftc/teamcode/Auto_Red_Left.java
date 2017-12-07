@@ -85,7 +85,6 @@ public class Auto_Red_Left extends LinearOpMode {
     private DcMotor m5_Lift = null;
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
-    private Servo s3_rotation = null;
     private Servo s4_kicker = null;
     /*
      * Functions
