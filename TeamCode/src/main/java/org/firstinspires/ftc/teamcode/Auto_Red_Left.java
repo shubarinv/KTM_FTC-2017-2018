@@ -92,74 +92,20 @@ public class Auto_Red_Left extends LinearOpMode {
      */
 
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
-        if (top_clamp) {
-            s1_top_Claw.setPosition(0);
-            if (s1_top_Claw.getPosition() != 0) {
-                telemetry.addData("TopClawClamp", "[X]");
-            } else {
-                telemetry.addData("TopClawClamp", "[OK]");
-            }
-            telemetry.update();
-        }
-        if (top_release) {
-            s1_top_Claw.setPosition(0.50);
-            if (s1_top_Claw.getPosition() != 0.50) {
-                telemetry.addData("TopClawRelease", "[X]");
-            } else {
-                telemetry.addData("TopClawRelease", "[OK]");
-            }
-        }
-        if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0);
-            if (s2_bottom_Claw.getPosition() != 0) {
-                telemetry.addData("BottomClawClamp", "[X]");
-            } else {
-                telemetry.addData("BottomClawClamp", "[OK]");
-            }
-        }
-        if (bottom_release) {
-            s2_bottom_Claw.setPosition(0.50);
-            if (s2_bottom_Claw.getPosition() != 0.50) {
-                telemetry.addData("BottomClawRelease", "[X]");
-            } else {
-                telemetry.addData("BottomClawRelease", "[OK]");
-            }
-        }
+        // DEPERECATED
+        assert true;
     }
 
     // Lift claw
     void lift_claw(double lift_power, long ms) {
-        m5_Lift.setPower(lift_power);
-        sleep(ms);
-        m5_Lift.setPower(0);
+        // DEPERCATED
+        assert true;
     }
 
     // Rotate claw
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
-        if (rotate) {
-            s3_rotation.setPosition(1);
-            if (s3_rotation.getPosition() != 1) {
-                telemetry.addData("Claw_ROT", "Stuck, retrying");
-                s3_rotation.setPosition(1);
-                if (s3_rotation.getPosition() != 1) {
-                    telemetry.addData("Claw_ROT", "Stuck! , and disabled");
-                    s3_rotation = null;
-                }
-
-            }
-
-        } else {
-            s3_rotation.setPosition(0);
-            if (s3_rotation.getPosition() != 0) {
-                telemetry.addData("Claw_ROT", "Stuck, retrying");
-                s3_rotation.setPosition(0);
-                if (s3_rotation.getPosition() != 0) {
-                    telemetry.addData("Claw_ROT", "Stuck! , and disabled");
-                    s3_rotation = null;
-                }
-
-            }
-        }
+        // DEPRECATED
+        assert true;
     }
 
     void set_Motors_Power(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
@@ -325,19 +271,8 @@ public class Auto_Red_Left extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
-                    //Trying to get another box
-
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                  /*  set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-*/
+                  
                     wasExecuted = true;
                 }
                else if (vuMark == RelicRecoveryVuMark.CENTER) {
@@ -355,18 +290,8 @@ public class Auto_Red_Left extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
-                    //Trying to get another box
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                  /*  set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                    */
+                  
                     wasExecuted = true;
                 }
                else if (vuMark == RelicRecoveryVuMark.LEFT) {
@@ -383,19 +308,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
-                    //Trying to get another box
-
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                 /*   set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                    */
                     wasExecuted = true;
                 }
                 else{
@@ -412,19 +325,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
-                    //Trying to get another box
-
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                   /* set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                    */
                     wasExecuted = true;
                 }
                 wasExecuted = true;
