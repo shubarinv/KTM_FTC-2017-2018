@@ -84,7 +84,6 @@ public class Auto_Blue_Right extends LinearOpMode {
     private DcMotor m5_Lift = null;
     private Servo s1_top_Claw = null;
     private Servo s2_bottom_Claw = null;
-    private Servo s3_rotation = null;
     private Servo s4_kicker = null;
 
     /*
@@ -92,74 +91,20 @@ public class Auto_Blue_Right extends LinearOpMode {
      */
 
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
-        if (top_clamp) {
-            s1_top_Claw.setPosition(0);
-            if (s1_top_Claw.getPosition() != 0) {
-                telemetry.addData("TopClawClamp", "[X]");
-            } else {
-                telemetry.addData("TopClawClamp", "[OK]");
-            }
-            telemetry.update();
-        }
-        if (top_release) {
-            s1_top_Claw.setPosition(0.50);
-            if (s1_top_Claw.getPosition() != 0.50) {
-                telemetry.addData("TopClawRelease", "[X]");
-            } else {
-                telemetry.addData("TopClawRelease", "[OK]");
-            }
-        }
-        if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0);
-            if (s2_bottom_Claw.getPosition() != 0) {
-                telemetry.addData("BottomClawClamp", "[X]");
-            } else {
-                telemetry.addData("BottomClawClamp", "[OK]");
-            }
-        }
-        if (bottom_release) {
-            s2_bottom_Claw.setPosition(0.50);
-            if (s2_bottom_Claw.getPosition() != 0.50) {
-                telemetry.addData("BottomClawRelease", "[X]");
-            } else {
-                telemetry.addData("BottomClawRelease", "[OK]");
-            }
-        }
+        // DEPRECATED
+        assert true;
     }
 
     // Lift claw
     void lift_claw(double lift_power, long ms) {
-        m5_Lift.setPower(lift_power);
-        sleep(ms);
-        m5_Lift.setPower(0);
+        // DEPRECATED
+        assert true;
     }
 
     // Rotate claw
     void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
-        if (rotate) {
-            s3_rotation.setPosition(1);
-            if (s3_rotation.getPosition() != 1) {
-                telemetry.addData("Claw_ROT", "Stuck, retrying");
-                s3_rotation.setPosition(1);
-                if (s3_rotation.getPosition() != 1) {
-                    telemetry.addData("Claw_ROT", "Stuck! , and disabled");
-                    s3_rotation = null;
-                }
-
-            }
-
-        } else {
-            s3_rotation.setPosition(0);
-            if (s3_rotation.getPosition() != 0) {
-                telemetry.addData("Claw_ROT", "Stuck, retrying");
-                s3_rotation.setPosition(0);
-                if (s3_rotation.getPosition() != 0) {
-                    telemetry.addData("Claw_ROT", "Stuck! , and disabled");
-                    s3_rotation = null;
-                }
-
-            }
-        }
+        // DEPRECATED
+        assert true;
     }
 
     void set_Motors_Power(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
@@ -241,7 +186,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
         s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
-        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -283,7 +227,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 s4_kicker.setPosition(1);
-               /* grab_box(true,false,true,false);
+                grab_box(true,false,true,false);
                 lift_claw(0.1,250);
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
@@ -299,7 +243,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 }
                 s4_kicker.setPosition(0);
                 telemetry.addData("Step-1", "DONE");
-                telemetry.update();*/
+                telemetry.update();
                 /*
                 STEP 2 -Cryptobox related
                 */
@@ -318,19 +262,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    //Trying to get another box
-                    /*
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-*/
+
                     wasExecuted = true;
                 }
                else if (vuMark == RelicRecoveryVuMark.CENTER) {
@@ -349,19 +281,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    //Trying to get another box
-                    /*
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                    */
+                   
                     wasExecuted = true;
                 }
                else if (vuMark == RelicRecoveryVuMark.LEFT) {
@@ -379,19 +299,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    //Trying to get another box
-                    /*
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                    */
+                   
                     wasExecuted = true;
                 }
                 else{
@@ -409,19 +317,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    //Trying to get another box
-                    /*
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(true, false, true, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 2500);//поворот по часовой
-                    lift_claw(0.5, 500);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2500);//движение вперед
-                    grab_box(false, true, false, true);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
-                    */
+                    
                     wasExecuted = true;
                 }
 
