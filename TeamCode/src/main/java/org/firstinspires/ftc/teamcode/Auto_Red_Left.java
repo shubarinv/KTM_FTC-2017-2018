@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -152,11 +150,11 @@ public class Auto_Red_Left extends LinearOpMode {
         sleep(2000);
         double hue = Utils.hue(sensorRGB);
         telemetry.addData("HUE", hue);
-        if (hue > 200 && hue < 260) {
+       /* if (hue > 200 && hue < 260) {
             return "Blue";
         } else if (hue < 50 || hue > 330) {
             return "Red";
-        }
+        }*/
         return "Error";
     }
 
