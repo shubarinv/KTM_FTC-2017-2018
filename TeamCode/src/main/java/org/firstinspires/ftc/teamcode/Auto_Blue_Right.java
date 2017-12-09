@@ -147,6 +147,7 @@ public class Auto_Blue_Right extends LinearOpMode {
 
         sleep(2000);
         double hue = Utils.hue(sensorRGB);
+        telemetry.addData("HUE", hue);
         if (hue > 200 && hue < 260) {
             return "Blue";
         } else if (hue < 50 || hue > 330) {
