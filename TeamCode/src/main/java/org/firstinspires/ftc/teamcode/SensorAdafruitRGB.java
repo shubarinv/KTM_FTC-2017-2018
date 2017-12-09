@@ -37,8 +37,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-import java.util.Objects;
-
 /*
  *
  * This is an example LinearOpMode that shows how to use
@@ -128,8 +126,23 @@ public class SensorAdafruitRGB extends LinearOpMode {
 
 
             // send the info back to driver station using telemetry function.
-            double hue = Utils.hue(sensorRGB);
-            telemetry.addData("HUE", hue);
+            Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+
+            double hue = hsvValues[0];
+            if (hue > 200 && hue < 260) {
+                telemetry.addData("Color-->", "Blue");
+            } else if (hue < 50 || hue > 330) {
+                telemetry.addData("Color-->", "red");
+            }
+
+
+            // send the info back to driver station using telemetry function.
+            telemetry.addData("Clear", sensorRGB.alpha());
+            telemetry.addData("Red  ", sensorRGB.red());
+            telemetry.addData("Green", sensorRGB.green());
+            telemetry.addData("Blue ", sensorRGB.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+
             telemetry.update();
         }
     }
