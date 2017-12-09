@@ -138,6 +138,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            s4_kicker.setPosition(0);
             /*
                * Chassis movement
             */
