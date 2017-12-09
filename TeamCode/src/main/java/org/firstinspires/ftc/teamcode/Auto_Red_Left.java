@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -55,14 +54,7 @@ public class Auto_Red_Left extends LinearOpMode {
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
-    static final int LED_CHANNEL = 5;
-    OpenGLMatrix lastLocation = null;
-    /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-     * localization engine.
-     */
-    VuforiaLocalizer vuforia;
-    boolean wasExecuted = false;
+    private static final int LED_CHANNEL = 5;
     ColorSensor sensorRGB;
     DeviceInterfaceModule cdim;
     // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -74,6 +66,12 @@ public class Auto_Red_Left extends LinearOpMode {
     boolean bCurrState = false;
     // bLedOn represents the state of the LED.
     boolean bLedOn = true;
+    /**
+     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+     * localization engine.
+     */
+    private VuforiaLocalizer vuforia;
+    private boolean wasExecuted = false;
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor m1_Drive = null;
@@ -218,7 +216,6 @@ public class Auto_Red_Left extends LinearOpMode {
         waitForStart();
 
         relicTrackables.activate();
-        //wasExecuted=false;
         while (opModeIsActive()) {
             if (wasExecuted) {
                 telemetry.addData("Autonomous: ", "DONE");
@@ -329,10 +326,5 @@ public class Auto_Red_Left extends LinearOpMode {
             }
             telemetry.update();
         }
-    }
-
-
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 }

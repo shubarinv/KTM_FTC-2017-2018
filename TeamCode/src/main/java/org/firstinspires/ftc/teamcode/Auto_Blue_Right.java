@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -55,7 +54,6 @@ public class Auto_Blue_Right extends LinearOpMode {
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
     static final int LED_CHANNEL = 5;
-    OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -211,7 +209,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         waitForStart();
 
         relicTrackables.activate();
-        //wasExecuted=false;
         while (opModeIsActive()) {
             if (wasExecuted) {
                 telemetry.addData("Autonomous: ", "DONE");
@@ -319,15 +316,9 @@ public class Auto_Blue_Right extends LinearOpMode {
                     
                     wasExecuted = true;
                 }
-
                 wasExecuted = true;
             }
             telemetry.update();
         }
-    }
-
-
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 }
