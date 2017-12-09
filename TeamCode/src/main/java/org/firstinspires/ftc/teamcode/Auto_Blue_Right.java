@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -142,15 +144,17 @@ public class Auto_Blue_Right extends LinearOpMode {
         bPrevState = bCurrState;
 
         sleep(2000);
-        double hue = Utils.hue(sensorRGB);
-        telemetry.addData("HUE", hue);
-     /*   if (hue > 200 && hue < 260) {
+        Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+
+        double hue = hsvValues[0];
+        if (hue > 200 && hue < 260) {
             return "Blue";
         } else if (hue < 50 || hue > 330) {
             return "Red";
-        }*/
+        }
         return "Error";
     }
+
     @Override
     public void runOpMode() {
         /*
@@ -223,7 +227,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
                 s4_kicker.setPosition(1);
-                grab_box(true,false,true,false);
+                grab_box(true, false, true, false);
                 lift_claw(0.1, 500);
                 telemetry.addData("AdaFruit", get_color());
                 telemetry.update();
@@ -260,8 +264,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
                     wasExecuted = true;
-                }
-               else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
 
@@ -277,10 +280,9 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                   
+
                     wasExecuted = true;
-                }
-               else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
                     grab_box(true, false, false, true);
@@ -295,10 +297,9 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                   
+
                     wasExecuted = true;
-                }
-                else{
+                } else {
                     telemetry.addData("Vumark", " NOT VISIBLE");
                     telemetry.update();
                     grab_box(true, false, false, true);
@@ -313,7 +314,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    
+
                     wasExecuted = true;
                 }
                 wasExecuted = true;
