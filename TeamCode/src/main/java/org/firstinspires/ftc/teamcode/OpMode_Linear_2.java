@@ -168,8 +168,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean claw_rotation_r = gamepad2.dpad_right;
             //Slide Related
             double slide;
-            double slide_L = gamepad1.right_trigger;
-            double slide_R = gamepad1.left_trigger;
+            double slide_L = gamepad1.left_trigger;
+            double slide_R = gamepad1.right_trigger;
             if (slide_L < slide_R) {
                 slide = slide_R * -1;
             } else {
@@ -184,8 +184,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
             } else {
 
 
-                drive_L = drive_L / A;
-                drive_R = drive_R / A;
+                drive_L = (drive_L / A)*2;
+                drive_R = (drive_R / A)*2;
                 slide = slide / A;
                 m1_Drive_Power = drive_L - slide;
                 m2_Drive_Power = drive_R - slide;
