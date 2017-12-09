@@ -178,13 +178,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
             } else {
 
 
-                drive_L = (drive_L / A) * 2;
-                drive_R = (drive_R / A) * 2;
+                drive_L = drive_L / A;
+                drive_R = drive_R / A;
                 slide = slide / A;
-                m1_Drive_Power = drive_L - slide;
-                m2_Drive_Power = drive_R - slide;
-                m3_Drive_Power = drive_R + slide;
-                m4_Drive_Power = drive_L + slide;
+                m1_Drive_Power = (drive_L - slide)*2;
+                m2_Drive_Power = (drive_R - slide)*2;
+                m3_Drive_Power = (drive_R + slide)*2;
+                m4_Drive_Power = (drive_L + slide)*2;
             }
             // Send calculated power to wheels
 
