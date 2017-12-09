@@ -52,21 +52,21 @@ public class OpMode_Linear_2 extends LinearOpMode {
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         if (top_clamp) {
             s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
-            s1_top_Claw.setPower(0.8);
+            s1_top_Claw.setPower(1);
         } else if (top_release) {
             s1_top_Claw.setDirection(CRServo.Direction.REVERSE);
-            s1_top_Claw.setPower(0.2);
+            s1_top_Claw.setPower(0);
         } else {
-            s1_top_Claw.setPower(0.5);
+            s1_top_Claw.setPower(1);
         }
         if (bottom_clamp) {
             s2_bottom_Claw.setDirection(CRServo.Direction.FORWARD);
-            s2_bottom_Claw.setPower(0.8);
+            s2_bottom_Claw.setPower(1);
         } else if (bottom_release) {
             s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
-            s2_bottom_Claw.setPower(0.2);
+            s2_bottom_Claw.setPower(0);
         } else {
-            s2_bottom_Claw.setPower(0.5);
+            s2_bottom_Claw.setPower(1);
         }
     }
 
