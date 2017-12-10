@@ -54,11 +54,11 @@ import java.util.Objects;
 @Autonomous(name = "Blue_RIGHT", group = "WIP")
 //@Disabled
 public class Auto_Blue_Right extends LinearOpMode {
-    OpenGLMatrix lastLocation = null;
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
     static final int LED_CHANNEL = 5;
+    OpenGLMatrix lastLocation = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -243,8 +243,8 @@ public class Auto_Blue_Right extends LinearOpMode {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
                     set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
                 } else if (Objects.equals(get_color(), "Red")) {
-                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот по часовой
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот против часовой
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
@@ -262,12 +262,12 @@ public class Auto_Blue_Right extends LinearOpMode {
                     sleep(100);
                     lift_claw(0.3, 1250);
                     sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперед
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+                    set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
                     grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1250);//движение вперед
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
@@ -285,7 +285,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     lift_claw(-0.3, 1250);
                     sleep(100);
                     grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1250);//движение вперед
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
@@ -298,11 +298,11 @@ public class Auto_Blue_Right extends LinearOpMode {
                     lift_claw(0.3, 1250);
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 3400);//движение вперед
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
                     lift_claw(-0.3, 1250);
                     sleep(100);
                     grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1250);//движение вперед
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
@@ -319,7 +319,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     lift_claw(-0.3, 1250);
                     sleep(100);
                     grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1250);//движение вперед
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
