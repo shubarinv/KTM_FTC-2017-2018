@@ -2,7 +2,12 @@
 
 ## (2017-12-11)
 
-[Скачать](http://vhundef.net/Development-TeamCode-debug.apk)
+### Изменено
+- В связи с возможными изменениями в конструкции, создана копия приложения  поддерживающая эти изменения 
+
+[Скачать (Версия с совком) далее shwl](http://vhundef.net/Development-TeamCode-debug.apk)
+
+[Скачать (Версия с роликами) далее roll](http://vhundef.net/Development-TeamCode-debug.apk) 
 
 ## (2017-12-10)
 
@@ -13,8 +18,6 @@
 ### Всё ещё не работает
 
 - В обеих автономках палка работает не корректно
-
-[Скачать](http://vhundef.net/Development-TeamCode-debug.apk)
 
 
 ## V3.0 (2017-12-10)
