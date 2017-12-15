@@ -1,13 +1,17 @@
 # KTM FTC
 
-## (2017-12-11)
+## (2017-12-15)
 
-### Изменено
-- В связи с возможными изменениями в конструкции, создана копия приложения  поддерживающая эти изменения 
+### Добавлено
 
-[Скачать (Версия с совком) далее shwl](http://vhundef.net/Development-TeamCode-debug.apk)
+-  Версия с роликами.
 
-[Скачать (Версия с роликами) далее roll](http://vhundef.net/dev_rollers-TeamCode-debug.apk) 
+### Исправленно
+-
+
+[Скачать версию с совком](http://vhundef.net/Development-TeamCode-debug.apk)
+
+[Скачать версию с роликами](http://vhundef.net/dev_rollers-TeamCode-debug.apk)
 
 ## (2017-12-10)
 
@@ -18,6 +22,8 @@
 ### Всё ещё не работает
 
 - В обеих автономках палка работает не корректно
+
+[Скачать](http://vhundef.net/Development-TeamCode-debug.apk)
 
 
 ## V3.0 (2017-12-10)
