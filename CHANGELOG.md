@@ -1,8 +1,17 @@
 # KTM FTC
 
-## (2017-12-11)
+## (2017-12-15)
 
-[Скачать](http://vhundef.net/Development-TeamCode-debug.apk)
+### Добавлено
+
+-  Версия с роликами.
+
+### Исправленно
+-
+
+[Скачать версию с совком](http://vhundef.net/Development-TeamCode-debug.apk)
+
+[Скачать версию с роликами](http://vhundef.net/dev_rollers-TeamCode-debug.apk)
 
 ## (2017-12-10)
 
