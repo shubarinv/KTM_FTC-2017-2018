@@ -20,6 +20,7 @@ cache:
     - $HOME/.android/build-cache
 deploy:
   provider: script
+  skip_cleanup: true
   script: deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE $FTP_USER $FTP_PASSWORD
   on:
     tags: true
