@@ -19,9 +19,8 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 deploy:
-  provider: releases
-  file: TeamCode-debug.apk
-  skip_cleanup: true
-
-after_success:
-    "curl --ftp-create-dirs -T app/build/outputs/apk/TeamCode-debug.apk -u $FTP_USER:$FTP_PASSWORD ftp://vhundef.net/public_html/$TRAVIS_BRANCH_TeamCode-debug.apk"
+  provider: script
+  script: deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE $FTP_USER $FTP_PASSWORD
+  on:
+    tags: true
+    all_branches: true
