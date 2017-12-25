@@ -19,4 +19,4 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 after_success:
-    "curl --ftp-create-dirs -T TeamCode-debug.apk -u $FTP_USER:$FTP_PASSWORD ftp://sitename.com//public_html/$TRAVIS_BRANCH_TeamCode-debug.apk"
+    "curl --ftp-create-dirs -T TeamCode-debug.apk -u $FTP_USER:$FTP_PASSWORD ftp://vhundef.net/public_html/$TRAVIS_BRANCH_TeamCode-debug.apk"
