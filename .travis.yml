@@ -1,4 +1,6 @@
 language: android
+notifications:
+  email: false
 android:
   components:
     - tools
@@ -16,3 +18,5 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
+after_success:
+    "curl --ftp-create-dirs -T TeamCode-debug.apk -u $FTP_USER:$FTP_PASSWORD ftp://sitename.com//public_html/$TRAVIS_BRANCH_TeamCode-debug.apk"
