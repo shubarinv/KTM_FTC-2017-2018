@@ -4,6 +4,7 @@ echo $2 '\n' $3 >Build.info
 echo "--------Installing ftp------"
 sudo apt-get install ftp
 echo "+++++++++ Ftp installed +++++++++++"
+echo "VARS "$1 $2 $3 $4 $5
 FILE='TeamCode-debug.apk'
 IP='vhundef.net'
 USER=$4
