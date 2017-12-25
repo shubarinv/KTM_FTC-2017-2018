@@ -21,7 +21,7 @@ cache:
 deploy:
   provider: script
   skip_cleanup: true
-  script:sh deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE $FTP_USER $FTP_PASSWORD
+  script: sh deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE $FTP_USER $FTP_PASSWORD
   on:
     tags: false
     all_branches: true
