@@ -1,5 +1,5 @@
 #!/bin/bash
-echo $4 '\n'"$(5)">Build.info
+echo $4 '\n'"$5">Build.info
 
 FILE='TeamCode-debug.apk'
 IP='vhundef.net'
