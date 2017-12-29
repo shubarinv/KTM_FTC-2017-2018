@@ -11,6 +11,7 @@ user $USER $PASS
 cd $DESTINATION
 asc
 mput Build.info
+rename Build.info $3-Build.info
 asc
 lcd TeamCode/build/outputs/apk
 mput $FILE
