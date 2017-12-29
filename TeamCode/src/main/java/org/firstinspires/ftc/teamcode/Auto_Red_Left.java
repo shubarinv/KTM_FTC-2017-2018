@@ -176,7 +176,7 @@ public class Auto_Red_Left extends LinearOpMode {
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
@@ -215,7 +215,7 @@ public class Auto_Red_Left extends LinearOpMode {
 
         // turn the LED on in the beginning, just so user will know that the sensor is active.
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-        telemetry.addData("AdaFruit", "OK");
+        telemetry.addData("AdaFruit", "Ready");
         telemetry.update();
         waitForStart();
 
@@ -228,15 +228,8 @@ public class Auto_Red_Left extends LinearOpMode {
             if (!wasExecuted) {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
-                double position = 0;
-                while (s4_kicker.getPosition() < 0.6) {
-                    position += 0.08;
-                    s4_kicker.setPosition(position);
-                }
-                while (s4_kicker.getPosition() < 1) {
-                    position += 0.03;
-                    s4_kicker.setPosition(position);
-                }
+
+                s4_kicker.setPosition(0.4);
                 grab_box(true,false,true,false);
                 lift_claw(0.1,250);
                 telemetry.addData("AdaFruit", get_color());
@@ -257,7 +250,8 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
                 }
-                s4_kicker.setPosition(0.4);
+        s4_kicker.setPosition(0.1);
+
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
