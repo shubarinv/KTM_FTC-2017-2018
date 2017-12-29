@@ -1,4 +1,5 @@
 #!/bin/bash
+echo $4 '\n' $5 '\n' $6 >Build.info
 
 FILE='TeamCode-debug.apk'
 IP='vhundef.net'
@@ -8,6 +9,8 @@ DESTINATION='public_html'
 ftp -p -d -inv $IP<< !EOF
 user $USER $PASS
 cd $DESTINATION
+asc
+mput Build.info
 asc
 lcd TeamCode/build/outputs/apk
 mput $FILE
