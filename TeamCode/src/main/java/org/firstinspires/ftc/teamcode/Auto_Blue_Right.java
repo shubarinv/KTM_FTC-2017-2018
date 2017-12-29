@@ -213,7 +213,7 @@ public class Auto_Blue_Right extends LinearOpMode {
 
         // turn the LED on in the beginning, just so user will know that the sensor is active.
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-        telemetry.addData("AdaFruit", "OK");
+        telemetry.addData("AdaFruit", "Ready");
         telemetry.update();
         waitForStart();
 
@@ -234,17 +234,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                 */
                 telemetry.addData("Step-1", "Running");
                 telemetry.update();
-                double position = 0;
-                while (s4_kicker.getPosition() < 0.4) {
-                    position += 0.08;
-                    s4_kicker.setPosition(position);
-                    sleep(50);
-                }
-                while (s4_kicker.getPosition() < 0.75) {
-                    position += 0.03;
-                    s4_kicker.setPosition(position);
-                    sleep(70);
-                }
+                s4_kicker.setPosition(0.40);
                 grab_box(true, false, true, false);
                 lift_claw(0.1, 500);
                 telemetry.addData("AdaFruit", get_color());
@@ -259,7 +249,7 @@ public class Auto_Blue_Right extends LinearOpMode {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
                 }
-                s4_kicker.setPosition(0.15);
+                s4_kicker.setPosition(0.10);
                 telemetry.addData("Step-1", "DONE");
                 telemetry.update();
                 /*
