@@ -147,17 +147,28 @@ public class Auto_Blue_Right extends LinearOpMode {
     // update previous state variable.
     bPrevState = bCurrState;
 
-    sleep(2000);
+    // convert the RGB values to HSV values.
+    telemetry.addData("Blue", sensorRGB.blue());
+    telemetry.addData("Red", sensorRGB.red());
+    telemetry.update();
+    sleep(1000);
     Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
 
     double hue = hsvValues[0];
-    if (hue > 200 && hue < 260) {
+    if (hue > 110 && hue < 290) {
       return "Blue";
-    } else if (hue < 50 || hue > 330) {
+    } else if (hue < 110 || hue > 290 && hue < 360) {
       return "Red";
     }
-    return "Error";
-  }
+    else if(sensorRGB.blue()>sensorRGB.red()){
+      return "Blue";
+    }
+    else{
+      return "Red";
+    }
+    return "ERROR hue and actual color does not match";
+}
+
 
   @Override
   public void runOpMode() {

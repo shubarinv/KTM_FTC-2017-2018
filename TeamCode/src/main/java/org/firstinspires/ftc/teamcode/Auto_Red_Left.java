@@ -148,172 +148,177 @@ public class Auto_Red_Left extends LinearOpMode {
     telemetry.addData("Blue", sensorRGB.blue());
     telemetry.addData("Red", sensorRGB.red());
     telemetry.update();
-    sleep(2000);
+    sleep(1000);
     Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
 
     double hue = hsvValues[0];
-    telemetry.addData("HUE", hue);
-    if (hue > 200 && hue < 260) {
+    if (hue > 110 && hue < 290) {
       return "Blue";
-    } else if (hue < 50 || hue > 330) {
+    } else if (hue < 110 || hue > 290 && hue < 360) {
       return "Red";
     }
-    return "Error";
-  }
-
-
-  @Override
-  public void runOpMode() {
-    /*
-    * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-    * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
-    */
-    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-    VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-    //Vuforia API key
-    parameters.vuforiaLicenseKey = "AfQcHkL/////AAAAGd5Auzk+t0CxnAw8xKONnjke+r6gFs0KfKK8LsB35FsX6bnhXZmEN+0f3blTVk7nI4xjKNob63Ps1Jpp/JS25hHc083okOZzcTsBlA5qz2hJK3LFNWyZv59kjCUyqbc3qS7dTXJ4i4/JD9t+IeyvGH9G9xPwV7DNmcuNeT7o+YDn3cI7zgUcVcrdFM8t22/wGkmiCz5TfY5A0BMETyriYX6BzlVuwGtMfXdp9CYDQ+ZhZTRNjPfvKlNyLLxVycIiM1p4nprW2UnySO11fmTkUZR9Ofqr+gbHj0VNm7gUEz77s/cHTl+swX84pxpOhm1QJeO0wuNw4c5siQpizcWHPMhJCDRFqRmTQ3LBpcMJWjTx";
-    /*
-    * We also indicate which camera on the RC that we wish to use.
-    * Here we chose the back (HiRes) camera (for greater range), but
-    * for a competition robot, the front camera might be more convenient.
-    */
-    parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-    this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-    VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-    VuforiaTrackable relicTemplate = relicTrackables.get(0);
-    relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-    /*
-    * Initialize the drive system variables.
-    * The init() method of the hardware class does all the work here
-    */
-    m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-    m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-    m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-    m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-    m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-    s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-    s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-    s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-
-
-    m1_Drive.setDirection(DcMotor.Direction.FORWARD);
-    m2_Drive.setDirection(DcMotor.Direction.FORWARD);
-    m3_Drive.setDirection(DcMotor.Direction.FORWARD);
-    m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-    /* AdaFruit */
-
-    // get a reference to our DeviceInterfaceModule object.
-    cdim = hardwareMap.deviceInterfaceModule.get("dim");
-
-    // set the digital channel to output mode.
-    // remember, the Adafruit sensor is actually two devices.
-    // It's an I2C sensor and it's also an LED that can be turned on or off.
-    cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
-
-    // get a reference to our ColorSensor object.
-    sensorRGB = hardwareMap.colorSensor.get("sensor_color");
-
-    // turn the LED on in the beginning, just so user will know that the sensor is active.
-    cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-    telemetry.addData("AdaFruit", "Ready");
-    telemetry.update();
-    waitForStart();
-
-    relicTrackables.activate();
-    while (opModeIsActive()) {
-      if (wasExecuted) {
-        telemetry.addData("Autonomous: ", "DONE");
-      }
-      RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-      if (!wasExecuted) {
-        telemetry.addData("AutoOP", "Running nominally");
-        telemetry.update();
-
-        s4_kicker.setPosition(0.8);
-        sleep(1000);
-        grab_box(true,false,true,false);
-        lift_claw(0.1,250);
-        /*
-        STEP 1 -Trying to kick jewel
-        */
-        telemetry.addData("Step-1", "Running");
-        telemetry.update();
-        String jewel_color=get_color();
-        telemetry.addData("AdaFruit", jewel_color);
-        telemetry.update();
-        if (Objects.equals(jewel_color, "Blue")) {
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
-          set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
-        } else if (Objects.equals(jewel_color, "Red")) {
-          set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
-        } else {
-          telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-          telemetry.addData("Step-1", "FAILED");
-          telemetry.update();
-        }
-        s4_kicker.setPosition(0.1);
-        sleep(500);
-
-
-        /*
-        STEP 2 -Cryptobox related
-        */
-        if (vuMark == RelicRecoveryVuMark.RIGHT) {
-          telemetry.addData("Vumark", " RIGHT");
-          telemetry.update();
-          grab_box(true, false, false, true);
-          sleep(100);
-          lift_claw(0.3, 1250);
-          sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение назад
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
-          lift_claw(-0.3, 1250);
-          sleep(100);
-          grab_box(false, true, false, false);
-          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
-          sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-
-          wasExecuted = true;
-        } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-          telemetry.addData("Vumark", " CENTER");
-          telemetry.update();
-
-          grab_box(true, false, false, true);
-          sleep(500);
-          lift_claw(0.3, 1250);
-          sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2750);//движение назад
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
-          lift_claw(-0.3, 1250);
-          sleep(100);
-          grab_box(false, true, false, false);
-          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
-          sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-
-          wasExecuted = true;
-        } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-          telemetry.addData("Vumark", " LEFT");
-          telemetry.update();
-          grab_box(true, false, false, true);
-          sleep(500);
-          lift_claw(0.3, 1250);
-          sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 3400);//движение назад
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1250);//поворот по часовой на 90 градусов
-          lift_claw(-0.3, 1250);
-          sleep(100);
-          grab_box(false, true, false, false);
-          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
-          sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-        }
-        wasExecuted = true;
-      }
-      telemetry.update();
+    else if(sensorRGB.blue()>sensorRGB.red()){
+      return "Blue";
     }
+    else{
+      return "Red";
+    }
+    return "ERROR hue and actual color does not match";
+}
+
+
+@Override
+public void runOpMode() {
+  /*
+  * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
+  * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
+  */
+  int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+  VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+  //Vuforia API key
+  parameters.vuforiaLicenseKey = "AfQcHkL/////AAAAGd5Auzk+t0CxnAw8xKONnjke+r6gFs0KfKK8LsB35FsX6bnhXZmEN+0f3blTVk7nI4xjKNob63Ps1Jpp/JS25hHc083okOZzcTsBlA5qz2hJK3LFNWyZv59kjCUyqbc3qS7dTXJ4i4/JD9t+IeyvGH9G9xPwV7DNmcuNeT7o+YDn3cI7zgUcVcrdFM8t22/wGkmiCz5TfY5A0BMETyriYX6BzlVuwGtMfXdp9CYDQ+ZhZTRNjPfvKlNyLLxVycIiM1p4nprW2UnySO11fmTkUZR9Ofqr+gbHj0VNm7gUEz77s/cHTl+swX84pxpOhm1QJeO0wuNw4c5siQpizcWHPMhJCDRFqRmTQ3LBpcMJWjTx";
+  /*
+  * We also indicate which camera on the RC that we wish to use.
+  * Here we chose the back (HiRes) camera (for greater range), but
+  * for a competition robot, the front camera might be more convenient.
+  */
+  parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+  this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+  VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+  VuforiaTrackable relicTemplate = relicTrackables.get(0);
+  relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+  /*
+  * Initialize the drive system variables.
+  * The init() method of the hardware class does all the work here
+  */
+  m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+  m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+  m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+  m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+  m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+  s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+  s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+  s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+
+
+  m1_Drive.setDirection(DcMotor.Direction.FORWARD);
+  m2_Drive.setDirection(DcMotor.Direction.FORWARD);
+  m3_Drive.setDirection(DcMotor.Direction.FORWARD);
+  m4_Drive.setDirection(DcMotor.Direction.FORWARD);
+  /* AdaFruit */
+
+  // get a reference to our DeviceInterfaceModule object.
+  cdim = hardwareMap.deviceInterfaceModule.get("dim");
+
+  // set the digital channel to output mode.
+  // remember, the Adafruit sensor is actually two devices.
+  // It's an I2C sensor and it's also an LED that can be turned on or off.
+  cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
+
+  // get a reference to our ColorSensor object.
+  sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+
+  // turn the LED on in the beginning, just so user will know that the sensor is active.
+  cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+  telemetry.addData("AdaFruit", "Ready");
+  telemetry.update();
+  waitForStart();
+
+  relicTrackables.activate();
+  while (opModeIsActive()) {
+    if (wasExecuted) {
+      telemetry.addData("Autonomous: ", "DONE");
+    }
+    RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+    if (!wasExecuted) {
+      telemetry.addData("AutoOP", "Running nominally");
+      telemetry.update();
+
+      s4_kicker.setPosition(0.8);
+      sleep(1000);
+      grab_box(true,false,true,false);
+      lift_claw(0.1,250);
+      /*
+      STEP 1 -Trying to kick jewel
+      */
+      telemetry.addData("Step-1", "Running");
+      telemetry.update();
+      String jewel_color=get_color();
+      telemetry.addData("AdaFruit", jewel_color);
+      telemetry.update();
+      if (Objects.equals(jewel_color, "Blue")) {
+        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+        set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+      } else if (Objects.equals(jewel_color, "Red")) {
+        set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+      } else {
+        telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+        telemetry.addData("Step-1", "FAILED");
+        telemetry.update();
+      }
+      s4_kicker.setPosition(0.1);
+      sleep(500);
+
+
+      /*
+      STEP 2 -Cryptobox related
+      */
+      if (vuMark == RelicRecoveryVuMark.RIGHT) {
+        telemetry.addData("Vumark", " RIGHT");
+        telemetry.update();
+        grab_box(true, false, false, true);
+        sleep(100);
+        lift_claw(0.3, 1250);
+        sleep(100);
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение назад
+        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
+        lift_claw(-0.3, 1250);
+        sleep(100);
+        grab_box(false, true, false, false);
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
+        sleep(100);
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+
+        wasExecuted = true;
+      } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+        telemetry.addData("Vumark", " CENTER");
+        telemetry.update();
+
+        grab_box(true, false, false, true);
+        sleep(500);
+        lift_claw(0.3, 1250);
+        sleep(100);
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2750);//движение назад
+        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
+        lift_claw(-0.3, 1250);
+        sleep(100);
+        grab_box(false, true, false, false);
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
+        sleep(100);
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+
+        wasExecuted = true;
+      } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+        telemetry.addData("Vumark", " LEFT");
+        telemetry.update();
+        grab_box(true, false, false, true);
+        sleep(500);
+        lift_claw(0.3, 1250);
+        sleep(100);
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 3400);//движение назад
+        set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1250);//поворот по часовой на 90 градусов
+        lift_claw(-0.3, 1250);
+        sleep(100);
+        grab_box(false, true, false, false);
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
+        sleep(100);
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+      }
+      wasExecuted = true;
+    }
+    telemetry.update();
   }
+}
 }
