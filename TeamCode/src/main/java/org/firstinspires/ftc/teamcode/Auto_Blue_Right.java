@@ -166,7 +166,6 @@ public class Auto_Blue_Right extends LinearOpMode {
     else{
       return "Red";
     }
-    return "ERROR hue and actual color does not match";
 }
 
 
