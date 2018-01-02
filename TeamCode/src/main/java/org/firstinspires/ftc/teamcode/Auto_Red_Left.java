@@ -231,6 +231,7 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.update();
 
         s4_kicker.setPosition(0.8);
+        sleep(1000)
         grab_box(true,false,true,false);
         lift_claw(0.1,250);
         /*
@@ -240,6 +241,7 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.update();
         String jewel_color=get_color();
         telemetry.addData("AdaFruit", jewel_color);
+        telemetry.update();
         if (Objects.equals(jewel_color, "Blue")) {
           set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
           set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
@@ -249,11 +251,11 @@ public class Auto_Red_Left extends LinearOpMode {
         } else {
           telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
           telemetry.addData("Step-1", "FAILED");
+          telemetry.update();
         }
         s4_kicker.setPosition(0.1);
-        telemetry.addData("Step-1", "DONE");
-        telemetry.update();
-        sleep(300);
+
+
         /*
         STEP 2 -Cryptobox related
         */
