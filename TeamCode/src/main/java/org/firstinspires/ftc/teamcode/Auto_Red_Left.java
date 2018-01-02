@@ -230,7 +230,7 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.addData("AutoOP", "Running nominally");
                 telemetry.update();
 
-                s4_kicker.setPosition(0.4);
+                s4_kicker.setPosition(0.8);
                 grab_box(true,false,true,false);
                 lift_claw(0.1,250);
                 telemetry.addData("AdaFruit", get_color());
