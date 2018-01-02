@@ -254,6 +254,7 @@ public class Auto_Red_Left extends LinearOpMode {
           telemetry.update();
         }
         s4_kicker.setPosition(0.1);
+        sleep(500)
 
 
         /*

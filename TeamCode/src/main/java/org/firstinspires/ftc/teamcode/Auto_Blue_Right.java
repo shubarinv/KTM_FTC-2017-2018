@@ -254,6 +254,7 @@ public class Auto_Blue_Right extends LinearOpMode {
           telemetry.update();
         }
         s4_kicker.setPosition(0.1);
+        sleep(500)
 
         /*
         STEP 2 -Cryptobox related
