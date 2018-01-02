@@ -144,10 +144,9 @@ public class Auto_Red_Left extends LinearOpMode {
     // update previous state variable.
     bPrevState = bCurrState;
 
-
-    double[] hue_arr = new double;
-    double[] blue = new double;
-    double[] red = new double;
+    double[] hue_arr;
+    double[] blue;
+    double[] red;
     //для точности 4 измерения
     for(int j = 0;j<4;j++){
       // convert the RGB values to HSV values.
@@ -156,8 +155,8 @@ public class Auto_Red_Left extends LinearOpMode {
       telemetry.update();
       sleep(500);
       Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-      red[j]=sensorRGB.red() * 255 / 800
-      blue[j]=sensorRGB.blue() * 255 / 800
+      red[j]=sensorRGB.red() * 255 / 800;
+      blue[j]=sensorRGB.blue() * 255 / 800;
       double hue = hsvValues[0];
       hue_arr[j]=hue;
     }
