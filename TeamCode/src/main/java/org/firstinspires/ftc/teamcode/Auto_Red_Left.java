@@ -231,7 +231,7 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.update();
 
         s4_kicker.setPosition(0.8);
-        sleep(1000)
+        sleep(1000);
         grab_box(true,false,true,false);
         lift_claw(0.1,250);
         /*
@@ -254,7 +254,7 @@ public class Auto_Red_Left extends LinearOpMode {
           telemetry.update();
         }
         s4_kicker.setPosition(0.1);
-        sleep(500)
+        sleep(500);
 
 
         /*
