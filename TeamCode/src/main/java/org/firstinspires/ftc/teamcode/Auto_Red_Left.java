@@ -161,9 +161,9 @@ public class Auto_Red_Left extends LinearOpMode {
       hue_arr[j]=hue;
     }
     //Находим среднее арифметическое
-    double red_sr;
-    double blue_sr;
-    double hue_sr;
+    double red_sr = 0;
+    double blue_sr = 0;
+    double hue_sr = 0;
     for(int j = 0;j<4;j++){
       red_sr=red_sr+red[j];
       blue_sr=blue_sr+blue[j];
