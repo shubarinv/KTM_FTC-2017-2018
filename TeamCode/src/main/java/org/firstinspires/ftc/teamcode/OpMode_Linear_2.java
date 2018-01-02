@@ -55,9 +55,9 @@ public class OpMode_Linear_2 extends LinearOpMode {
             s1_top_Claw.setPower(1);
         } else if (top_release) {
             s1_top_Claw.setDirection(CRServo.Direction.REVERSE);
-            s1_top_Claw.setPower(0);
+            s1_top_Claw.setPower(-1);
         } else {
-            s1_top_Claw.setPower(0.5);
+            s1_top_Claw.setPower(0);
         }
         if (bottom_clamp) {
             s2_bottom_Claw.setDirection(CRServo.Direction.FORWARD);
@@ -66,7 +66,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
             s2_bottom_Claw.setPower(0);
         } else {
-            s2_bottom_Claw.setPower(0.5);
+            s2_bottom_Claw.setPower(-1);
         }
     }
 
