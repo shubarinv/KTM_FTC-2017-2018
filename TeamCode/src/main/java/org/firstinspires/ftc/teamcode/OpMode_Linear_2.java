@@ -64,9 +64,9 @@ public class OpMode_Linear_2 extends LinearOpMode {
             s2_bottom_Claw.setPower(1);
         } else if (bottom_release) {
             s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
-            s2_bottom_Claw.setPower(0);
-        } else {
             s2_bottom_Claw.setPower(-1);
+        } else {
+            s2_bottom_Claw.setPower(0);
         }
     }
 
