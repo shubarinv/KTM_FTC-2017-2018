@@ -148,9 +148,9 @@ public class Auto_Blue_Right extends LinearOpMode {
     bPrevState = bCurrState;
 
 
-    double[] hue_arr;
-    double[] blue;
-    double[] red;
+    double[] hue_arr= new double[5];;
+    double[] blue= new double[5];;
+    double[] red= new double[5];;
     //для точности 4 измерения
     for(int j = 0;j<4;j++){
       // convert the RGB values to HSV values.
