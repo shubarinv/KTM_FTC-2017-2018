@@ -147,26 +147,48 @@ public class Auto_Blue_Right extends LinearOpMode {
     // update previous state variable.
     bPrevState = bCurrState;
 
-    // convert the RGB values to HSV values.
-    telemetry.addData("Blue", sensorRGB.blue());
-    telemetry.addData("Red", sensorRGB.red());
-    telemetry.update();
-    sleep(1000);
-    Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
 
-    double hue = hsvValues[0];
-    if (hue > 110 && hue < 290) {
+    double[] hue_arr = new double;
+    double[] blue = new double;
+    double[] red = new double;
+    //для точности 4 измерения
+    for(int j = 0;j<4;j++){
+      // convert the RGB values to HSV values.
+      telemetry.addData("Blue", sensorRGB.blue());
+      telemetry.addData("Red", sensorRGB.red());
+      telemetry.update();
+      sleep(500);
+      Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+      red[j]=sensorRGB.red() * 255 / 800
+      blue[j]=sensorRGB.blue() * 255 / 800
+      double hue = hsvValues[0];
+      hue_arr[j]=hue;
+    }
+    //Находим среднее арифметическое
+    double red_sr;
+    double blue_sr;
+    double hue_sr;
+    for(int j = 0;j<4;j++){
+      red_sr=red_sr+red[j];
+      blue_sr=blue_sr+blue[j];
+      hue_sr=hue_sr+hue_arr[j];
+    }
+    red_sr=red_sr/4;
+    blue_sr=blue_sr/4;
+    hue_sr=hue_sr/4;
+    //
+    if (hue_sr > 110 && hue_sr < 290) {
       return "Blue";
-    } else if (hue < 110 || hue > 290 && hue < 360) {
+    } else if (hue_sr < 110 || hue_sr > 290 && hue_sr < 360) {
       return "Red";
     }
-    else if(sensorRGB.blue()>sensorRGB.red()){
+    else if(blue_sr>red_sr){
       return "Blue";
     }
     else{
       return "Red";
     }
-}
+  }
 
 
   @Override
@@ -246,7 +268,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         telemetry.addData("Step-1", "Running");
         telemetry.update();
         s4_kicker.setPosition(0.8);
-        sleep(1000);
+        sleep(4000);
         grab_box(true, false, true, false);
         lift_claw(0.1, 500);
         String jewel_color=get_color();
