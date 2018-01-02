@@ -83,8 +83,8 @@ public class Auto_Blue_Right extends LinearOpMode {
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     private DcMotor m5_Lift = null;
-    private Servo s1_top_Claw = null;
-    private Servo s2_bottom_Claw = null;
+    private CRServo s1_top_Claw = null;
+    private CRServo s2_bottom_Claw = null;
     private Servo s4_kicker = null;
 
     /*
@@ -190,8 +190,8 @@ public class Auto_Blue_Right extends LinearOpMode {
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
-        s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
+        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+        s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
