@@ -54,7 +54,21 @@ import java.util.Objects;
 //@Disabled
 public class Auto_Red_Left extends LinearOpMode {
 
-
+  /* ADAFRUIT */
+  // we assume that the LED pin of the RGB sensor is connected to
+  // digital port 5 (zero indexed).
+  private static final int LED_CHANNEL = 5;
+  ColorSensor sensorRGB;
+  DeviceInterfaceModule cdim;
+  // hsvValues is an array that will hold the hue, saturation, and value information.
+  float hsvValues[] = {0F, 0F, 0F};
+  // values is a reference to the hsvValues array.
+  final float values[] = hsvValues;
+  // bPrevState and bCurrState represent the previous and current state of the button.
+  boolean bPrevState = false;
+  boolean bCurrState = false;
+  // bLedOn represents the state of the LED.
+  boolean bLedOn = true;
   /**
   * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
   * localization engine.
@@ -116,6 +130,63 @@ public class Auto_Red_Left extends LinearOpMode {
     m4_Drive.setPower(0);
   }
 
+  String get_color() {
+    // check the status of the x button on gamepad.
+    bCurrState = true;
+
+    // check for button-press state transitions.
+    if (bCurrState != bPrevState) {
+
+      // button is transitioning to a pressed state. Toggle the LED.
+      cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+    }
+
+    // update previous state variable.
+    bPrevState = bCurrState;
+
+    double[] hue_arr= new double[5];
+    double[] blue= new double[5];
+    double[] red= new double[5];;
+    //для точности 4 измерения
+    for(int j = 0;j<4;j++){
+      // convert the RGB values to HSV values.
+      telemetry.addData("Blue", sensorRGB.blue());
+      telemetry.addData("Red", sensorRGB.red());
+      telemetry.update();
+      sleep(500);
+      Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+      red[j]=sensorRGB.red() * 255 / 800;
+      blue[j]=sensorRGB.blue() * 255 / 800;
+      double hue = hsvValues[0];
+      hue_arr[j]=hue;
+    }
+    //Находим среднее арифметическое
+    double red_sr = 0;
+    double blue_sr = 0;
+    double hue_sr = 0;
+    for(int j = 0;j<4;j++){
+      red_sr=red_sr+red[j];
+      blue_sr=blue_sr+blue[j];
+      hue_sr=hue_sr+hue_arr[j];
+    }
+    red_sr=red_sr/4;
+    blue_sr=blue_sr/4;
+    hue_sr=hue_sr/4;
+    //
+    if (hue_sr > 110 && hue_sr < 290) {
+      return "Blue";
+    } else if (hue_sr < 110 || hue_sr > 290 && hue_sr < 360) {
+      return "Red";
+    }
+    else if(blue_sr>red_sr){
+      return "Blue";
+    }
+    else{
+      return "Red";
+    }
+  }
+
+
   @Override
   public void runOpMode() {
     /*
@@ -155,7 +226,23 @@ public class Auto_Red_Left extends LinearOpMode {
     m2_Drive.setDirection(DcMotor.Direction.FORWARD);
     m3_Drive.setDirection(DcMotor.Direction.FORWARD);
     m4_Drive.setDirection(DcMotor.Direction.FORWARD);
+    /* AdaFruit */
 
+    // get a reference to our DeviceInterfaceModule object.
+    cdim = hardwareMap.deviceInterfaceModule.get("dim");
+
+    // set the digital channel to output mode.
+    // remember, the Adafruit sensor is actually two devices.
+    // It's an I2C sensor and it's also an LED that can be turned on or off.
+    cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
+
+    // get a reference to our ColorSensor object.
+    sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+
+    // turn the LED on in the beginning, just so user will know that the sensor is active.
+    cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+    telemetry.addData("AdaFruit", "Ready");
+    telemetry.update();
     waitForStart();
 
     relicTrackables.activate();
@@ -177,7 +264,7 @@ public class Auto_Red_Left extends LinearOpMode {
         */
         telemetry.addData("Step-1", "Running");
         telemetry.update();
-        String jewel_color=Utils.get_color();
+        String jewel_color=get_color();
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
         if (Objects.equals(jewel_color, "Blue")) {
