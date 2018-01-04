@@ -231,23 +231,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     m2_Drive.setDirection(DcMotor.Direction.FORWARD);
     m3_Drive.setDirection(DcMotor.Direction.FORWARD);
     m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-    /* AdaFruit */
 
-    // get a reference to our DeviceInterfaceModule object.
-    cdim = hardwareMap.deviceInterfaceModule.get("dim");
-
-    // set the digital channel to output mode.
-    // remember, the Adafruit sensor is actually two devices.
-    // It's an I2C sensor and it's also an LED that can be turned on or off.
-    cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
-
-    // get a reference to our ColorSensor object.
-    sensorRGB = hardwareMap.colorSensor.get("sensor_color");
-
-    // turn the LED on in the beginning, just so user will know that the sensor is active.
-    cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-    telemetry.addData("AdaFruit", "Ready");
-    telemetry.update();
     waitForStart();
 
     relicTrackables.activate();
@@ -271,7 +255,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         sleep(4000);
         grab_box(true, false, true, false);
         lift_claw(0.1, 500);
-        String jewel_color=get_color();
+        String jewel_color=Utils.get_color();
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
         if (Objects.equals(jewel_color, "Blue")) {
