@@ -49,12 +49,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
   */
 
   // Grab box
-  void grab_box(float claw_clamp_top, float claw_clamp_bottom) {
+  void grab_box(float claw_clamp_top, float claw_clamp_bottom ,boolean claw_release_top, boolean claw_release_bottom) {
     s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
     s2_bottom_Claw.setDirection(CRServo.Direction.FORWARD);
     //Clamp
-    s1_top_Claw.setPower(claw_clamp_top);
-    s2_bottom_Claw.setPower(claw_clamp_bottom);
+    s1_top_Claw.setPower(claw_release_top);
+    s2_bottom_Claw.setPower(claw_release_bottom);
     //Release
     if (claw_release_bottom && claw_release_top){
       s1_top_Claw.setPower(-1);
@@ -214,7 +214,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       */
 
       // Grab box
-      grab_box(claw_clamp_top ,claw_clamp_bottom);
+      grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
 
 
       if (gamepad2.y == true) {
