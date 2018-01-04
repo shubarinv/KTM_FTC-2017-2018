@@ -55,10 +55,7 @@ import java.util.Objects;
 @Autonomous(name = "Blue_RIGHT", group = "WIP")
 //@Disabled
 public class Auto_Blue_Right extends LinearOpMode {
-  /* ADAFRUIT */
-  // we assume that the LED pin of the RGB sensor is connected to
-  // digital port 5 (zero indexed).
-  static final int LED_CHANNEL = 5;
+
   OpenGLMatrix lastLocation = null;
   /**
   * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -66,17 +63,7 @@ public class Auto_Blue_Right extends LinearOpMode {
   */
   VuforiaLocalizer vuforia;
   boolean wasExecuted = false;
-  ColorSensor sensorRGB;
-  DeviceInterfaceModule cdim;
-  // hsvValues is an array that will hold the hue, saturation, and value information.
-  float hsvValues[] = {0F, 0F, 0F};
-  // values is a reference to the hsvValues array.
-  final float values[] = hsvValues;
-  // bPrevState and bCurrState represent the previous and current state of the button.
-  boolean bPrevState = false;
-  boolean bCurrState = false;
-  // bLedOn represents the state of the LED.
-  boolean bLedOn = true;
+
   /* Declare OpMode members. */
   private ElapsedTime runtime = new ElapsedTime();
   private DcMotor m1_Drive = null;
@@ -131,63 +118,6 @@ public class Auto_Blue_Right extends LinearOpMode {
     m2_Drive.setPower(0);
     m3_Drive.setPower(0);
     m4_Drive.setPower(0);
-  }
-
-  String get_color() {
-    // check the status of the x button on gamepad.
-    bCurrState = true;
-
-    // check for button-press state transitions.
-    if (bCurrState != bPrevState) {
-
-      // button is transitioning to a pressed state. Toggle the LED.
-      cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-    }
-
-    // update previous state variable.
-    bPrevState = bCurrState;
-
-
-    double[] hue_arr= new double[5];;
-    double[] blue= new double[5];;
-    double[] red= new double[5];;
-    //для точности 4 измерения
-    for(int j = 0;j<4;j++){
-      // convert the RGB values to HSV values.
-      telemetry.addData("Blue", sensorRGB.blue());
-      telemetry.addData("Red", sensorRGB.red());
-      telemetry.update();
-      sleep(500);
-      Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-      red[j]=sensorRGB.red() * 255 / 800;
-      blue[j]=sensorRGB.blue() * 255 / 800;
-      double hue = hsvValues[0];
-      hue_arr[j]=hue;
-    }
-    //Находим среднее арифметическое
-    double red_sr = 0;
-    double blue_sr = 0;
-    double hue_sr = 0;
-    for(int j = 0;j<4;j++){
-      red_sr=red_sr+red[j];
-      blue_sr=blue_sr+blue[j];
-      hue_sr=hue_sr+hue_arr[j];
-    }
-    red_sr=red_sr/4;
-    blue_sr=blue_sr/4;
-    hue_sr=hue_sr/4;
-    //
-    if (hue_sr > 110 && hue_sr < 290) {
-      return "Blue";
-    } else if (hue_sr < 110 || hue_sr > 290 && hue_sr < 360) {
-      return "Red";
-    }
-    else if(blue_sr>red_sr){
-      return "Blue";
-    }
-    else{
-      return "Red";
-    }
   }
 
 

@@ -21,11 +21,20 @@ public class Utils {
      * @param sensorRGB
      * @return
      */
-    static float level(ColorSensor sensorRGB) {
-        return sensorRGB.red() + sensorRGB.blue() + sensorRGB.green();
-    }
     static String get_color(){
       /* AdaFruit */
+      ColorSensor sensorRGB;
+      DeviceInterfaceModule cdim;
+      // hsvValues is an array that will hold the hue, saturation, and value information.
+      float hsvValues[] = {0F, 0F, 0F};
+      // values is a reference to the hsvValues array.
+      final float values[] = hsvValues;
+      // bPrevState and bCurrState represent the previous and current state of the button.
+      boolean bPrevState = false;
+      boolean bCurrState = false;
+      // bLedOn represents the state of the LED.
+      boolean bLedOn = true;
+
 
       // get a reference to our DeviceInterfaceModule object.
       cdim = hardwareMap.deviceInterfaceModule.get("dim");
@@ -41,7 +50,7 @@ public class Utils {
       // turn the LED on in the beginning, just so user will know that the sensor is active.
       cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
       telemetry.addData("AdaFruit", "Ready");
-      
+
       // check the status of the x button on gamepad.
       bCurrState = true;
 

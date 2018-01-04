@@ -54,21 +54,7 @@ import java.util.Objects;
 //@Disabled
 public class Auto_Red_Left extends LinearOpMode {
 
-  /* ADAFRUIT */
-  // we assume that the LED pin of the RGB sensor is connected to
-  // digital port 5 (zero indexed).
-  private static final int LED_CHANNEL = 5;
-  ColorSensor sensorRGB;
-  DeviceInterfaceModule cdim;
-  // hsvValues is an array that will hold the hue, saturation, and value information.
-  float hsvValues[] = {0F, 0F, 0F};
-  // values is a reference to the hsvValues array.
-  final float values[] = hsvValues;
-  // bPrevState and bCurrState represent the previous and current state of the button.
-  boolean bPrevState = false;
-  boolean bCurrState = false;
-  // bLedOn represents the state of the LED.
-  boolean bLedOn = true;
+
   /**
   * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
   * localization engine.
@@ -191,7 +177,7 @@ public class Auto_Red_Left extends LinearOpMode {
         */
         telemetry.addData("Step-1", "Running");
         telemetry.update();
-        String jewel_color=get_color();
+        String jewel_color=Utils.get_color();
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
         if (Objects.equals(jewel_color, "Blue")) {
