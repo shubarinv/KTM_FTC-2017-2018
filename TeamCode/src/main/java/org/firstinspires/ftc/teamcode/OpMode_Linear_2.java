@@ -53,8 +53,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
     s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
     s2_bottom_Claw.setDirection(CRServo.Direction.FORWARD);
     //Clamp
-    s1_top_Claw.setPower(claw_release_top);
-    s2_bottom_Claw.setPower(claw_release_bottom);
+    s1_top_Claw.setPower(claw_clamp_top);
+    s2_bottom_Claw.setPower(claw_clamp_bottom);
     //Release
     if (claw_release_bottom && claw_release_top){
       s1_top_Claw.setPower(-1);
