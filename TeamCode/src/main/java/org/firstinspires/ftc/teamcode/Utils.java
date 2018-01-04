@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import java.util.Objects;
-
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 /**
  * Created by vhundef on 01.01.2018.
  */
