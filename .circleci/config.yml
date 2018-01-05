@@ -24,4 +24,4 @@ jobs:
           destination: apk
       - run:
           name: Deploy
-          command: sh ./deploy.sh $CIRCLE_BRANCH $CIRCLE_COMPARE_URL $CIRCLE_BUILD_NUM
+          command: sh ./deploy.sh $ftplogin $ftppass $CIRCLE_BRANCH $CIRCLE_COMPARE_URL $CIRCLE_BUILD_NUM
