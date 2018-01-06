@@ -68,7 +68,7 @@ public class Auto_Red_Left extends LinearOpMode {
   boolean bPrevState = false;
   boolean bCurrState = false;
   // bLedOn represents the state of the LED.
-  boolean bLedOn = true;
+  boolean bLedOn = false;
   /**
   * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
   * localization engine.
@@ -135,11 +135,9 @@ public class Auto_Red_Left extends LinearOpMode {
     bCurrState = true;
 
     // check for button-press state transitions.
-    if (bCurrState != bPrevState) {
 
       // button is transitioning to a pressed state. Toggle the LED.
       cdim.setDigitalChannelState(LED_CHANNEL, true);
-    }
 
     // update previous state variable.
     bPrevState = bCurrState;
@@ -160,7 +158,7 @@ public class Auto_Red_Left extends LinearOpMode {
       double hue = hsvValues[0];
       hue_arr[j]=hue;
     }
-    cdim.setDigitalChannelState(LED_CHANNEL, false);
+    
     //Находим среднее арифметическое
     double red_sr = 0;
     double blue_sr = 0;
@@ -282,6 +280,7 @@ public class Auto_Red_Left extends LinearOpMode {
           telemetry.update();
         }
         s4_kicker.setPosition(0.1);
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
         sleep(500);
 
 
