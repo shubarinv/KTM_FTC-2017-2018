@@ -138,7 +138,7 @@ public class Auto_Red_Left extends LinearOpMode {
     if (bCurrState != bPrevState) {
 
       // button is transitioning to a pressed state. Toggle the LED.
-      cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+      cdim.setDigitalChannelState(LED_CHANNEL, true);
     }
 
     // update previous state variable.
@@ -184,6 +184,8 @@ public class Auto_Red_Left extends LinearOpMode {
     else{
       return "Red";
     }
+    cdim.setDigitalChannelState(LED_CHANNEL, false);
+
   }
 
 
