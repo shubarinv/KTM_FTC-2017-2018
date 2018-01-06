@@ -3,9 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
-
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import java.util.Objects;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 /**
- * Created by dimich on 18.03.2017.
+ * Created by vhundef on 01.01.2018.
  */
 public class Utils {
     static float[] tmpHsv= {0F, 0F, 0F};
@@ -21,7 +26,4 @@ public class Utils {
      * @param sensorRGB
      * @return
      */
-    static float level(ColorSensor sensorRGB) {
-        return sensorRGB.red() + sensorRGB.blue() + sensorRGB.green();
-    }
-}
+   }
