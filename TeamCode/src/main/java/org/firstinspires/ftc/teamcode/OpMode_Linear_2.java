@@ -160,10 +160,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double drive_L = gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
-      float claw_clamp_top = gamepad2.left_trigger;
-      float claw_clamp_bottom = gamepad2.right_trigger;
-      boolean claw_release_top = gamepad2.left_bumper;
-      boolean claw_release_bottom = gamepad2.right_bumper;
+      float claw_clamp_top = gamepad2.left_bumper;
+      float claw_clamp_bottom = gamepad2.right_bumper;
+      boolean claw_release_top = gamepad2.left_trigger; 
+      boolean claw_release_bottom = gamepad2.right_trigger;
       boolean claw_rotation_l = gamepad2.dpad_left;
       boolean claw_rotation_r = gamepad2.dpad_right;
       //Slide Related
