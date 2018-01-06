@@ -256,7 +256,7 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.addData("AutoOP", "Running nominally");
         telemetry.update();
 
-        s4_kicker.setPosition(0.6);
+        s4_kicker.setPosition(0.7);
         sleep(4000);
         grab_box(true,false,true,false);
         lift_claw(0.1,250);
