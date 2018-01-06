@@ -35,5 +35,11 @@ workflows:
     jobs:
       - "Setup"
       - "DepInstall"
+        requires:
+            - "Setup"
       - "Build"
+        requires:
+            - "DepInstall"
       - "Deploy"
+        requires:
+            - "Build"
