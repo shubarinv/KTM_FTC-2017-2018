@@ -160,10 +160,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double drive_L = gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
-      float claw_clamp_top = gamepad2.left_bumper;
-      float claw_clamp_bottom = gamepad2.right_bumper;
-      boolean claw_release_top = gamepad2.left_trigger; 
-      boolean claw_release_bottom = gamepad2.right_trigger;
+      float claw_clamp_top = gamepad2.left_trigger;
+      float claw_clamp_bottom = gamepad2.right_trigger;
+      boolean claw_release_top = gamepad2.left_bumper;
+      boolean claw_release_bottom = gamepad2.right_bumper;
       boolean claw_rotation_l = gamepad2.dpad_left;
       boolean claw_rotation_r = gamepad2.dpad_right;
       //Slide Related
@@ -210,8 +210,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       // Grab box
      // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
-      s1_top_Claw.setDirection(CRServo.Direction.REVERSE);
-    s2_bottom_Claw.setDirection(CRServo.Direction.FORWARD);
+      s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
+      s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
     //Release
     
     if (claw_release_top) {
