@@ -343,6 +343,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
+        telemetry.addData("Step-1", "Running");
         if (vuMark == RelicRecoveryVuMark.RIGHT) {
           telemetry.addData("Vumark", " RIGHT");
           telemetry.update();
@@ -359,7 +360,7 @@ public class Auto_Blue_Right extends LinearOpMode {
           sleep(100);
           set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
-          wasExecuted = true;
+
         } else if (vuMark == RelicRecoveryVuMark.CENTER) {
           telemetry.addData("Vumark", " CENTER");
           telemetry.update();
@@ -377,7 +378,7 @@ public class Auto_Blue_Right extends LinearOpMode {
           sleep(100);
           set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
-          wasExecuted = true;
+
         } else if (vuMark == RelicRecoveryVuMark.LEFT) {
           telemetry.addData("Vumark", " LEFT");
           telemetry.update();
@@ -394,7 +395,7 @@ public class Auto_Blue_Right extends LinearOpMode {
           sleep(100);
           set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
-          wasExecuted = true;
+
         } else {
           telemetry.addData("Vumark", " NOT VISIBLE");
           telemetry.update();
@@ -411,7 +412,7 @@ public class Auto_Blue_Right extends LinearOpMode {
           sleep(100);
           set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
-          wasExecuted = true;
+
         }
         wasExecuted = true;
       }

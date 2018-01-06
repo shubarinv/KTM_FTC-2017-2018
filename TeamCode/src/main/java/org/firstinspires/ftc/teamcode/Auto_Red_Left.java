@@ -339,6 +339,8 @@ public class Auto_Red_Left extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
+
+        telemetry.addData("Step-2", "Running");
         if (vuMark == RelicRecoveryVuMark.RIGHT) {
           telemetry.addData("Vumark", " RIGHT");
           telemetry.update();
@@ -355,7 +357,6 @@ public class Auto_Red_Left extends LinearOpMode {
           sleep(100);
           set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
-          wasExecuted = true;
         } else if (vuMark == RelicRecoveryVuMark.CENTER) {
           telemetry.addData("Vumark", " CENTER");
           telemetry.update();
@@ -373,9 +374,25 @@ public class Auto_Red_Left extends LinearOpMode {
           sleep(100);
           set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
-          wasExecuted = true;
+
         } else if (vuMark == RelicRecoveryVuMark.LEFT) {
           telemetry.addData("Vumark", " LEFT");
+          telemetry.update();
+          grab_box(true, false, false, true);
+          sleep(500);
+          lift_claw(0.3, 1250);
+          sleep(100);
+          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 3400);//движение назад
+          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1250);//поворот по часовой на 90 градусов
+          lift_claw(-0.3, 1250);
+          sleep(100);
+          grab_box(false, true, false, false);
+          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
+          sleep(100);
+          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+        }
+        else{
+          telemetry.addData("Vumark", " NOT VISIBLE (X)");
           telemetry.update();
           grab_box(true, false, false, true);
           sleep(500);
