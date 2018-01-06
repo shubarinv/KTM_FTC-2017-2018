@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  "Setup":
+  Setup:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-23-alpha
@@ -13,18 +13,18 @@ jobs:
       - checkout:
           post:  
              - cp -r licenses/. $ANDROID_HOME/licenses
-  "DepInstall":       
+  DepInstall:       
     - run:
        name: Download Dependencies
        command: ./gradlew androidDependencies
-  "Build":
+  Build:
     - run:
        name: Build assembleDebug
        command: ./gradlew assembleDebug
     - store_artifacts:
        path: TeamCode/build/outputs/apk
        destination: apk
-  "Deploy":
+  Deploy:
     - run:
        name: Deploy
        command: sh ./deploy.sh $ftplogin $ftppass $CIRCLE_BRANCH $CIRCLE_COMPARE_URL $CIRCLE_BUILD_NUM
@@ -33,13 +33,13 @@ workflows:
   version: 2
   build:
     jobs:
-      - "Setup"
-      - "DepInstall"
+      - Setup
+      - DepInstall
         requires:
-            - "Setup"
-      - "Build"
+            - Setup
+      - Build
         requires:
-            - "DepInstall"
-      - "Deploy"
+            - DepInstall
+      - Deploy
         requires:
-            - "Build"
+            - Build
