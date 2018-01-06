@@ -160,6 +160,7 @@ public class Auto_Red_Left extends LinearOpMode {
       double hue = hsvValues[0];
       hue_arr[j]=hue;
     }
+    cdim.setDigitalChannelState(LED_CHANNEL, false);
     //Находим среднее арифметическое
     double red_sr = 0;
     double blue_sr = 0;
@@ -184,7 +185,7 @@ public class Auto_Red_Left extends LinearOpMode {
     else{
       return "Red";
     }
-    cdim.setDigitalChannelState(LED_CHANNEL, false);
+    
 
   }
 
