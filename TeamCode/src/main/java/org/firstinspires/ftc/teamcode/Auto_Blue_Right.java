@@ -58,14 +58,7 @@ public class Auto_Blue_Right extends LinearOpMode {
   /* ADAFRUIT */
   // we assume that the LED pin of the RGB sensor is connected to
   // digital port 5 (zero indexed).
-  static final int LED_CHANNEL = 5;
-  OpenGLMatrix lastLocation = null;
-  /**
-  * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-  * localization engine.
-  */
-  VuforiaLocalizer vuforia;
-  boolean wasExecuted = false;
+  private static final int LED_CHANNEL = 5;
   ColorSensor sensorRGB;
   DeviceInterfaceModule cdim;
   // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -76,7 +69,13 @@ public class Auto_Blue_Right extends LinearOpMode {
   boolean bPrevState = false;
   boolean bCurrState = false;
   // bLedOn represents the state of the LED.
-  boolean bLedOn = true;
+  boolean bLedOn = false;
+  /**
+  * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+  * localization engine.
+  */
+  private VuforiaLocalizer vuforia;
+  private boolean wasExecuted = false;
   /* Declare OpMode members. */
   private ElapsedTime runtime = new ElapsedTime();
   private DcMotor m1_Drive = null;
@@ -87,7 +86,6 @@ public class Auto_Blue_Right extends LinearOpMode {
   private CRServo s1_top_Claw = null;
   private CRServo s2_bottom_Claw = null;
   private Servo s4_kicker = null;
-
   /*
   * Functions
   */
@@ -138,18 +136,15 @@ public class Auto_Blue_Right extends LinearOpMode {
     bCurrState = true;
 
     // check for button-press state transitions.
-    if (bCurrState != bPrevState) {
 
       // button is transitioning to a pressed state. Toggle the LED.
-      cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-    }
+      cdim.setDigitalChannelState(LED_CHANNEL, true);
 
     // update previous state variable.
     bPrevState = bCurrState;
 
-
-    double[] hue_arr= new double[5];;
-    double[] blue= new double[5];;
+    double[] hue_arr= new double[5];
+    double[] blue= new double[5];
     double[] red= new double[5];;
     //для точности 4 измерения
     for(int j = 0;j<4;j++){
@@ -164,6 +159,7 @@ public class Auto_Blue_Right extends LinearOpMode {
       double hue = hsvValues[0];
       hue_arr[j]=hue;
     }
+
     //Находим среднее арифметическое
     double red_sr = 0;
     double blue_sr = 0;
@@ -189,7 +185,6 @@ public class Auto_Blue_Right extends LinearOpMode {
       return "Red";
     }
   }
-
 
   @Override
   public void runOpMode() {
@@ -260,17 +255,15 @@ public class Auto_Blue_Right extends LinearOpMode {
       }
       RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
       if (!wasExecuted) {
-        telemetry.addData("AutoOP", "Running nominally");
-        telemetry.update();
         /*
         STEP 1 -Trying to kick jewel
         */
-        telemetry.addData("Step-1", "Running");
-        telemetry.update();
-        s4_kicker.setPosition(0.8);
+        s4_kicker.setPosition(0.7);
         sleep(4000);
-        grab_box(true, false, true, false);
-        lift_claw(0.1, 500);
+        grab_box(true,false,true,false);
+        lift_claw(0.1,250);
+
+        telemetry.addData("Step-1", "Running");
         String jewel_color=get_color();
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
@@ -286,8 +279,9 @@ public class Auto_Blue_Right extends LinearOpMode {
           telemetry.update();
         }
         s4_kicker.setPosition(0.1);
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
         sleep(500);
-
+        
         /*
         STEP 2 -Cryptobox related
         */

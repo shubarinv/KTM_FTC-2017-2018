@@ -158,7 +158,7 @@ public class Auto_Red_Left extends LinearOpMode {
       double hue = hsvValues[0];
       hue_arr[j]=hue;
     }
-    
+
     //Находим среднее арифметическое
     double red_sr = 0;
     double blue_sr = 0;
@@ -183,8 +183,6 @@ public class Auto_Red_Left extends LinearOpMode {
     else{
       return "Red";
     }
-    
-
   }
 
 
@@ -253,18 +251,15 @@ public class Auto_Red_Left extends LinearOpMode {
       }
       RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
       if (!wasExecuted) {
-        telemetry.addData("AutoOP", "Running nominally");
-        telemetry.update();
-
+        /*
+        STEP 1 -Trying to kick jewel
+        */
         s4_kicker.setPosition(0.7);
         sleep(4000);
         grab_box(true,false,true,false);
         lift_claw(0.1,250);
-        /*
-        STEP 1 -Trying to kick jewel
-        */
+        
         telemetry.addData("Step-1", "Running");
-        telemetry.update();
         String jewel_color=get_color();
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
