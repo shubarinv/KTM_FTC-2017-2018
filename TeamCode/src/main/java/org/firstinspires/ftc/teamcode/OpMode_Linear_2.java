@@ -55,18 +55,18 @@ public class OpMode_Linear_2 extends LinearOpMode {
     //Release
     
     if (claw_release_top) {
-      s1_top_Claw.setPower(-1);
+      s1_top_Claw.setPower(1);
     }
     else{
-      s1_top_Claw.setPower(claw_clamp_top);
+      s1_top_Claw.setPower(claw_clamp_top*-1);
     }
     
 
     if (claw_release_bottom) {
-      s2_bottom_Claw.setPower(-1);
+      s2_bottom_Claw.setPower(1);
     }
     else{
-      s2_bottom_Claw.setPower(claw_clamp_bottom);
+      s2_bottom_Claw.setPower(claw_clamp_bottom*-1);
     }
   }
 
