@@ -46,6 +46,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.exception.RobotCoreException;
 
 import java.util.Objects;
 
@@ -217,7 +218,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       m1_Drive=null;
       telemetry.addData("EXCEPTION", "Отвалился m1_Drive");
     }
@@ -225,7 +226,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       m2_Drive=null;
       telemetry.addData("EXCEPTION", "Отвалился m2_Drive");
     }
@@ -233,7 +234,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       m3_Drive=null;
       telemetry.addData("EXCEPTION", "Отвалился m3_Drive");
     }
@@ -241,7 +242,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");;
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       m4_Drive=null;
       telemetry.addData("EXCEPTION", "Отвалился m4_Drive");
     }
@@ -249,7 +250,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       m5_Lift=null;
       telemetry.addData("EXCEPTION", "Отвалился m5_lift");
     }
@@ -257,7 +258,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       s1_top_Claw=null;
       telemetry.addData("EXCEPTION", "Отвалился s1 top claw");
     }
@@ -265,7 +266,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       s2_bottom_Claw=null;
       telemetry.addData("EXCEPTION", "Отвалился s2 bottom claw");
     }
@@ -273,7 +274,7 @@ public class Auto_Red_Left extends LinearOpMode {
     try{
       s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
     }
-    catch(RuntimeException e){
+    catch(RobotCoreException e){
       s4_kicker=null;
       telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
     }

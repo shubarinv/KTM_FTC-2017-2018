@@ -22,7 +22,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "KTM TeleOp", group = "Linear Opmode")
 
-//@Disabled
+@Disabled
 public class OpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
