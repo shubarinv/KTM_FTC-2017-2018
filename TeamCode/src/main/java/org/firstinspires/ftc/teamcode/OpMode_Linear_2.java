@@ -187,17 +187,17 @@ public class OpMode_Linear_2 extends LinearOpMode {
         drive_L = drive_L / A;
         drive_R = drive_R / A;
         slide = slide / A;
-        m1_Drive_Power = (drive_L*-1 - slide)*2;
+        m1_Drive_Power = (drive_L - slide)*2;
         m2_Drive_Power = (drive_R - slide)*2;
         m3_Drive_Power = (drive_R + slide)*2;
-        m4_Drive_Power = (drive_L*-1 + slide)*2;
+        m4_Drive_Power = (drive_L + slide)*2;
       }
       // Send calculated power to wheels
 
-      m1_Drive.setPower(magic(m1_Drive_Power));
+      m1_Drive.setPower(magic(m1_Drive_Power*-1));
       m2_Drive.setPower(magic(m2_Drive_Power));
       m3_Drive.setPower(magic(m3_Drive_Power));
-      m4_Drive.setPower(magic(m4_Drive_Power));
+      m4_Drive.setPower(magic(m4_Drive_Power*-1));
       // Show the elapsed game time and wheel power.
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
