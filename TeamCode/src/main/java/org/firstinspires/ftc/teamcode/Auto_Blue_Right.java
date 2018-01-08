@@ -240,7 +240,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     }
     // m4_drive
     try{
-      m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");;
+      m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
     }
     catch(RuntimeException e){
       m4_Drive=null;
