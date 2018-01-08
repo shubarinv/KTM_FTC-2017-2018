@@ -53,14 +53,14 @@ public class OpMode_Linear_2 extends LinearOpMode {
     s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
     s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
     //Release
-    
+
     if (claw_release_top) {
       s1_top_Claw.setPower(1);
     }
     else{
       s1_top_Claw.setPower(claw_clamp_top*-1);
     }
-    
+
 
     if (claw_release_bottom) {
       s2_bottom_Claw.setPower(1);
@@ -177,20 +177,20 @@ public class OpMode_Linear_2 extends LinearOpMode {
       }
       double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
       if (A <= 1) {
-        m1_Drive_Power = drive_L - slide;
+        m1_Drive_Power = (drive_L*-1 - slide);
         m2_Drive_Power = drive_R - slide;
         m3_Drive_Power = drive_R + slide;
-        m4_Drive_Power = drive_L + slide;
+        m4_Drive_Power = drive_L*-1 + slide;
       } else {
 
 
         drive_L = drive_L / A;
         drive_R = drive_R / A;
         slide = slide / A;
-        m1_Drive_Power = (drive_L - slide)*2;
+        m1_Drive_Power = (drive_L*-1 - slide)*2;
         m2_Drive_Power = (drive_R - slide)*2;
         m3_Drive_Power = (drive_R + slide)*2;
-        m4_Drive_Power = (drive_L + slide)*2;
+        m4_Drive_Power = (drive_L*-1 + slide)*2;
       }
       // Send calculated power to wheels
 
@@ -211,14 +211,14 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // Grab box
      // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
     //Release
-    
+
     if (claw_release_top) {
       s1_top_Claw.setPower(-1);
     }
     else{
       s1_top_Claw.setPower(claw_clamp_top);
     }
-    
+
 
     if (claw_release_bottom) {
       s2_bottom_Claw.setPower(-1);
