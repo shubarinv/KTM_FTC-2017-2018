@@ -144,7 +144,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
     // run until the end of the match (driver presses STOP)
     while (opModeIsActive()) {
-      s4_kicker.setPosition(0.10);
+      cdim.setDigitalChannelState(LED_CHANNEL, false);
+      s4_kicker.setPosition(0.05);
       /*
       * Chassis movement
       */
@@ -177,10 +178,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
       }
       double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
       if (A <= 1) {
-        m1_Drive_Power = (drive_L*-1 - slide);
+        m1_Drive_Power = (drive_L - slide);
         m2_Drive_Power = drive_R - slide;
         m3_Drive_Power = drive_R + slide;
-        m4_Drive_Power = drive_L*-1 + slide;
+        m4_Drive_Power = drive_L + slide;
       } else {
 
 
