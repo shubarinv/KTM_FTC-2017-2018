@@ -84,8 +84,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
       s3_rotation.setPosition(0);
     }
     if(claw_rotation>0){
-      double pos=-0.1+claw_rotation/1.1;
-      s3_rotation.setPosition((pos*100.0)/100.0);
+      double pos=0.1+claw_rotation/1.1;
+      s3_rotation.setPosition(pos);
     }
   }
 
