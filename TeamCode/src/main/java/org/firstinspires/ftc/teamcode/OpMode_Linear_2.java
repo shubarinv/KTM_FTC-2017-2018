@@ -77,11 +77,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
   }
 
   //rotate claw
-  void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
-    if (rotate) {
-      s3_rotation.setPosition(1);
-    } else {
+  void rotate_claw(double claw_rotation) { //if rotate true then rotate to  180 . else to 0
+    if (claw_rotation==0) {
+      s3_rotation.setPosition(0.3);
+    } else if(claw_rotation==-1){
       s3_rotation.setPosition(0);
+    }
+    if(claw_rotation>0){
+      double pos=0.3+claw_rotation/1.5;
+      s3_rotation.setPosition((pos*100.0)/100.0);
     }
   }
 
@@ -161,12 +165,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double drive_L = gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
+      double claw_rotation = gamepad2.right_stick_x;
       float claw_clamp_top = gamepad2.left_trigger;
       float claw_clamp_bottom = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
-      boolean claw_rotation_l = gamepad2.dpad_left;
-      boolean claw_rotation_r = gamepad2.dpad_right;
+
       //Slide Related
       double slide;
       double slide_L = gamepad1.left_trigger;
@@ -243,12 +247,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         stick_lifted = !stick_lifted;
       }
       // Claw rotation
-      if (claw_rotation_l) {
-        rotate_claw(true); // Rotate claw to left
-      }
-      if (claw_rotation_r) {
-        rotate_claw(false); // Rotate claw to right
-      }
+        rotate_claw(claw_rotation);
 
       // Claw lift
       lift_claw(magic(claw_lift));
