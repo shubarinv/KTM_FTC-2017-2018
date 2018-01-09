@@ -247,14 +247,14 @@ public class OpMode_Linear_2 extends LinearOpMode {
         stick_lifted = !stick_lifted;
       }
       // Claw rotation
-      if (claw_rotation==0) {
-        s3_rotation.setPosition(0.1);
-      } else if(claw_rotation==-1){
-        s3_rotation.setPosition(0);
+      if (claw_rotation>0){
+        s3_rotation.setPosition(0.9-claw_rotation*0.9);
       }
-      if(claw_rotation>0){
-        double pos=0.1+claw_rotation/1.1;
-        s3_rotation.setPosition(pos);
+      else if(claw_rotation<-0.5){
+        s3_rotation.setPosition(1);
+      }
+      else{
+        s3_rotation.setPosition(0.9);
       }
 
       // Claw lift
