@@ -165,7 +165,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double drive_L = gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
-      double claw_rotation = gamepad2.right_stick_x;
+      double claw_rotation = gamepad2.right_stick_y;
       float claw_clamp_top = gamepad2.left_trigger;
       float claw_clamp_bottom = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
@@ -197,7 +197,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m3_Drive_Power = (drive_R + slide)*2;
         m4_Drive_Power = (drive_L + slide)*2;
       }
-      float max = Math.max(Math.max(m1_Drive_Power,m2_Drive_Power),Math.max(m3_Drive_Power,m4_Drive_Power));
+      double max = Math.max(Math.max(m1_Drive_Power,m2_Drive_Power),Math.max(m3_Drive_Power,m4_Drive_Power));
       // Send calculated power to wheels
       if (max>=1){
       m1_Drive.setPower(magic(m1_Drive_Power*-1)/max);
