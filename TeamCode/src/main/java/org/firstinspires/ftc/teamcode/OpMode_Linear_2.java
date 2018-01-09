@@ -200,10 +200,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double max = Math.max(Math.max(m1_Drive_Power,m2_Drive_Power),Math.max(m3_Drive_Power,m4_Drive_Power));
       // Send calculated power to wheels
       if (max>=1){
-      m1_Drive.setPower(magic(m1_Drive_Power*-1)/max);
-      m2_Drive.setPower(magic(m2_Drive_Power)/max);
-      m3_Drive.setPower(magic(m3_Drive_Power)/max);
-      m4_Drive.setPower(magic(m4_Drive_Power*-1)/max);
+        m1_Drive.setPower(magic(m1_Drive_Power*-1)/max);
+        m2_Drive.setPower(magic(m2_Drive_Power)/max);
+        m3_Drive.setPower(magic(m3_Drive_Power)/max);
+        m4_Drive.setPower(magic(m4_Drive_Power*-1)/max);
       }
       else{
         m1_Drive.setPower(magic(m1_Drive_Power*-1));
@@ -222,23 +222,23 @@ public class OpMode_Linear_2 extends LinearOpMode {
       */
 
       // Grab box
-     // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
-    //Release
+      // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
+      //Release
 
-    if (claw_release_top) {
-      s1_top_Claw.setPower(-1);
-    }
-    else{
-      s1_top_Claw.setPower(claw_clamp_top);
-    }
+      if (claw_release_top) {
+        s1_top_Claw.setPower(-1);
+      }
+      else{
+        s1_top_Claw.setPower(claw_clamp_top);
+      }
 
 
-    if (claw_release_bottom) {
-      s2_bottom_Claw.setPower(1);
-    }
-    else{
-      s2_bottom_Claw.setPower(-claw_clamp_bottom);
-    }
+      if (claw_release_bottom) {
+        s2_bottom_Claw.setPower(1);
+      }
+      else{
+        s2_bottom_Claw.setPower(-claw_clamp_bottom);
+      }
       //!end
 
 
@@ -247,7 +247,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
         stick_lifted = !stick_lifted;
       }
       // Claw rotation
-        rotate_claw(claw_rotation);
+      if (claw_rotation==0) {
+        s3_rotation.setPosition(0.1);
+      } else if(claw_rotation==-1){
+        s3_rotation.setPosition(0);
+      }
+      if(claw_rotation>0){
+        double pos=0.1+claw_rotation/1.1;
+        s3_rotation.setPosition(pos);
+      }
 
       // Claw lift
       lift_claw(magic(claw_lift));
