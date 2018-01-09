@@ -79,12 +79,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
   //rotate claw
   void rotate_claw(double claw_rotation) { //if rotate true then rotate to  180 . else to 0
     if (claw_rotation==0) {
-      s3_rotation.setPosition(0.3);
+      s3_rotation.setPosition(0.1);
     } else if(claw_rotation==-1){
       s3_rotation.setPosition(0);
     }
     if(claw_rotation>0){
-      double pos=0.3+claw_rotation/1.5;
+      double pos=0.1+claw_rotation/1.1;
       s3_rotation.setPosition((pos*100.0)/100.0);
     }
   }
@@ -162,7 +162,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       // POV Mode uses right stick to go forward and right to slide.
       // - This uses basic math to combine motions and is easier to drive straight.
-      double drive_L = gamepad1.left_stick_y;
+      double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
       double claw_rotation = gamepad2.right_stick_y;
