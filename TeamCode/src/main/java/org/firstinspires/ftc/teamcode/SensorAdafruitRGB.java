@@ -37,8 +37,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-import java.util.Objects;
-
 /*
  *
  * This is an example LinearOpMode that shows how to use
@@ -114,38 +112,36 @@ public class SensorAdafruitRGB extends LinearOpMode {
         while (opModeIsActive()) {
 
             // check the status of the x button on gamepad.
-            bCurrState = gamepad1.x;
+            bCurrState = true;
 
             // check for button-press state transitions.
-            if ((bCurrState == true) && (bCurrState != bPrevState)) {
+
 
                 // button is transitioning to a pressed state. Toggle the LED.
-                bLedOn = !bLedOn;
+                bLedOn = true;
                 cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-            }
 
             // update previous state variable.
             bPrevState = bCurrState;
 
 
             // send the info back to driver station using telemetry function.
-            double hue = Utils.hue(sensorRGB);
+            Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+
+            double hue = hsvValues[0];
             if (hue > 200 && hue < 260) {
-                String jewel_color = "Blue";
+                telemetry.addData("Color-->", "Blue");
             } else if (hue < 50 || hue > 330) {
-                String jewel_color = "Red";
+                telemetry.addData("Color-->", "red");
             }
-            String jewel_color = "Error";
-            if (Objects.equals(jewel_color, "Blue")) {
-                telemetry.addData("AdaFruit", "BLUE");
-                telemetry.addData("Step-1", "BLUE");
-            } else if (Objects.equals(jewel_color, "Red")) {
-                telemetry.addData("AdaFruit", "RED");
-                telemetry.addData("Step-1", "RED");
-            } else {
-                telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-                telemetry.addData("Step-1", "FAILED");
-            }
+
+
+            // send the info back to driver station using telemetry function.
+            telemetry.addData("Clear", sensorRGB.alpha());
+            telemetry.addData("Red  ", sensorRGB.red());
+            telemetry.addData("Green", sensorRGB.green());
+            telemetry.addData("Blue ", sensorRGB.blue());
+            telemetry.addData("Hue", hsvValues[0]);
 
             telemetry.update();
         }
