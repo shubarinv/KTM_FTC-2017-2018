@@ -326,11 +326,11 @@ public class Auto_Blue_Right extends LinearOpMode {
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
         if (Objects.equals(jewel_color, "Blue")) {
-          set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+          set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
         } else if (Objects.equals(jewel_color, "Red")) {
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
-          set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+          set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
         } else {
           telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
           telemetry.addData("Step-1", "FAILED");
@@ -351,14 +351,14 @@ public class Auto_Blue_Right extends LinearOpMode {
           sleep(100);
           lift_claw(0.3, 1250);
           sleep(100);
-          set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 2100);//движение вперед
-          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 1350);//поворот против часовой
+          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
+          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
           lift_claw(-0.3, 1250);
           sleep(100);
           grab_box(false, true, false, false);
-          set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1250);//движение вперед
+          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1250);//движение вперед
           sleep(100);
-          set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 1000);//движение назад
+          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
 
 
         } else if (vuMark == RelicRecoveryVuMark.CENTER) {
