@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,7 +39,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
   private CRServo s2_bottom_Claw = null;
   private Servo s3_rotation = null;
   private Servo s4_kicker = null;
-
+    DeviceInterfaceModule cdim;
   //-------
   double magic(double input) {
     return Math.signum(input) * Math.pow(Math.abs(input), 2);
@@ -260,6 +261,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // Claw lift
       lift_claw(magic(claw_lift));
 
+      cdim.setDigitalChannelState(5, true);
     }
   }
 }
