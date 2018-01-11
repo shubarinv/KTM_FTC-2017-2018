@@ -174,9 +174,10 @@ public class Auto_Red_Left extends LinearOpMode {
     //
     if (hue_sr > 110 && hue_sr < 290) {
       return "Blue";
-    } else if (hue_sr < 110 || hue_sr > 290 && hue_sr < 360) {
+    } else if (hue_sr < 110 || hue_sr > 290 && hue_sr <= 360) {
       return "Red";
     }
+    // THIS IS DEPRECATED
     else if(blue_sr>red_sr){
       return "Blue";
     }
@@ -312,7 +313,7 @@ public class Auto_Red_Left extends LinearOpMode {
         STEP 1 -Trying to kick jewel
         */
         s4_kicker.setPosition(0.7);
-        sleep(4000);
+        sleep(500);
         grab_box(true,false,true,false);
         lift_claw(0.1,250);
 
@@ -321,11 +322,11 @@ public class Auto_Red_Left extends LinearOpMode {
         telemetry.addData("AdaFruit", jewel_color);
         telemetry.update();
         if (Objects.equals(jewel_color, "Blue")) {
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
-          set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
+          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+          set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
         } else if (Objects.equals(jewel_color, "Red")) {
-          set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 300);//поворот по часовой
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 300);//поворот против часовой
+          set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
         } else {
           telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
           telemetry.addData("Step-1", "FAILED");

@@ -317,7 +317,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         STEP 1 -Trying to kick jewel
         */
         s4_kicker.setPosition(0.7);
-        sleep(4000);
+        sleep(500);
         grab_box(true,false,true,false);
         lift_claw(0.1,250);
 
@@ -351,14 +351,14 @@ public class Auto_Blue_Right extends LinearOpMode {
           sleep(100);
           lift_claw(0.3, 1250);
           sleep(100);
-          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
-          set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 1350);//поворот против часовой
+          set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 2100);//движение вперед
+          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 1350);//поворот против часовой
           lift_claw(-0.3, 1250);
           sleep(100);
           grab_box(false, true, false, false);
-          set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1250);//движение вперед
+          set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1250);//движение вперед
           sleep(100);
-          set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
+          set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 1000);//движение назад
 
 
         } else if (vuMark == RelicRecoveryVuMark.CENTER) {
