@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -39,7 +40,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
   private CRServo s2_bottom_Claw = null;
   private Servo s3_rotation = null;
   private Servo s4_kicker = null;
-    DeviceInterfaceModule cdim;
+  private static final int LED_CHANNEL = 5;
+  ColorSensor sensorRGB;
+  DeviceInterfaceModule cdim;
+
+
   //-------
   double magic(double input) {
     return Math.signum(input) * Math.pow(Math.abs(input), 2);
@@ -149,7 +154,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
     // run until the end of the match (driver presses STOP)
     while (opModeIsActive()) {
-      //cdim.setDigitalChannelState(LED_CHANNEL, false);
+
       s4_kicker.setPosition(0.05);
       /*
       * Chassis movement
@@ -171,7 +176,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       float claw_clamp_bottom = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
-
+      cdim = hardwareMap.deviceInterfaceModule.get("dim");
       //Slide Related
       double slide;
       double slide_L = gamepad1.left_trigger;
@@ -261,7 +266,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // Claw lift
       lift_claw(magic(claw_lift));
 
-      cdim.setDigitalChannelState(5, false);
+      cdim.setDigitalChannelState(LED_CHANNEL, false);
     }
   }
 }
