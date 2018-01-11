@@ -261,7 +261,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // Claw lift
       lift_claw(magic(claw_lift));
 
-      cdim.setDigitalChannelState(5, true);
+      cdim.setDigitalChannelState(5, false);
     }
   }
 }
