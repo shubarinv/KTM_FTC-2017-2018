@@ -33,6 +33,7 @@ import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
@@ -47,7 +48,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import com.qualcomm.robotcore.hardware.CRServo;
 
 import java.util.Objects;
 
@@ -145,7 +145,7 @@ public class Auto_Blue_Right extends LinearOpMode {
 
     double[] hue_arr= new double[5];
     double[] blue= new double[5];
-    double[] red= new double[5];;
+    double[] red = new double[5];
     //для точности 4 измерения
     for(int j = 0;j<4;j++){
       // convert the RGB values to HSV values.

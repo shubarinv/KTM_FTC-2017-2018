@@ -116,11 +116,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class FtcRobotControllerActivity extends Activity
   {
   public static final String TAG = "RCActivity";
-  public String getTag() { return TAG; }
-
   private static final int REQUEST_CONFIG_WIFI_CHANNEL = 1;
   private static final int NUM_GAMEPADS = 2;
-
+      protected final SharedPreferencesListener sharedPreferencesListener = new SharedPreferencesListener();
   protected WifiManager.WifiLock wifiLock;
   protected RobotConfigFileManager cfgFileMgr;
 
@@ -133,8 +131,6 @@ public class FtcRobotControllerActivity extends Activity
   protected StartResult deviceNameManagerStartResult = new StartResult();
   protected StartResult prefRemoterStartResult = new StartResult();
   protected PreferencesHelper preferencesHelper;
-  protected final SharedPreferencesListener sharedPreferencesListener = new SharedPreferencesListener();
-
   protected ImageButton buttonMenu;
   protected TextView textDeviceName;
   protected TextView textNetworkConnectionStatus;
@@ -143,25 +139,13 @@ public class FtcRobotControllerActivity extends Activity
   protected TextView textOpMode;
   protected TextView textErrorMessage;
   protected ImmersiveMode immersion;
-
   protected UpdateUI updateUI;
   protected Dimmer dimmer;
   protected LinearLayout entireScreenLayout;
-
   protected FtcRobotControllerService controllerService;
   protected NetworkType networkType;
-
   protected FtcEventLoop eventLoop;
   protected Queue<UsbDevice> receivedUsbAttachmentNotifications;
-
-  protected class RobotRestarter implements Restarter {
-
-    public void requestRestart() {
-      requestRobotRestart();
-    }
-
-  }
-
   protected ServiceConnection connection = new ServiceConnection() {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -175,6 +159,10 @@ public class FtcRobotControllerActivity extends Activity
       controllerService = null;
     }
   };
+
+      public String getTag() {
+          return TAG;
+      }
 
   @Override
   protected void onNewIntent(Intent intent) {
@@ -440,7 +428,6 @@ public class FtcRobotControllerActivity extends Activity
     }
   }
 
-
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.ftc_robot_controller, menu);
@@ -614,6 +601,14 @@ public class FtcRobotControllerActivity extends Activity
       });
     }
   }
+
+      protected class RobotRestarter implements Restarter {
+
+          public void requestRestart() {
+              requestRobotRestart();
+          }
+
+      }
 
   protected class SharedPreferencesListener implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Override public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
