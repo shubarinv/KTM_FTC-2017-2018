@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get install ftp
-echo $4 '\n'"$5">Build.info
+echo $5 '\n'"$4">Build.info
 
 FILE='TeamCode-debug.apk'
 IP='vhundef.net'
