@@ -6,10 +6,8 @@ FILE='TeamCode-debug.apk'
 IP='vhundef.net'
 USER=$1
 PASS=$2
-DESTINATION='public_html'
 ftp -p -d -inv $IP<< !EOF
 user $USER $PASS
-cd $DESTINATION
 asc
 mput Build.info
 rename Build.info $3-Build.info
