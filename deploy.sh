@@ -6,7 +6,7 @@ FILE='TeamCode-debug.apk'
 IP='vhundef.net'
 USER=$1
 PASS=$2
-sftp -v -oIdentityFile=path ktm@vhundef.net <<EOF
+ftp -p -d -inv $IP<< !EOF
 user $USER $PASS
 asc
 mput Build.info
