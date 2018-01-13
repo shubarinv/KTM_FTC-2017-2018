@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,6 +40,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
   private CRServo s2_bottom_Claw = null;
   private Servo s3_rotation = null;
   private Servo s4_kicker = null;
+  private static final int LED_CHANNEL = 5;
+  ColorSensor sensorRGB;
+  DeviceInterfaceModule cdim;
+
 
   //-------
   double magic(double input) {
@@ -77,11 +83,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
   }
 
   //rotate claw
-  void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
-    if (rotate) {
-      s3_rotation.setPosition(1);
-    } else {
+  void rotate_claw(double claw_rotation) { //if rotate true then rotate to  180 . else to 0
+    if (claw_rotation==0) {
+      s3_rotation.setPosition(0.1);
+    } else if(claw_rotation==-1){
       s3_rotation.setPosition(0);
+    }
+    if(claw_rotation>0){
+      double pos=0.1+claw_rotation/1.1;
+      s3_rotation.setPosition(pos);
     }
   }
 
@@ -118,70 +128,16 @@ public class OpMode_Linear_2 extends LinearOpMode {
     // to 'get' must correspond to the names assigned during the robot configuration
     // step (using the FTC Robot Controller app on the phone).
 
-    try{
-      m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-    }
-    catch(RobotCoreException e){
-      m1_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m1_Drive");
-    }
-    // m2_drive
-    try{
-      m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-    }
-    catch(RobotCoreException e){
-      m2_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m2_Drive");
-    }
-    // m3_drive
-    try{
-      m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-    }
-    catch(RobotCoreException e){
-      m3_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m3_Drive");
-    }
-    // m4_drive
-    try{
-      m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");;
-    }
-    catch(RobotCoreException e){
-      m4_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m4_Drive");
-    }
-    // m5_lift
-    try{
-      m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-    }
-    catch(RobotCoreException e){
-      m5_Lift=null;
-      telemetry.addData("EXCEPTION", "Отвалился m5_lift");
-    }
-    // s1_top_Claw
-    try{
-      s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-    }
-    catch(RobotCoreException e){
-      s1_top_Claw=null;
-      telemetry.addData("EXCEPTION", "Отвалился s1 top claw");
-    }
-    // s2_bottom_Claw
-    try{
-      s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-    }
-    catch(RobotCoreException e){
-      s2_bottom_Claw=null;
-      telemetry.addData("EXCEPTION", "Отвалился s2 bottom claw");
-    }
-    //s4_kicker
-    try{
-      s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-    }
-    catch(RobotCoreException e){
-      s4_kicker=null;
-      telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
-    }
-    
+    // Chassis
+    m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+    m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+    m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+    m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+    m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+    s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+    s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+    s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+    s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
     //-------
     // Most robots need the motor on one side to be reversed to drive forward
     // Reverse the motor that runs backwards when connected directly to the battery
@@ -198,7 +154,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
     // run until the end of the match (driver presses STOP)
     while (opModeIsActive()) {
-      s4_kicker.setPosition(0.10);
+
+      s4_kicker.setPosition(0.05);
       /*
       * Chassis movement
       */
@@ -211,15 +168,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       // POV Mode uses right stick to go forward and right to slide.
       // - This uses basic math to combine motions and is easier to drive straight.
-      double drive_L = gamepad1.left_stick_y;
+      double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
+      double claw_rotation = gamepad2.right_stick_y;
       float claw_clamp_top = gamepad2.left_trigger;
       float claw_clamp_bottom = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
-      boolean claw_rotation_l = gamepad2.dpad_left;
-      boolean claw_rotation_r = gamepad2.dpad_right;
+      cdim = hardwareMap.deviceInterfaceModule.get("dim");
       //Slide Related
       double slide;
       double slide_L = gamepad1.left_trigger;
@@ -231,7 +188,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       }
       double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
       if (A <= 1) {
-        m1_Drive_Power = drive_L - slide;
+        m1_Drive_Power = (drive_L - slide);
         m2_Drive_Power = drive_R - slide;
         m3_Drive_Power = drive_R + slide;
         m4_Drive_Power = drive_L + slide;
@@ -246,12 +203,20 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m3_Drive_Power = (drive_R + slide)*2;
         m4_Drive_Power = (drive_L + slide)*2;
       }
+      double max = Math.max(Math.max(m1_Drive_Power,m2_Drive_Power),Math.max(m3_Drive_Power,m4_Drive_Power));
       // Send calculated power to wheels
-
-      m1_Drive.setPower(magic(m1_Drive_Power));
-      m2_Drive.setPower(magic(m2_Drive_Power));
-      m3_Drive.setPower(magic(m3_Drive_Power));
-      m4_Drive.setPower(magic(m4_Drive_Power));
+      if (max>=1){
+        m1_Drive.setPower(magic(m1_Drive_Power*-1)/max);
+        m2_Drive.setPower(magic(m2_Drive_Power)/max);
+        m3_Drive.setPower(magic(m3_Drive_Power)/max);
+        m4_Drive.setPower(magic(m4_Drive_Power*-1)/max);
+      }
+      else{
+        m1_Drive.setPower(magic(m1_Drive_Power*-1));
+        m2_Drive.setPower(magic(m2_Drive_Power));
+        m3_Drive.setPower(magic(m3_Drive_Power));
+        m4_Drive.setPower(magic(m4_Drive_Power*-1));
+      }
       // Show the elapsed game time and wheel power.
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
@@ -263,23 +228,23 @@ public class OpMode_Linear_2 extends LinearOpMode {
       */
 
       // Grab box
-     // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
-    //Release
+      // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
+      //Release
 
-    if (claw_release_top) {
-      s1_top_Claw.setPower(-1);
-    }
-    else{
-      s1_top_Claw.setPower(claw_clamp_top);
-    }
+      if (claw_release_top) {
+        s1_top_Claw.setPower(-1);
+      }
+      else{
+        s1_top_Claw.setPower(claw_clamp_top);
+      }
 
 
-    if (claw_release_bottom) {
-      s2_bottom_Claw.setPower(-1);
-    }
-    else{
-      s2_bottom_Claw.setPower(claw_clamp_bottom);
-    }
+      if (claw_release_bottom) {
+        s2_bottom_Claw.setPower(1);
+      }
+      else{
+        s2_bottom_Claw.setPower(-claw_clamp_bottom);
+      }
       //!end
 
 
@@ -288,16 +253,20 @@ public class OpMode_Linear_2 extends LinearOpMode {
         stick_lifted = !stick_lifted;
       }
       // Claw rotation
-      if (claw_rotation_l) {
-        rotate_claw(true); // Rotate claw to left
+      if (claw_rotation>0){
+        s3_rotation.setPosition(0.8-claw_rotation*0.8);
       }
-      if (claw_rotation_r) {
-        rotate_claw(false); // Rotate claw to right
+      else if(claw_rotation<-0.5){
+        s3_rotation.setPosition(1);
+      }
+      else{
+        s3_rotation.setPosition(0.8);
       }
 
       // Claw lift
       lift_claw(magic(claw_lift));
 
+      cdim.setDigitalChannelState(LED_CHANNEL, false);
     }
   }
 }
