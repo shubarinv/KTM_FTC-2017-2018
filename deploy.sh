@@ -1,15 +1,13 @@
 #!/bin/bash
 sudo apt-get install ftp
-echo $4 '\n'"$5">Build.info
+echo $5 '\n'"$4">Build.info
 
 FILE='TeamCode-debug.apk'
 IP='vhundef.net'
 USER=$1
 PASS=$2
-DESTINATION='public_html'
 ftp -p -d -inv $IP<< !EOF
 user $USER $PASS
-cd $DESTINATION
 asc
 mput Build.info
 rename Build.info $3-Build.info

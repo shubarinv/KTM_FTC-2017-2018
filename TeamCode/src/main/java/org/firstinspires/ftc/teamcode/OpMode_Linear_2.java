@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,6 +40,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
   private CRServo s2_bottom_Claw = null;
   private Servo s3_rotation = null;
   private Servo s4_kicker = null;
+  private Servo s5_shovel = null;
+  private static final int LED_CHANNEL = 5;
+  ColorSensor sensorRGB;
+  DeviceInterfaceModule cdim;
+
 
   //-------
   double magic(double input) {
@@ -76,17 +83,16 @@ public class OpMode_Linear_2 extends LinearOpMode {
     m5_Lift.setPower(lift_power);
   }
 
-  //rotate claw
-  void rotate_claw(double claw_rotation) { //if rotate true then rotate to  180 . else to 0
-    if (claw_rotation==0) {
-      s3_rotation.setPosition(0.1);
-    } else if(claw_rotation==-1){
-      s3_rotation.setPosition(0);
+  void shovel_trigger(boolean shovel_up, boolean shovel_down){
+    if (shovel_up){
+    s5_shovel.setPosition(0);
     }
-    if(claw_rotation>0){
-      double pos=0.1+claw_rotation/1.1;
-      s3_rotation.setPosition(pos);
+    else if(shovel_down){
+      s5_shovel.setPosition(1);
     }
+  }
+  void shovel_trigger(double shovel_pos) {
+  s5_shovel.setPosition(0.5+shovel_pos);
   }
 
   void lift_stick(boolean lift) { //if rotate true then rotate to  180 . else to 0
@@ -132,6 +138,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
     s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
     s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
     s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+    s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
+
     //-------
     // Most robots need the motor on one side to be reversed to drive forward
     // Reverse the motor that runs backwards when connected directly to the battery
@@ -148,7 +156,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
     // run until the end of the match (driver presses STOP)
     while (opModeIsActive()) {
-      //cdim.setDigitalChannelState(LED_CHANNEL, false);
+
       s4_kicker.setPosition(0.05);
       /*
       * Chassis movement
@@ -170,7 +178,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
       float claw_clamp_bottom = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
-
+      boolean shovel_down=gamepad2.dpad_down;
+      boolean shovel_up=gamepad2.dpad_up;
+      double shovel_pos=gamepad2.right_stick_x;
+      cdim = hardwareMap.deviceInterfaceModule.get("dim");
       //Slide Related
       double slide;
       double slide_L = gamepad1.left_trigger;
@@ -248,18 +259,20 @@ public class OpMode_Linear_2 extends LinearOpMode {
       }
       // Claw rotation
       if (claw_rotation>0){
-        s3_rotation.setPosition(0.9-claw_rotation*0.9);
+        s3_rotation.setPosition(0.8-claw_rotation*0.8);
       }
       else if(claw_rotation<-0.5){
         s3_rotation.setPosition(1);
       }
       else{
-        s3_rotation.setPosition(0.9);
+        s3_rotation.setPosition(0.8);
       }
-
+      shovel_trigger(shovel_up,shovel_down);
+      shovel_trigger(shovel_pos);
       // Claw lift
       lift_claw(magic(claw_lift));
 
+      cdim.setDigitalChannelState(LED_CHANNEL, false);
     }
   }
 }
