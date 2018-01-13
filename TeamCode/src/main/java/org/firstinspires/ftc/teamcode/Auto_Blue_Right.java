@@ -330,7 +330,7 @@ try {
         }
         s4_kicker.setPosition(0.1);
         cdim.setDigitalChannelState(LED_CHANNEL, false);
-        sleep(500);
+        requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
 
 
         /*

@@ -328,7 +328,7 @@ public class Auto_Red_Left extends LinearOpMode {
                 }
                 s4_kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
-                sleep(500);
+                requestOpModeStop();
 
 
         /*
