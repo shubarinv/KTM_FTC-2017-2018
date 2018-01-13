@@ -213,69 +213,64 @@ public class Auto_Blue_Right extends LinearOpMode {
     */
     //Обработка исключений
     // m1_drive
-    try{
-      m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-    }
-    catch(RobotCoreException e){
-      m1_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m1_Drive");
-    }
-    // m2_drive
-    try{
-      m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-    }
-    catch(RobotCoreException e){
-      m2_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m2_Drive");
-    }
-    // m3_drive
-    try{
-      m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-    }
-    catch(RobotCoreException e){
-      m3_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m3_Drive");
-    }
-    // m4_drive
-    try{
-      m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-    }
-    catch(RobotCoreException e){
-      m4_Drive=null;
-      telemetry.addData("EXCEPTION", "Отвалился m4_Drive");
-    }
-    // m5_lift
-    try{
-      m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-    }
-    catch(RobotCoreException e){
-      m5_Lift=null;
-      telemetry.addData("EXCEPTION", "Отвалился m5_lift");
-    }
-    // s1_top_Claw
-    try{
-      s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-    }
-    catch(RobotCoreException e){
-      s1_top_Claw=null;
-      telemetry.addData("EXCEPTION", "Отвалился s1 top claw");
-    }
-    // s2_bottom_Claw
-    try{
-      s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-    }
-    catch(RobotCoreException e){
-      s2_bottom_Claw=null;
-      telemetry.addData("EXCEPTION", "Отвалился s2 bottom claw");
-    }
-    //s4_kicker
-    try{
-      s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-    }
-    catch(RobotCoreException e){
-      s4_kicker=null;
-      telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
-    }
+try {
+            m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+        } catch (RuntimeException e) {
+            m1_Drive = null;
+            telemetry.addData("EXCEPTION", "Отвалился m1_Drive");
+        }
+        // m2_drive
+        try {
+            m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+        } catch (RuntimeException e) {
+            m2_Drive = null;
+            telemetry.addData("EXCEPTION", "Отвалился m2_Drive");
+        }
+        // m3_drive
+        try {
+            m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+        } catch (RuntimeException e) {
+            m3_Drive = null;
+            telemetry.addData("EXCEPTION", "Отвалился m3_Drive");
+        }
+        // m4_drive
+        try {
+            m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+        } catch (RuntimeException e) {
+            m4_Drive = null;
+            telemetry.addData("EXCEPTION", "Отвалился m4_Drive");
+        }
+        // m5_lift
+        try {
+            m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+        } catch (RuntimeException e) {
+            m5_Lift = null;
+            telemetry.addData("EXCEPTION", "Отвалился m5_lift");
+        }
+        // s1_top_Claw
+        try {
+            s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+        } catch (RuntimeException e) {
+            s1_top_Claw = null;
+            telemetry.addData("EXCEPTION", "Отвалился s1 top claw");
+        }
+        // s2_bottom_Claw
+        try {
+            s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+        } catch (RuntimeException e) {
+            s2_bottom_Claw = null;
+            telemetry.addData("EXCEPTION", "Отвалился s2 bottom claw");
+        }
+        //s4_kicker
+        try {
+            s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+        } catch (RuntimeException e) {
+            s4_kicker = null;
+            telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
+        }
+
+       s3_rotation=  hardwareMap.get(Servo.class, "s3 rotation");
+    
     // Конец обработки исключений
 
     m1_Drive.setDirection(DcMotor.Direction.FORWARD);
