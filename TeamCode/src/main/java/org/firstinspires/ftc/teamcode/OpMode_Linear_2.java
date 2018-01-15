@@ -253,7 +253,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       shovel_trigger(shovel_pos);
       // Claw lift
-      if (claw_lift_up > 0) {
+      if (claw_lift_up < 0) {
         lift_claw(magic(claw_lift_up));
       } else if (claw_lift_down > 0) {
         lift_claw(magic(claw_lift_down));
