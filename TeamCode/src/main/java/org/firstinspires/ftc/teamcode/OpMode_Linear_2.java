@@ -83,7 +83,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
   }
 
   void shovel_trigger(double shovel_pos) {
-    s5_shovel.setPosition(1 + shovel_pos);
+    s5_shovel.setPosition(0 - shovel_pos);
   }
 
   void lift_stick(boolean lift) { //if rotate true then rotate to  180 . else to 0
