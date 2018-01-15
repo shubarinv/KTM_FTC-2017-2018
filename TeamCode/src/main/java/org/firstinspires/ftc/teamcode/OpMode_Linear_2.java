@@ -163,10 +163,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // - This uses basic math to combine motions and is easier to drive straight.
       double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
-      double claw_lift = gamepad2.left_stick_y;
-      double claw_rotation = gamepad2.left_stick_y;
-      float claw_clamp_top = gamepad2.left_trigger;
-      float claw_clamp_bottom = gamepad2.right_trigger;
+      double claw_lift_up = gamepad2.left_trigger;
+      double claw_lift_down = gamepad2.right_trigger;
+      double claw_rotation = -gamepad2.left_stick_y;
+    /*  float claw_clamp_top = gamepad2.left_trigger;
+      float claw_clamp_bottom = gamepad2.right_trigger; */
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
       double shovel_pos = gamepad2.right_stick_y;
@@ -225,7 +226,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
       //Release
 
-      if (claw_release_top) {
+     /* if (claw_release_top) {
         s1_top_Claw.setPower(-1);
       }
       else{
@@ -238,7 +239,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       }
       else{
         s2_bottom_Claw.setPower(-claw_clamp_bottom);
-      }
+      }*/
       //!end
 
 
@@ -252,7 +253,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       shovel_trigger(shovel_pos);
       // Claw lift
-      lift_claw(magic(claw_lift));
+      if (claw_lift_up > 0) {
+        lift_claw(magic(claw_lift_up));
+      } else if (claw_lift_down > 0) {
+        lift_claw(magic(claw_lift_down));
+      } else {
+        lift_claw(0);
+      }
 
       cdim.setDigitalChannelState(LED_CHANNEL, false);
     }
