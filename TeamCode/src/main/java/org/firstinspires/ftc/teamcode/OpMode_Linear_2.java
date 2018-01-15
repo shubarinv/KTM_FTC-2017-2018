@@ -164,7 +164,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift_up = gamepad2.left_trigger;
-      double claw_lift_down = -gamepad2.right_trigger;
+      double claw_lift_down = gamepad2.right_trigger;
       double claw_rotation = -gamepad2.left_stick_y;
     /*  float claw_clamp_top = gamepad2.left_trigger;
       float claw_clamp_bottom = gamepad2.right_trigger; */
@@ -253,10 +253,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       shovel_trigger(shovel_pos);
       // Claw lift
-      if (claw_lift_up < 0) {
+      if (claw_lift_up > 0) {
         lift_claw(magic(claw_lift_up));
       } else if (claw_lift_down > 0) {
-        lift_claw(magic(claw_lift_down));
+        lift_claw(-magic(claw_lift_down));
       } else {
         lift_claw(0);
       }
