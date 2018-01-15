@@ -28,6 +28,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class OpMode_Linear_2 extends LinearOpMode {
 
+  private static final int LED_CHANNEL = 5;
+  ColorSensor sensorRGB;
+  DeviceInterfaceModule cdim;
   // Declare OpMode members.
   private ElapsedTime runtime = new ElapsedTime();
   //Chassis
@@ -41,10 +44,6 @@ public class OpMode_Linear_2 extends LinearOpMode {
   private Servo s3_rotation = null;
   private Servo s4_kicker = null;
   private Servo s5_shovel = null;
-  private static final int LED_CHANNEL = 5;
-  ColorSensor sensorRGB;
-  DeviceInterfaceModule cdim;
-
 
   //-------
   double magic(double input) {
@@ -83,16 +82,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
     m5_Lift.setPower(lift_power);
   }
 
-  void shovel_trigger(boolean shovel_up, boolean shovel_down){
-    if (shovel_up){
-    s5_shovel.setPosition(0);
-    }
-    else if(shovel_down){
-      s5_shovel.setPosition(1);
-    }
-  }
   void shovel_trigger(double shovel_pos) {
-  s5_shovel.setPosition(0.5+shovel_pos);
+    s5_shovel.setPosition(1 + shovel_pos);
   }
 
   void lift_stick(boolean lift) { //if rotate true then rotate to  180 . else to 0
@@ -173,14 +164,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
       double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
       double claw_lift = gamepad2.left_stick_y;
-      double claw_rotation = gamepad2.right_stick_y;
+      double claw_rotation = gamepad2.left_stick_y;
       float claw_clamp_top = gamepad2.left_trigger;
       float claw_clamp_bottom = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
-      boolean shovel_down=gamepad2.dpad_down;
-      boolean shovel_up=gamepad2.dpad_up;
-      double shovel_pos=gamepad2.right_stick_x;
+      double shovel_pos = gamepad2.right_stick_y;
       cdim = hardwareMap.deviceInterfaceModule.get("dim");
       //Slide Related
       double slide;
@@ -258,16 +247,9 @@ public class OpMode_Linear_2 extends LinearOpMode {
         stick_lifted = !stick_lifted;
       }
       // Claw rotation
-      if (claw_rotation>0){
-        s3_rotation.setPosition(0.8-claw_rotation*0.8);
-      }
-      else if(claw_rotation<-0.5){
-        s3_rotation.setPosition(1);
-      }
-      else{
-        s3_rotation.setPosition(0.8);
-      }
-      shovel_trigger(shovel_up,shovel_down);
+      s3_rotation.setPosition(1 - claw_rotation);
+
+
       shovel_trigger(shovel_pos);
       // Claw lift
       lift_claw(magic(claw_lift));
