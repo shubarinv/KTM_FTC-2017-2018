@@ -248,7 +248,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         stick_lifted = !stick_lifted;
       }
       // Claw rotation
-      s3_rotation.setPosition(1 - claw_rotation);
+      s3_rotation.setPosition(0.78 - claw_rotation * 0.78);
 
 
       shovel_trigger(shovel_pos);
