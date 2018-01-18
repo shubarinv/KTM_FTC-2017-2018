@@ -11,17 +11,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 /**
-* This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
-* the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
-* of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
-* class is instantiated on the Robot Controller and executed.
-* <p>
-* This particular OpMode just executes a basic Tank Drive Teleop for a four wheeled robot
-* It includes all the skeletal structure that all linear OpModes contain.
-* <p>
-* Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
-* Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
-*/
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
+ * <p>
+ * This particular OpMode just executes a basic Tank Drive Teleop for a four wheeled robot
+ * It includes all the skeletal structure that all linear OpModes contain.
+ * <p>
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ */
 
 @TeleOp(name = "KTM TeleOp 2 (ALT)", group = "Linear Opmode")
 
@@ -39,7 +39,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
   private DcMotor m3_Drive = null;
   private DcMotor m4_Drive = null;
   private DcMotor m5_Lift = null;
-    private DcMotor m6_Relic = null;
+  private DcMotor m6_Relic = null;
   private CRServo s1_top_Claw = null;
   private CRServo s2_bottom_Claw = null;
   private Servo s3_rotation = null;
@@ -107,8 +107,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
 
   /**
-  * End of functions declaration
-  */
+   * End of functions declaration
+   */
 
   @Override
   public void runOpMode() {
@@ -126,7 +126,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
     m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
     m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
     m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-      m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
+    m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
     s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
     s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
     s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
@@ -165,10 +165,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // - This uses basic math to combine motions and is easier to drive straight.
       double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
-      double claw_lift = gamepad2.left_stick_y;
+      double claw_lift_up = gamepad2.left_trigger;
+      double claw_lift_down = gamepad2.right_trigger;
       double claw_rotation = -gamepad2.right_stick_y;
-        float relic_L = gamepad2.left_trigger;
-        float relic_R = gamepad2.right_trigger;
+      float relic_L = gamepad2.left_trigger;
+      float relic_R = gamepad2.right_trigger;
       boolean claw_release_top = gamepad2.left_bumper;
       boolean claw_release_bottom = gamepad2.right_bumper;
       double shovel_pos = gamepad2.right_stick_y;
@@ -254,16 +255,21 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       shovel_trigger(shovel_pos);
       // Claw lift
-      lift_claw(claw_lift);
-
-        //Grab relic
-        if (relic_L != 0) {
-            m6_Relic.setPower(relic_L);
-        } else if (relic_R != 0) {
-            m6_Relic.setPower(-relic_R);
-        } else {
-            m6_Relic.setPower(relic_L);
-        }
+      if (claw_lift_up > 0) {
+        lift_claw(claw_lift_up);
+      } else if (claw_lift_down > 0) {
+        lift_claw(-magic(claw_lift_down));
+      } else {
+        lift_claw(0);
+      }
+      //Grab relic
+      if (relic_L != 0) {
+        m6_Relic.setPower(relic_L);
+      } else if (relic_R != 0) {
+        m6_Relic.setPower(-relic_R);
+      } else {
+        m6_Relic.setPower(relic_L);
+      }
 
       cdim.setDigitalChannelState(LED_CHANNEL, false);
     }
