@@ -165,8 +165,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
       // - This uses basic math to combine motions and is easier to drive straight.
       double drive_L = -gamepad1.left_stick_y;
       double drive_R = -gamepad1.right_stick_y;
-      double claw_lift_up = gamepad2.left_trigger;
-      double claw_lift_down = gamepad2.right_trigger;
+      double claw_lift = gamepad2.left_stick_y;
       double claw_rotation = -gamepad2.right_stick_y;
         float relic_L = gamepad2.left_trigger;
         float relic_R = gamepad2.right_trigger;
@@ -255,13 +254,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       shovel_trigger(shovel_pos);
       // Claw lift
-      if (claw_lift_up > 0) {
-        lift_claw(claw_lift_up);
-      } else if (claw_lift_down > 0) {
-        lift_claw(-magic(claw_lift_down));
-      } else {
-        lift_claw(0);
-      }
+      lift_claw(claw_lift);
+
         //Grab relic
         if (relic_L != 0) {
             m6_Relic.setPower(relic_L);
