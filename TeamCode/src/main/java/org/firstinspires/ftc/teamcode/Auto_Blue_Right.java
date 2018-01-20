@@ -86,6 +86,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     private CRServo s2_bottom_Claw = null;
     private Servo s4_kicker = null;
     private Servo s3_rotation = null;
+    private Servo s5_shovel = null;
   /*
   * Functions
   */
@@ -270,6 +271,7 @@ try {
         }
 
        s3_rotation=  hardwareMap.get(Servo.class, "s3 rotation");
+        s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
     
     // Конец обработки исключений
 
@@ -330,7 +332,7 @@ try {
         }
         s4_kicker.setPosition(0.1);
         cdim.setDigitalChannelState(LED_CHANNEL, false);
-        requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
+        //requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
 
 
         /*
@@ -342,17 +344,18 @@ try {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
                     sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1200);//поворот против часовой
+                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 2500);//движение вперёд
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 1200);//поворот против часовой
                     // lift_claw(-0.3, 1250);
                     sleep(100);
                     //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
                     sleep(100);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                     rotate_claw(0);
+                    sleep(1000);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение назад
+                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                     rotate_claw(0.8);
 
@@ -361,17 +364,17 @@ try {
                     telemetry.update();
 
                     sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1200);//поворот против часовой
+                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 2100);//движение вперёд
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 1200);//поворот против часовой
                     // lift_claw(-0.3, 1250);
                     sleep(100);
                     //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
                     sleep(100);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                     rotate_claw(0);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение назад
+                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                     rotate_claw(0.8);
 
@@ -380,36 +383,52 @@ try {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
                     sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1200);//поворот против часовой
+                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 2100);//движение вперёд
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 1200);//поворот против часовой
                     // lift_claw(-0.3, 1250);
                     sleep(100);
                     //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
+                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
                     sleep(100);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                     rotate_claw(0);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение назад
+                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                     rotate_claw(0.8);
                 } else {
                     telemetry.addData("Vumark", " NOT VISIBLE (X)");
                     telemetry.update();
                     sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1200);//поворот против часовой
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1450);//движение вперёд
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 1400);//поворот против часовой
                     // lift_claw(-0.3, 1250);
                     sleep(100);
                     //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
                     sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение вперёд
                     rotate_claw(0);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение назад
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                    sleep(1000);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
+                  /*  set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
+                    */
                     rotate_claw(0.8);
+                    s5_shovel.setPosition(0);
+                    set_Motors_Power_timed(-0.3, 0.3, 0.3, -0.3, 1000);//движение назад
+                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 200);//движение вперёд
+                    s5_shovel.setPosition(1);
+                    sleep(200);
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 800);//движение назад
+                    s5_shovel.setPosition(0.5);
+                    sleep(200);
+                    s5_shovel.setPosition(1);
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+                    rotate_claw(0);
+
+
                 }
                 wasExecuted = true;
             }
