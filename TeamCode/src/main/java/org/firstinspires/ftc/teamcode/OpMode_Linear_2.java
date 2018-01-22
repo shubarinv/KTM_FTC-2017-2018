@@ -84,7 +84,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
     }
 
     void shovel_trigger(double shovel_pos) {
-        s5_shovel.setPosition(0 - shovel_pos);
+        s5_shovel.setPosition(shovel_pos);
     }
 
     void lift_stick(boolean lift) { //if rotate true then rotate to  180 . else to 0
@@ -168,11 +168,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive_L = -gamepad1.left_stick_y;
             double drive_R = -gamepad1.right_stick_y;
-            double claw_lift_up = gamepad2.left_trigger;
-            double claw_lift_down = gamepad2.right_trigger;
+            double claw_lift_l = gamepad2.left_trigger;
+            double claw_lift_r = gamepad2.right_trigger;
             double claw_rotation = -gamepad2.right_stick_y;
-            float relic_L = gamepad2.left_trigger;
-            float relic_R = gamepad2.right_trigger;
+            float relic = gamepad2.left_stick_x;
             boolean claw_release_top = gamepad2.left_bumper;
             boolean claw_release_bottom = gamepad2.right_bumper;
             double shovel_pos = gamepad2.right_stick_y;
@@ -226,7 +225,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
             telemetry.update();
 
-      /*esa
+      /*
       * End of chassis related code.
       * Begin Claw related code
       */
@@ -257,25 +256,24 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 stick_lifted = !stick_lifted;
             }
             // Claw rotation
-            s3_rotation.setPosition(0.78 - claw_rotation * 0.78);
-
-
-            shovel_trigger(shovel_pos);
-            // Claw lift
-            if (claw_lift_up > 0) {
-                lift_claw(claw_lift_up);
-            } else if (claw_lift_down > 0) {
-                lift_claw(-magic(claw_lift_down));
-            } else {
-                lift_claw(0);
+            if (claw_rotation > 0) {
+                s3_rotation.setPosition(0.78 - claw_rotation * 0.78);
             }
+            else {
+                s3_rotation.setPosition(0.78);
+            }
+            shovel_trigger(shovel_pos);
             //Grab relic
-            if (relic_L != 0) {
-                m6_Relic.setPower(relic_L);
-            } else if (relic_R != 0) {
-                m6_Relic.setPower(-relic_R);
+            m6_Relic.setPower(relic);
+
+
+            // Claw_lift
+            if (claw_lift_l != 0) {
+                lift_claw(claw_lift_l);
+            } else if (claw_lift_r != 0) {
+                lift_claw(-claw_lift_r);
             } else {
-                m6_Relic.setPower(relic_L);
+                lift_claw(claw_lift_l);
             }
 
             //Relic claw
