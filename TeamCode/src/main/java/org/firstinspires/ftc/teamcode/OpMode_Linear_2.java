@@ -265,7 +265,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             }
             shovel_trigger(shovel_pos);
             //Grab relic
-            m6_Relic.setPower(relic);
+            m6_Relic.setPower(relic * 0.2);
 
 
             // Claw_lift
