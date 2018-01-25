@@ -170,15 +170,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
             double drive_R = -gamepad1.right_stick_y;
             double claw_lift_l = gamepad2.left_trigger;
             double claw_lift_r = gamepad2.right_trigger;
-            double claw_rotation = -gamepad2.right_stick_y;
-            float relic = gamepad2.left_stick_y;
+            double claw_rotation = -gamepad2.right_stick_x;
+            float relic = gamepad2.left_stick_x;
             boolean claw_release_top = gamepad2.left_bumper;
             boolean claw_release_bottom = gamepad2.right_bumper;
             double shovel_pos = gamepad2.right_stick_y;
 
             boolean relic_claw_up = gamepad1.dpad_up;
             boolean relic_claw_down = gamepad1.dpad_down;
-            double relic_arm = gamepad2.left_stick_x;
+            double relic_arm = gamepad2.left_stick_y;
 
             cdim = hardwareMap.deviceInterfaceModule.get("dim");
             //Slide Related
@@ -278,7 +278,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
             }
 
             //Relic claw
-            s7_relic_arm.setPosition(0.5 + relic_arm * 0.5);
+            s7_relic_arm.setPosition(relic_arm);
+
 
             //Relic arm
             if (relic_claw_up) {
