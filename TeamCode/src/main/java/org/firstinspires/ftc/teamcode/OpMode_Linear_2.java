@@ -171,7 +171,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             double claw_lift_l = gamepad2.left_trigger;
             double claw_lift_r = gamepad2.right_trigger;
             double claw_rotation = -gamepad2.right_stick_y;
-            float relic = gamepad2.left_stick_x;
+            float relic = gamepad2.left_stick_y;
             boolean claw_release_top = gamepad2.left_bumper;
             boolean claw_release_bottom = gamepad2.right_bumper;
             double shovel_pos = gamepad2.right_stick_y;
@@ -255,6 +255,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 lift_stick(stick_lifted);
                 stick_lifted = !stick_lifted;
             }
+
             // Claw rotation
             if (claw_rotation > 0) {
                 s3_rotation.setPosition(0.78 - claw_rotation * 0.78);
@@ -269,11 +270,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
             // Claw_lift
             if (claw_lift_l != 0) {
-                lift_claw(claw_lift_l);
+                lift_claw(-claw_lift_l);
             } else if (claw_lift_r != 0) {
-                lift_claw(-claw_lift_r);
+                lift_claw(claw_lift_r);
             } else {
-                lift_claw(claw_lift_l);
+                lift_claw(-claw_lift_l);
             }
 
             //Relic claw
