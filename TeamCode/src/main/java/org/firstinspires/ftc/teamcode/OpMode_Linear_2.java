@@ -127,8 +127,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
-        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-        s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+        //s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+        //  s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
