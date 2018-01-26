@@ -170,11 +170,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
             double drive_R = -gamepad1.right_stick_y;
             double claw_lift_l = gamepad2.left_trigger;
             double claw_lift_r = gamepad2.right_trigger;
-            double claw_rotation = -gamepad2.right_stick_x;
+            double claw_rotation = -gamepad2.right_stick_y;
             float relic = gamepad2.left_stick_x;
-            /*boolean claw_release_top = gamepad2.left_bumper;
+          /*  boolean claw_release_top = gamepad2.left_bumper;
             boolean claw_release_bottom = gamepad2.right_bumper;*/
-            double relic_claw_d = gamepad1.right_stick_x;
+            // double relic_claw_d = gamepad1.right_stick_x;
             double shovel_pos = gamepad2.right_stick_y;
 
             boolean relic_claw_up = gamepad1.dpad_up;
@@ -260,8 +260,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             // Claw rotation
             if (claw_rotation > 0) {
                 s3_rotation.setPosition(0.78 - claw_rotation * 0.78);
-            }
-            else {
+            } else {
                 s3_rotation.setPosition(0.78);
             }
             shovel_trigger(shovel_pos);
@@ -283,14 +282,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
 
             //Relic arm
-          /*  if (relic_claw_up) {
+            if (relic_claw_up) {
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
                 s6_relic_claw.setPosition(0);
-            } else {
-                s6_relic_claw.setPosition(0.5);
-            }*/
-            s6_relic_claw.setPosition(relic_claw_d);
+            }
+
+            //s6_relic_claw.setPosition(relic_claw_d);
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
     }
