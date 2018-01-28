@@ -185,8 +185,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
             double shovel_pos = gamepad2.right_stick_y;
 
-            boolean relic_claw_up = gamepad1.dpad_up;
-            boolean relic_claw_down = gamepad1.dpad_down;
+            boolean relic_claw_up = gamepad2.dpad_up;
+            boolean relic_claw_down = gamepad2.dpad_down;
             double relic_arm = gamepad2.left_stick_y;
 
             cdim = hardwareMap.deviceInterfaceModule.get("dim");
