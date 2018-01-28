@@ -191,13 +191,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
             } else {
                 slide = slide_L;
             }
-            double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
-            if (A <= 1) {
-                m1_Drive_Power = (drive_L - slide);
-                m2_Drive_Power = drive_R - slide;
-                m3_Drive_Power = drive_R + slide;
-                m4_Drive_Power = drive_L + slide;
-            } else {
+          /*  double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
+            if (A <= 1) {*/
+            m1_Drive_Power = magic(drive_L - slide);
+            m2_Drive_Power = magic(drive_R - slide);
+            m3_Drive_Power = magic(drive_R + slide);
+            m4_Drive_Power = magic(drive_L + slide);
+           /* } else {
 
 
                 drive_L = drive_L / A;
@@ -208,18 +208,19 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 m3_Drive_Power = (drive_R + slide) * 2;
                 m4_Drive_Power = (drive_L + slide) * 2;
             }
+            */
             double max = Math.max(Math.max(m1_Drive_Power, m2_Drive_Power), Math.max(m3_Drive_Power, m4_Drive_Power));
             // Send calculated power to wheels
             if (max >= 1) {
-                m1_Drive.setPower(magic(m1_Drive_Power * -1) / max);
-                m2_Drive.setPower(magic(m2_Drive_Power) / max);
-                m3_Drive.setPower(magic(m3_Drive_Power) / max);
-                m4_Drive.setPower(magic(m4_Drive_Power * -1) / max);
+                m1_Drive.setPower(m1_Drive_Power * -1 / max);
+                m2_Drive.setPower(m2_Drive_Power / max);
+                m3_Drive.setPower(m3_Drive_Power / max);
+                m4_Drive.setPower(m4_Drive_Power * -1 / max);
             } else {
-                m1_Drive.setPower(magic(m1_Drive_Power * -1));
-                m2_Drive.setPower(magic(m2_Drive_Power));
-                m3_Drive.setPower(magic(m3_Drive_Power));
-                m4_Drive.setPower(magic(m4_Drive_Power * -1));
+                m1_Drive.setPower(m1_Drive_Power * -1);
+                m2_Drive.setPower(m2_Drive_Power);
+                m3_Drive.setPower(m3_Drive_Power);
+                m4_Drive.setPower(m4_Drive_Power * -1);
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
