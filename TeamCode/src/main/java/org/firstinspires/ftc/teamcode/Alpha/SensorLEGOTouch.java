@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode.Alpha;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -43,7 +42,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @TeleOp(name = "Sensor: LEGO touch", group = "Sensor")
-@Disabled
+//@Disabled
 public class SensorLEGOTouch extends LinearOpMode {
 
     TouchSensor touchSensor;  // Hardware Device Object
@@ -52,7 +51,7 @@ public class SensorLEGOTouch extends LinearOpMode {
     public void runOpMode() {
 
         // get a reference to our Light Sensor object.
-        touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
+        touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
         int counter = 0;
 
         // wait for the start button to be pressed.
