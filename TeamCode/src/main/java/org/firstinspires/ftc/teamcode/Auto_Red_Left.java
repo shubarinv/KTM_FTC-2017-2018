@@ -143,8 +143,6 @@ public class Auto_Red_Left extends LinearOpMode {
         bPrevState = bCurrState;
 
         double[] hue_arr = new double[5];
-        double[] blue = new double[5];
-        double[] red = new double[5];
         //для точности 4 измерения
         for (int j = 0; j < 4; j++) {
             // convert the RGB values to HSV values.
@@ -153,23 +151,16 @@ public class Auto_Red_Left extends LinearOpMode {
             telemetry.update();
             sleep(500);
             Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-            red[j] = sensorRGB.red() * 255 / 800;
-            blue[j] = sensorRGB.blue() * 255 / 800;
             double hue = hsvValues[0];
             hue_arr[j] = hue;
         }
 
         //Находим среднее арифметическое
-        double red_sr = 0;
-        double blue_sr = 0;
+
         double hue_sr = 0;
         for (int j = 0; j < 4; j++) {
-            red_sr = red_sr + red[j];
-            blue_sr = blue_sr + blue[j];
             hue_sr = hue_sr + hue_arr[j];
         }
-        red_sr = red_sr / 4;
-        blue_sr = blue_sr / 4;
         hue_sr = hue_sr / 4;
         //
         if (hue_sr > 110 && hue_sr < 290) {
@@ -177,12 +168,7 @@ public class Auto_Red_Left extends LinearOpMode {
         } else if (hue_sr < 110 || hue_sr > 290 && hue_sr <= 360) {
             return "Red";
         }
-        // THIS IS DEPRECATED
-        else if (blue_sr > red_sr) {
-            return "Blue";
-        } else {
-            return "Red";
-        }
+        return "Fail";
     }
 
 
@@ -214,62 +200,38 @@ public class Auto_Red_Left extends LinearOpMode {
 
         //Обработка исключений
         // m1_drive
-        try {
-            m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-        } catch (RuntimeException e) {
-            m1_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m1_Drive");
-        }
+
+        m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+
         // m2_drive
-        try {
-            m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-        } catch (RuntimeException e) {
-            m2_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m2_Drive");
-        }
+
+        m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+
         // m3_drive
-        try {
-            m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-        } catch (RuntimeException e) {
-            m3_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m3_Drive");
-        }
+
+        m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+
         // m4_drive
-        try {
-            m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        } catch (RuntimeException e) {
-            m4_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m4_Drive");
-        }
+
+        m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+
         // m5_lift
-        try {
-            m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        } catch (RuntimeException e) {
-            m5_Lift = null;
-            telemetry.addData("EXCEPTION", "Отвалился m5_lift");
-        }
+
+        m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+
         // s1_top_Claw
-        try {
-            s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-        } catch (RuntimeException e) {
-            s1_top_Claw = null;
-            telemetry.addData("EXCEPTION", "Отвалился s1 top claw");
-        }
+
+        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+
         // s2_bottom_Claw
-        try {
-            s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-        } catch (RuntimeException e) {
-            s2_bottom_Claw = null;
-            telemetry.addData("EXCEPTION", "Отвалился s2 bottom claw");
-        }
+
+        s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+
         //s4_kicker
-        try {
-            s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-        } catch (RuntimeException e) {
-            s4_kicker = null;
-            telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
-        }
-       s3_rotation=  hardwareMap.get(Servo.class, "s3 rotation");
+
+        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+        
+        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         // Конец обработки исключений
         m1_Drive.setDirection(DcMotor.Direction.REVERSE);
         m2_Drive.setDirection(DcMotor.Direction.REVERSE);
@@ -328,7 +290,7 @@ public class Auto_Red_Left extends LinearOpMode {
                 }
                 s4_kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
-               //
+                //
                 // requestOpModeStop();
 
 
@@ -343,9 +305,9 @@ public class Auto_Red_Left extends LinearOpMode {
                     sleep(100);
                     set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1200);//поворот против часовой
-                   // lift_claw(-0.3, 1250);
+                    // lift_claw(-0.3, 1250);
                     sleep(100);
-                 //   grab_box(false, true, false, false);
+                    //   grab_box(false, true, false, false);
                     set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
                     sleep(100);
                     set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
