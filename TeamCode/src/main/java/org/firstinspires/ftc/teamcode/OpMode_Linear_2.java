@@ -246,21 +246,20 @@ public class OpMode_Linear_2 extends LinearOpMode {
             //Partially AutoOP
             if (relic == 0) {
                 if (relic_arm_extend) {
-                    setPower_Timed(m6_Relic, 0.2, 700);
+                    setPower_Timed(m6_Relic, 0.2, 500);
                     s7_relic_arm.setPosition(0.9);
                     while (!touchSensor.isPressed()) {
                         m6_Relic.setPower(0.1);
                     }
 
-                    s7_relic_arm.setPosition(1);
                     m6_Relic.setPower(0);
                 }
                 if (relic_arm_halt) {
                     s7_relic_arm.setPosition(0.3);
                     sleep(200);
-                    setPower_Timed(m6_Relic, -0.2, 700);
+                    setPower_Timed(m6_Relic, -0.2, 500);
                     while (!touchSensor.isPressed()) {
-                        m6_Relic.setPower(-0.1);
+                        m6_Relic.setPower(-0.05);
                     }
                     m6_Relic.setPower(0);
                 }
@@ -273,6 +272,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
             //Relic arm_small
             if (relic_claw_up) {
+                s7_relic_arm.setPosition(1);
+                sleep(200);
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
                 s6_relic_claw.setPosition(0);
