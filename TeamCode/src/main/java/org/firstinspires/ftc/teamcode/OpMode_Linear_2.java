@@ -247,17 +247,17 @@ public class OpMode_Linear_2 extends LinearOpMode {
             if (relic == 0) {
                 if (relic_arm_extend) {
                     setPower_Timed(m6_Relic, 0.2, 700);
+                    s7_relic_arm.setPosition(0);
                     while (!touchSensor.isPressed()) {
                         m6_Relic.setPower(0.1);
                     }
-                    s7_relic_arm.setPosition(0);
 
                     m6_Relic.setPower(0);
                 }
                 if (relic_arm_halt) {
                     s7_relic_arm.setPosition(0.3);
                     sleep(200);
-                    setPower_Timed(m6_Relic, 0.2, 700);
+                    setPower_Timed(m6_Relic, -0.2, 700);
                     while (!touchSensor.isPressed()) {
                         m6_Relic.setPower(-0.1);
                     }
