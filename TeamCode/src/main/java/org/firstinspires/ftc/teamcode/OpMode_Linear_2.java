@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -29,6 +30,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class OpMode_Linear_2 extends LinearOpMode {
 
     private static final int LED_CHANNEL = 5;
+    TouchSensor touchSensor;  // Hardware Device Object
     ColorSensor sensorRGB;
     DeviceInterfaceModule cdim;
     // Declare OpMode members.
@@ -94,9 +96,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
             s4_kicker.setPosition(0);
         }
     }
-    // Grab another box
-    // Place box to shelf
 
+    void setPower_Timed(DcMotor motor, double power, long milliseconds) {
+        motor.setPower(power);
+        sleep(milliseconds);
+        motor.setPower(0);
+
+    }
 
   /*
   *Relic related
@@ -135,6 +141,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
         s6_relic_claw = hardwareMap.get(Servo.class, "s6 relic claw");
         s7_relic_arm = hardwareMap.get(Servo.class, "s7 relic arm");
 
+        //sensor
+        touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
 
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
@@ -172,9 +180,9 @@ public class OpMode_Linear_2 extends LinearOpMode {
             double claw_lift_r = gamepad2.right_trigger;
             double claw_rotation = -gamepad2.right_stick_y;
             float relic = gamepad2.left_stick_x;
-          /*  boolean claw_release_top = gamepad2.left_bumper;
-            boolean claw_release_bottom = gamepad2.right_bumper;*/
-            // double relic_claw_d = gamepad1.right_stick_x;
+            boolean relic_arm_extend = gamepad2.dpad_left;
+            boolean relic_arm_halt = gamepad2.dpad_right;
+
             double shovel_pos = gamepad2.right_stick_y;
 
             boolean relic_claw_up = gamepad1.dpad_up;
@@ -191,24 +199,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
             } else {
                 slide = slide_L;
             }
-          /*  double A = Math.abs(drive_L) + Math.abs(drive_R) + Math.abs(slide);
-            if (A <= 1) {*/
             m1_Drive_Power = magic(drive_L - slide);
             m2_Drive_Power = magic(drive_R - slide);
             m3_Drive_Power = magic(drive_R + slide);
             m4_Drive_Power = magic(drive_L + slide);
-           /* } else {
 
-
-                drive_L = drive_L / A;
-                drive_R = drive_R / A;
-                slide = slide / A;
-                m1_Drive_Power = (drive_L - slide) * 2;
-                m2_Drive_Power = (drive_R - slide) * 2;
-                m3_Drive_Power = (drive_R + slide) * 2;
-                m4_Drive_Power = (drive_L + slide) * 2;
-            }
-            */
             double max = Math.max(Math.max(m1_Drive_Power, m2_Drive_Power), Math.max(m3_Drive_Power, m4_Drive_Power));
             // Send calculated power to wheels
             if (max >= 1) {
@@ -229,34 +224,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
       /*
       * End of chassis related code.
-      * Begin Claw related code
       */
-
-            // Grab box
-            // grab_box(claw_clamp_top, claw_clamp_bottom, claw_release_top ,claw_release_bottom);
-            //Release
-
-     /* if (claw_release_top) {
-        s1_top_Claw.setPower(-1);
-      }
-      else{
-        s1_top_Claw.setPower(claw_clamp_top);
-      }
-
-
-      if (claw_release_bottom) {
-        s2_bottom_Claw.setPower(1);
-      }
-      else{
-        s2_bottom_Claw.setPower(-claw_clamp_bottom);
-      }*/
-            //!end
-
-
-            if (gamepad2.y) {
-                lift_stick(stick_lifted);
-                stick_lifted = !stick_lifted;
-            }
 
             // Claw rotation
             if (claw_rotation > 0) {
@@ -265,9 +233,6 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 s3_rotation.setPosition(0.78);
             }
             shovel_trigger(shovel_pos);
-            //Grab relic
-            m6_Relic.setPower(relic * 0.2);
-
 
             // Claw_lift
             if (claw_lift_l != 0) {
@@ -278,18 +243,39 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 lift_claw(-claw_lift_l);
             }
 
+            //Partially AutoOP
+            if (relic_arm_extend) {
+                setPower_Timed(m6_Relic, 0.2, 700);
+                while (!touchSensor.isPressed()) {
+                    m6_Relic.setPower(0.1);
+                }
+                s7_relic_arm.setPosition(0);
+
+                m6_Relic.setPower(0);
+            }
+            if (relic_arm_halt) {
+                s7_relic_arm.setPosition(0.3);
+                sleep(200);
+                setPower_Timed(m6_Relic, 0.2, 700);
+                while (!touchSensor.isPressed()) {
+                    m6_Relic.setPower(-0.1);
+                }
+                m6_Relic.setPower(0);
+            }
+
+            //relic arm
+
+            m6_Relic.setPower(relic * 0.2);
             //Relic claw
             s7_relic_arm.setPosition(relic_arm);
 
 
-            //Relic arm
+            //Relic arm_small
             if (relic_claw_up) {
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
                 s6_relic_claw.setPosition(0);
             }
-
-            //s6_relic_claw.setPosition(relic_claw_d);
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
     }
