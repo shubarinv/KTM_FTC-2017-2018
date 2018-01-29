@@ -184,7 +184,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean relic_arm_halt = gamepad2.dpad_right;
 
             double shovel_pos = gamepad2.right_stick_y;
-
+            boolean slide_left_bump = gamepad1.left_bumper;
+            boolean slide_right_bump = gamepad1.right_bumper;
             boolean relic_claw_up = gamepad2.dpad_up;
             boolean relic_claw_down = gamepad2.dpad_down;
             double relic_arm = gamepad2.left_stick_y;
@@ -198,6 +199,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 slide = slide_R * -1;
             } else {
                 slide = slide_L;
+            }
+            if (slide_left_bump) {
+                slide = 0.7;
+            }
+            if (slide_right_bump) {
+                slide = -0.7;
             }
             m1_Drive_Power = magic(drive_L - slide);
             m2_Drive_Power = magic(drive_R - slide);
