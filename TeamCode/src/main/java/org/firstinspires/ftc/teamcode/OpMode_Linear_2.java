@@ -251,6 +251,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
                         m6_Relic.setPower(0.1);
                     } else {
                         m6_Relic.setPower(0);
+                        s7_relic_arm.setPosition(0.7);
+                        sleep(500);
                         s7_relic_arm.setPosition(0.9);
                     }
 
@@ -265,8 +267,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
                         m6_Relic.setPower(0);
                     }
                 }
-            }
 
+            }
             //relic arm
 
             m6_Relic.setPower(relic * 0.2);
@@ -279,6 +281,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
                 s6_relic_claw.setPosition(0);
+                s7_relic_arm.setPosition(0.9);
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
