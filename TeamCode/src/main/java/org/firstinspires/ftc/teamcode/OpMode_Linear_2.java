@@ -281,6 +281,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
                 s6_relic_claw.setPosition(0);
+                sleep(300);
                 s7_relic_arm.setPosition(0.9);
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
