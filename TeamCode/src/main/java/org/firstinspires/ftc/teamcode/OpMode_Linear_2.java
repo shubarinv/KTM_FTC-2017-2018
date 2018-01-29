@@ -266,10 +266,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 }
                 if (relic_arm_halt) {
                     s7_relic_arm.setPosition(0.3);
-                    m1_Drive.setPower(-0.4);
-                    m2_Drive.setPower(-0.4);
-                    m3_Drive.setPower(0.4);
-                    m4_Drive.setPower(0.4);
+                    m1_Drive.setPower(-0.5);
+                    m2_Drive.setPower(0.5);
+                    m3_Drive.setPower(0.5);
+                    m4_Drive.setPower(-0.5);
                     sleep(300);
                     m1_Drive.setPower(0);
                     m2_Drive.setPower(0);
