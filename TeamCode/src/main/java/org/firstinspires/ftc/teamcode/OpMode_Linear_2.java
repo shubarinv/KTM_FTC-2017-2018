@@ -201,10 +201,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 slide = slide_L;
             }
             if (slide_left_bump) {
-                slide = 0.7;
+                slide = 0.07;
             }
             if (slide_right_bump) {
-                slide = -0.7;
+                slide = -0.07;
             }
             m1_Drive_Power = magic(drive_L - slide);
             m2_Drive_Power = magic(drive_R - slide);
@@ -266,7 +266,16 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 }
                 if (relic_arm_halt) {
                     s7_relic_arm.setPosition(0.3);
-                    sleep(200);
+                    m1_Drive.setPower(-0.4);
+                    m2_Drive.setPower(-0.4);
+                    m3_Drive.setPower(0.4);
+                    m4_Drive.setPower(0.4);
+                    sleep(300);
+                    m1_Drive.setPower(0);
+                    m2_Drive.setPower(0);
+                    m3_Drive.setPower(0);
+                    m4_Drive.setPower(0);
+                    sleep(300);
                     setPower_Timed(m6_Relic, -0.2, 500);
                     while (!touchSensor.isPressed()) {
                         m6_Relic.setPower(-0.05);
