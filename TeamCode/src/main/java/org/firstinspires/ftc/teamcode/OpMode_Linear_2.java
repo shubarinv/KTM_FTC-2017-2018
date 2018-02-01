@@ -134,7 +134,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
         s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-        s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+        //s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
@@ -301,9 +301,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 sleep(300);
                 s7_relic_arm.setPosition(0.9);
             }
-
-            s1_top_Claw.setPower(claw_cr);
-            s2_bottom_Claw.setPower(-claw_cr);
+            if (claw_cr > 0) {
+                s1_top_Claw.setPower(1);
+            } else if (claw_cr < 0) {
+                s1_top_Claw.setPower(-1);
+            } else {
+                s1_top_Claw.setPower(0);
+            }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
     }
