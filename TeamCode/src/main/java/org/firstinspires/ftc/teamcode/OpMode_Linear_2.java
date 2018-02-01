@@ -133,8 +133,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
-        //s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-        //  s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
+        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+        s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
@@ -188,7 +188,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean slide_right_bump = gamepad1.right_bumper;
             boolean relic_claw_up = gamepad2.dpad_up;
             boolean relic_claw_down = gamepad2.dpad_down;
-            double relic_arm = gamepad2.left_stick_y;
+            double claw_cr = gamepad2.left_stick_y;
+
 
             cdim = hardwareMap.deviceInterfaceModule.get("dim");
             //Slide Related
@@ -257,10 +258,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
                     while (!touchSensor.isPressed()) {
                         m6_Relic.setPower(0.1);
                     }
-                        m6_Relic.setPower(0);
-                        s7_relic_arm.setPosition(0.7);
-                        sleep(500);
-                        s7_relic_arm.setPosition(0.9);
+                    m6_Relic.setPower(0);
+                    s7_relic_arm.setPosition(0.7);
+                    sleep(500);
+                    s7_relic_arm.setPosition(0.9);
 
 
                 }
@@ -280,7 +281,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
                     while (!touchSensor.isPressed()) {
                         m6_Relic.setPower(-0.05);
                     }
-                        m6_Relic.setPower(0);
+                    m6_Relic.setPower(0);
 
                 }
 
@@ -300,6 +301,9 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 sleep(300);
                 s7_relic_arm.setPosition(0.9);
             }
+
+            s1_top_Claw.setPower(claw_cr);
+            s2_bottom_Claw.setPower(-claw_cr);
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
     }
