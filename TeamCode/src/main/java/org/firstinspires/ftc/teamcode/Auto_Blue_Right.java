@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -69,6 +70,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     boolean bCurrState = false;
     // bLedOn represents the state of the LED.
     boolean bLedOn = false;
+    OpticalDistanceSensor odsSensor;  // Hardware Device Object
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -212,9 +214,9 @@ public class Auto_Blue_Right extends LinearOpMode {
     * Initialize the drive system variables.
     * The init() method of the hardware class does all the work here
     */
-    //Обработка исключений
-    // m1_drive
-try {
+        //Обработка исключений
+        // m1_drive
+        try {
             m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         } catch (RuntimeException e) {
             m1_Drive = null;
@@ -269,16 +271,16 @@ try {
             s4_kicker = null;
             telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
         }
-
-       s3_rotation=  hardwareMap.get(Servo.class, "s3 rotation");
+        odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
+        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
-    
-    // Конец обработки исключений
 
-    m1_Drive.setDirection(DcMotor.Direction.FORWARD);
-    m2_Drive.setDirection(DcMotor.Direction.FORWARD);
-    m3_Drive.setDirection(DcMotor.Direction.FORWARD);
-    m4_Drive.setDirection(DcMotor.Direction.FORWARD);
+        // Конец обработки исключений
+
+        m1_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m2_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m3_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m4_Drive.setDirection(DcMotor.Direction.FORWARD);
     /* AdaFruit */
 
         // get a reference to our DeviceInterfaceModule object.
@@ -315,121 +317,61 @@ try {
                 grab_box(true, false, true, false);
                 lift_claw(0.1, 250);
 
-        telemetry.addData("Step-1", "Running");
-        String jewel_color=get_color();
-        telemetry.addData("AdaFruit", jewel_color);
-        telemetry.update();
-        if (Objects.equals(jewel_color, "Blue")) {
-          set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
-          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
-        } else if (Objects.equals(jewel_color, "Red")) {
-          set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
-          set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
-        } else {
-          telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-          telemetry.addData("Step-1", "FAILED");
-          telemetry.update();
-        }
-        s4_kicker.setPosition(0.1);
-        cdim.setDigitalChannelState(LED_CHANNEL, false);
-        //requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
+                telemetry.addData("Step-1", "Running");
+                String jewel_color = get_color();
+                telemetry.addData("AdaFruit", jewel_color);
+                telemetry.update();
+                if (Objects.equals(jewel_color, "Blue")) {
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+                } else if (Objects.equals(jewel_color, "Red")) {
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+                } else {
+                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                    telemetry.addData("Step-1", "FAILED");
+                    telemetry.update();
+                }
+                s4_kicker.setPosition(0.1);
+                cdim.setDigitalChannelState(LED_CHANNEL, false);
+                //requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
 
 
         /*
         STEP 2 -Cryptobox related
         */
-
-                telemetry.addData("Step-2", "Running");
+                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
+                while (odsSensor.getLightDetected() < 0.3) {
+                    set_Motors_Power(0.1, -0.1, -0.1, 0.1);//движение вперёд
+                    telemetry.addData("Line", "VISIBLE");
+                    telemetry.update();
+                }
+                telemetry.addData("Line", "VISIBLE");
+                telemetry.update();
+                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 600);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
-                    sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 2500);//движение вперёд
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 1200);//поворот против часовой
-                    // lift_claw(-0.3, 1250);
-                    sleep(100);
-                    //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
-                    sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    rotate_claw(0);
-                    sleep(1000);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    rotate_claw(0.8);
-
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
-
-                    sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 2100);//движение вперёд
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 1200);//поворот против часовой
-                    // lift_claw(-0.3, 1250);
-                    sleep(100);
-                    //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
-                    sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    rotate_claw(0);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    rotate_claw(0.8);
-
-
                 } else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
-                    sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 2100);//движение вперёд
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 1200);//поворот против часовой
-                    // lift_claw(-0.3, 1250);
-                    sleep(100);
-                    //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
-                    sleep(100);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    rotate_claw(0);
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                    rotate_claw(0.8);
                 } else {
                     telemetry.addData("Vumark", " NOT VISIBLE (X)");
                     telemetry.update();
-                    sleep(100);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1450);//движение вперёд
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 1400);//поворот против часовой
-                    // lift_claw(-0.3, 1250);
-                    sleep(100);
-                    //   grab_box(false, true, false, false);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение назад
-                    sleep(100);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение вперёд
-                    rotate_claw(0);
-                    sleep(1000);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
-                  /*  set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
-                    */
-                    rotate_claw(0.8);
-                    s5_shovel.setPosition(0);
-                    set_Motors_Power_timed(-0.3, 0.3, 0.3, -0.3, 1000);//движение назад
-                    set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 200);//движение вперёд
-                    s5_shovel.setPosition(1);
-                    sleep(200);
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 800);//движение назад
-                    s5_shovel.setPosition(0.5);
-                    sleep(200);
-                    s5_shovel.setPosition(1);
-                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
-                    rotate_claw(0);
-
-
                 }
+                set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
+                sleep(100);
+                set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                rotate_claw(0);
+                sleep(1000);
+                set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
+                set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                rotate_claw(0.8);
+
                 wasExecuted = true;
             }
             telemetry.update();
