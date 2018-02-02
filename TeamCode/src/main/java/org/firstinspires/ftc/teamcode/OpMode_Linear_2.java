@@ -42,8 +42,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
     private DcMotor m4_Drive = null;
     private DcMotor m5_Lift = null;
     private DcMotor m6_Relic = null;
-    private CRServo s1_top_Claw = null;
-    private CRServo s2_bottom_Claw = null;
+    private CRServo s1_Relic_ext_ret = null;
+    //private CRServo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
     private Servo s4_kicker = null;
     private Servo s5_shovel = null;
@@ -58,27 +58,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
   /*
   * Functions declaration
   */
-
-    // Grab box
-    void grab_box(float claw_clamp_top, float claw_clamp_bottom, boolean claw_release_top, boolean claw_release_bottom) {
-        s1_top_Claw.setDirection(CRServo.Direction.FORWARD);
-        s2_bottom_Claw.setDirection(CRServo.Direction.REVERSE);
-        //Release
-
-        if (claw_release_top) {
-            s1_top_Claw.setPower(1);
-        } else {
-            s1_top_Claw.setPower(claw_clamp_top * -1);
-        }
-
-
-        if (claw_release_bottom) {
-            s2_bottom_Claw.setPower(1);
-        } else {
-            s2_bottom_Claw.setPower(claw_clamp_bottom * -1);
-        }
-    }
-
+    
 
     //Lift claw
     void lift_claw(double lift_power) {
@@ -101,6 +81,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
         motor.setPower(power);
         sleep(milliseconds);
         motor.setPower(0);
+
+    }
+
+    void setPower_Timed(CRServo Crservo, double power, long milliseconds) {
+        Crservo.setPower(power);
+        sleep(milliseconds);
+        Crservo.setPower(0);
 
     }
 
@@ -133,7 +120,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
         m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
-        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+        s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
         //s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
@@ -188,7 +175,6 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean slide_right_bump = gamepad1.right_bumper;
             boolean relic_claw_up = gamepad2.dpad_up;
             boolean relic_claw_down = gamepad2.dpad_down;
-            double claw_cr = gamepad2.left_stick_y;
 
 
             cdim = hardwareMap.deviceInterfaceModule.get("dim");
@@ -254,11 +240,11 @@ public class OpMode_Linear_2 extends LinearOpMode {
             //Partially AutoOP
             if (relic == 0) {
                 if (relic_arm_extend) {
-                    setPower_Timed(m6_Relic, 0.3, 450);
+                    setPower_Timed(s1_Relic_ext_ret, 1, 450);
                     while (!touchSensor.isPressed()) {
-                        m6_Relic.setPower(0.1);
+                        s1_Relic_ext_ret.setPower(0.5);
                     }
-                    m6_Relic.setPower(0);
+                    s1_Relic_ext_ret.setPower(0);
                     s7_relic_arm.setPosition(0.7);
                     sleep(500);
                     s7_relic_arm.setPosition(0.9);
@@ -277,18 +263,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
                     m3_Drive.setPower(0);
                     m4_Drive.setPower(0);
                     sleep(300);
-                    setPower_Timed(m6_Relic, -0.2, 700);
-                    while (!touchSensor.isPressed()) {
-                        m6_Relic.setPower(-0.075);
-                    }
-                    m6_Relic.setPower(0);
+                    setPower_Timed(s1_Relic_ext_ret, -1, 1500);
+
 
                 }
 
             }
             //relic arm
 
-            m6_Relic.setPower(relic * 0.2);
+            s1_Relic_ext_ret.setPower(relic * 0.2);
 
 
             //Relic arm_small
@@ -299,14 +282,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             } else if (relic_claw_down) {
                 s6_relic_claw.setPosition(0);
                 sleep(300);
-                s7_relic_arm.setPosition(0.9);
-            }
-            if (claw_cr > 0) {
-                s1_top_Claw.setPower(1);
-            } else if (claw_cr < 0) {
-                s1_top_Claw.setPower(-1);
-            } else {
-                s1_top_Claw.setPower(0);
+                s7_relic_arm.setPosition(1);
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
