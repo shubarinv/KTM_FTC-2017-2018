@@ -41,7 +41,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
     private DcMotor m5_Lift = null;
-    private DcMotor m6_Relic = null;
+    private DcMotor m6_intake = null;
     private CRServo s1_Relic_ext_ret = null;
     //private CRServo s2_bottom_Claw = null;
     private Servo s3_rotation = null;
@@ -118,7 +118,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
         m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        m6_Relic = hardwareMap.get(DcMotor.class, "m6 relic");
+        m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
         s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
         //s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
@@ -169,7 +169,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean relic_arm_extend = gamepad2.dpad_left;
             boolean relic_arm_halt = gamepad2.dpad_right;
 
-            double shovel_pos = gamepad2.right_stick_y;
+            double intake_motor = gamepad2.right_stick_y; // to motor if y<0 p=0 else prop
             boolean slide_left_bump = gamepad1.left_bumper;
             boolean slide_right_bump = gamepad1.right_bumper;
             boolean relic_claw_up = gamepad2.dpad_up;
@@ -225,8 +225,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
             } else {
                 s3_rotation.setPosition(0.78);
             }
-            shovel_trigger(shovel_pos);
-
+            shovel_trigger(intake_motor);
+            if (intake_motor < 0) {
+                m6_intake.setPower(0);
+            } else {
+                m6_intake.setPower(intake_motor);
+            }
             // Claw_lift
             if (claw_lift_l != 0) {
                 lift_claw(-claw_lift_l);
