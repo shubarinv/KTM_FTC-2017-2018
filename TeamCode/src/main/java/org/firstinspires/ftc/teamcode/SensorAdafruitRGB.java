@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /*
  *
@@ -73,6 +74,7 @@ public class SensorAdafruitRGB extends LinearOpMode {
     static final int LED_CHANNEL = 5;
     ColorSensor sensorRGB;
     DeviceInterfaceModule cdim;
+    private Servo s4_kicker = null;
 
     @Override
     public void runOpMode() {
@@ -107,10 +109,11 @@ public class SensorAdafruitRGB extends LinearOpMode {
         // wait for the start button to be pressed.
         waitForStart();
 
+        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
         // loop and read the RGB data.
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
         while (opModeIsActive()) {
-
+            s4_kicker.setPosition(0.75);
             // check the status of the x button on gamepad.
             bCurrState = true;
 
