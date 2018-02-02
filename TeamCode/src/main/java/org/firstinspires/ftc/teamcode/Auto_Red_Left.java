@@ -346,9 +346,10 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
                 } else {
-                    telemetry.addData("Vumark", " NOT VISIBLE (X)");
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();
                 }
+                telemetry.addData("Line", "VISIBLE (OK)");
                 set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
                 sleep(100);
                 set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд

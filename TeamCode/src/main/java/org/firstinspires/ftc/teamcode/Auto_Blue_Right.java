@@ -343,10 +343,10 @@ public class Auto_Blue_Right extends LinearOpMode {
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
                 while (odsSensor.getLightDetected() < 0.3) {
                     set_Motors_Power(0.1, -0.1, -0.1, 0.1);//движение вперёд
-                    telemetry.addData("Line", "VISIBLE");
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();
                 }
-                telemetry.addData("Line", "VISIBLE");
+                telemetry.addData("Line", "VISIBLE (OK)");
                 telemetry.update();
                 set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 600);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
