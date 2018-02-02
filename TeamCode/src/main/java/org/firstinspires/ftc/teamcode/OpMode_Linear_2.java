@@ -58,7 +58,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
   /*
   * Functions declaration
   */
-    
+
 
     //Lift claw
     void lift_claw(double lift_power) {
@@ -83,7 +83,6 @@ public class OpMode_Linear_2 extends LinearOpMode {
         motor.setPower(0);
 
     }
-
     void setPower_Timed(CRServo Crservo, double power, long milliseconds) {
         Crservo.setPower(power);
         sleep(milliseconds);
@@ -280,9 +279,9 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 sleep(200);
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
-                s6_relic_claw.setPosition(0);
-                sleep(300);
                 s7_relic_arm.setPosition(1);
+                sleep(300);
+                s6_relic_claw.setPosition(0);
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
