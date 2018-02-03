@@ -226,11 +226,15 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 s3_rotation.setPosition(0.78);
             }
             shovel_trigger(intake_motor);
-            if (intake_motor < 0) {
-                m6_intake.setPower(0);
-            } else {
+            if (intake_motor>0) {
                 m6_intake.setPower(intake_motor);
+            } else {
+                m6_intake.setPower(0);
             }
+            if(gamepad2.left_stick_y<0){
+                m6_intake.setPower(gamepad2.left_stick_y);
+            }
+
             // Claw_lift
             if (claw_lift_l != 0) {
                 lift_claw(-claw_lift_l);
@@ -256,6 +260,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 }
                 if (relic_arm_halt) {
                     s7_relic_arm.setPosition(0.3);
+                    sleep(500);
                     m1_Drive.setPower(-0.3);
                     m2_Drive.setPower(0.3);
                     m3_Drive.setPower(-0.3);
@@ -266,7 +271,12 @@ public class OpMode_Linear_2 extends LinearOpMode {
                     m3_Drive.setPower(0);
                     m4_Drive.setPower(0);
                     sleep(300);
-                    setPower_Timed(s1_Relic_ext_ret, -1, 1500);
+                    setPower_Timed(s1_Relic_ext_ret, -1, 1200);
+                    /*while (!touchSensor.isPressed()) {
+                        s1_Relic_ext_ret.setPower(-0.5);
+                    }*/
+                    s1_Relic_ext_ret.setPower(0);
+
 
 
                 }

@@ -33,6 +33,7 @@ import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -76,9 +77,11 @@ public class SensorAdafruitRGB extends LinearOpMode {
     DeviceInterfaceModule cdim;
     private Servo s4_kicker = null;
 
+    private CRServo s1_Relic_ext_ret = null;
     @Override
     public void runOpMode() {
-
+        s1_Relic_ext_ret.setPower(0);
+        s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F, 0F, 0F};
 
@@ -132,9 +135,9 @@ public class SensorAdafruitRGB extends LinearOpMode {
             Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
 
             double hue = hsvValues[0];
-            if (hue > 200 && hue < 260) {
+            if (hue > 150 && hue < 320) {
                 telemetry.addData("Color-->", "Blue");
-            } else if (hue < 50 || hue > 330) {
+            } else{
                 telemetry.addData("Color-->", "red");
             }
 

@@ -54,7 +54,7 @@ import java.util.Objects;
 @Autonomous(name = "Blue_RIGHT", group = "WIP")
 //@Disabled
 public class Auto_Blue_Right extends LinearOpMode {
-
+    private CRServo s1_Relic_ext_ret = null;
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
@@ -89,6 +89,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     private Servo s4_kicker = null;
     private Servo s3_rotation = null;
     private Servo s5_shovel = null;
+    private DcMotor m6_intake = null;
   /*
   * Functions
   */
@@ -190,7 +191,10 @@ public class Auto_Blue_Right extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() {s3_rotation.setPosition(0.8);
+
+        s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
+        s1_Relic_ext_ret.setPower(0);
     /*
     * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
     * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
@@ -274,7 +278,7 @@ public class Auto_Blue_Right extends LinearOpMode {
         odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
-
+        m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
         // Конец обработки исключений
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -298,10 +302,12 @@ public class Auto_Blue_Right extends LinearOpMode {
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         telemetry.addData("AdaFruit", "Ready");
         telemetry.update();
+
         waitForStart();
 
         relicTrackables.activate();
         while (opModeIsActive()) {
+            s1_Relic_ext_ret.setPower(0);
             if (wasExecuted) {
                 telemetry.addData("Autonomous: ", "DONE");
             }
@@ -312,7 +318,9 @@ public class Auto_Blue_Right extends LinearOpMode {
         STEP 1 -Trying to kick jewel
         */
                 rotate_claw(0.8);// so that boxes won't fall off
-                s4_kicker.setPosition(0.75);
+                sleep(800);
+                m6_intake.setPower(0.6);
+                s4_kicker.setPosition(0.85);
                 sleep(500);
                 grab_box(true, false, true, false);
                 lift_claw(0.1, 250);
@@ -340,15 +348,16 @@ public class Auto_Blue_Right extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
-                while (odsSensor.getLightDetected() < 0.3) {
+        //requestOpModeStop();
+                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
+                /*while (odsSensor.getLightDetected() < 0.8) {
                     set_Motors_Power(0.1, -0.1, -0.1, 0.1);//движение вперёд
                     telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();
-                }
+                }*/
                 telemetry.addData("Line", "VISIBLE (OK)");
                 telemetry.update();
-                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 600);//поворот против часовой
+                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 600);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
