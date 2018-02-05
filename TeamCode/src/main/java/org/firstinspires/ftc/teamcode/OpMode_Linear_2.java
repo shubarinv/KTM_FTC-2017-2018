@@ -246,7 +246,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
             //Partially AutoOP
             if (relic == 0) {
-                if (relic_arm_extend) {
+                if (relic_arm_extend) { //DO NOT FORKING CHANGE
                     setPower_Timed(s1_Relic_ext_ret, 1, 450);
                     while (!touchSensor.isPressed()) {
                         s1_Relic_ext_ret.setPower(0.5);
@@ -260,24 +260,21 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 }
                 if (relic_arm_halt) {
                     s7_relic_arm.setPosition(0.3);
-                    sleep(500);
-                    m1_Drive.setPower(-0.3);
-                    m2_Drive.setPower(0.3);
-                    m3_Drive.setPower(-0.3);
-                    m4_Drive.setPower(0.3);
+                    m1_Drive.setPower(-0.5);
+                    m2_Drive.setPower(0.5);
+                    m3_Drive.setPower(-0.1);
+                    m4_Drive.setPower(0.1);
                     sleep(300);
                     m1_Drive.setPower(0);
                     m2_Drive.setPower(0);
                     m3_Drive.setPower(0);
                     m4_Drive.setPower(0);
                     sleep(300);
-                    setPower_Timed(s1_Relic_ext_ret, -1, 1200);
-                    /*while (!touchSensor.isPressed()) {
+                    setPower_Timed(s1_Relic_ext_ret, -1, 450);
+                    while (!touchSensor.isPressed()) {
                         s1_Relic_ext_ret.setPower(-0.5);
-                    }*/
+                    }
                     s1_Relic_ext_ret.setPower(0);
-
-
 
                 }
 
@@ -288,14 +285,14 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
 
             //Relic arm_small
-            if (relic_claw_up) {
+            if (relic_claw_up) { //DO NOT CHANGE
                 s7_relic_arm.setPosition(1);
                 sleep(200);
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
-                s7_relic_arm.setPosition(1);
-                sleep(300);
                 s6_relic_claw.setPosition(0);
+                sleep(300);
+                s7_relic_arm.setPosition(0.9);
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
