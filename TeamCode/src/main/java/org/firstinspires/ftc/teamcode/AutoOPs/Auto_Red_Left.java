@@ -27,7 +27,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutoOPs;
 
 import android.graphics.Color;
 
@@ -51,10 +51,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.Objects;
 
 
-@Autonomous(name = "Blue_RIGHT", group = "WIP")
+@Autonomous(name = "AUTO_Red_Left", group = "WIP")
 //@Disabled
-public class Auto_Blue_Right extends LinearOpMode {
-    private CRServo s1_Relic_ext_ret = null;
+public class Auto_Red_Left extends LinearOpMode {
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
@@ -71,6 +70,7 @@ public class Auto_Blue_Right extends LinearOpMode {
     // bLedOn represents the state of the LED.
     boolean bLedOn = false;
     OpticalDistanceSensor odsSensor;  // Hardware Device Object
+    private CRServo s1_Relic_ext_ret = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -147,8 +147,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         bPrevState = bCurrState;
 
         double[] hue_arr = new double[5];
-        double[] blue = new double[5];
-        double[] red = new double[5];
         //для точности 4 измерения
         for (int j = 0; j < 4; j++) {
             // convert the RGB values to HSV values.
@@ -157,23 +155,16 @@ public class Auto_Blue_Right extends LinearOpMode {
             telemetry.update();
             sleep(500);
             Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-            red[j] = sensorRGB.red() * 255 / 800;
-            blue[j] = sensorRGB.blue() * 255 / 800;
             double hue = hsvValues[0];
             hue_arr[j] = hue;
         }
 
         //Находим среднее арифметическое
-        double red_sr = 0;
-        double blue_sr = 0;
+
         double hue_sr = 0;
         for (int j = 0; j < 4; j++) {
-            red_sr = red_sr + red[j];
-            blue_sr = blue_sr + blue[j];
             hue_sr = hue_sr + hue_arr[j];
         }
-        red_sr = red_sr / 4;
-        blue_sr = blue_sr / 4;
         hue_sr = hue_sr / 4;
         //
         if (hue_sr > 110 && hue_sr < 290) {
@@ -181,18 +172,12 @@ public class Auto_Blue_Right extends LinearOpMode {
         } else if (hue_sr < 110 || hue_sr > 290 && hue_sr <= 360) {
             return "Red";
         }
-        // THIS IS DEPRECATED
-        else if (blue_sr > red_sr) {
-            return "Blue";
-        } else {
-            return "Red";
-        }
+        return "Fail";
     }
 
 
     @Override
-    public void runOpMode() {s3_rotation.setPosition(0.8);
-
+    public void runOpMode() {
         s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
         s1_Relic_ext_ret.setPower(0);
     /*
@@ -218,8 +203,10 @@ public class Auto_Blue_Right extends LinearOpMode {
     * Initialize the drive system variables.
     * The init() method of the hardware class does all the work here
     */
+
         //Обработка исключений
         // m1_drive
+
         try {
             m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         } catch (RuntimeException e) {
@@ -276,15 +263,15 @@ public class Auto_Blue_Right extends LinearOpMode {
             telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
         }
         odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
+
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
         m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
         // Конец обработки исключений
-
-        m1_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m2_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m3_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m4_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m1_Drive.setDirection(DcMotor.Direction.REVERSE);
+        m2_Drive.setDirection(DcMotor.Direction.REVERSE);
+        m3_Drive.setDirection(DcMotor.Direction.REVERSE);
+        m4_Drive.setDirection(DcMotor.Direction.REVERSE);
     /* AdaFruit */
 
         // get a reference to our DeviceInterfaceModule object.
@@ -302,7 +289,6 @@ public class Auto_Blue_Right extends LinearOpMode {
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         telemetry.addData("AdaFruit", "Ready");
         telemetry.update();
-
         waitForStart();
 
         relicTrackables.activate();
@@ -317,10 +303,11 @@ public class Auto_Blue_Right extends LinearOpMode {
         /*
         STEP 1 -Trying to kick jewel
         */
+
                 rotate_claw(0.8);// so that boxes won't fall off
                 sleep(800);
                 m6_intake.setPower(0.6);
-                s4_kicker.setPosition(0.85);
+                s4_kicker.setPosition(0.75);
                 sleep(500);
                 grab_box(true, false, true, false);
                 lift_claw(0.1, 250);
@@ -330,11 +317,11 @@ public class Auto_Blue_Right extends LinearOpMode {
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                 } else if (Objects.equals(jewel_color, "Red")) {
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
@@ -342,22 +329,20 @@ public class Auto_Blue_Right extends LinearOpMode {
                 }
                 s4_kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
-                //requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
-
+               // requestOpModeStop();
 
         /*
         STEP 2 -Cryptobox related
         */
-        //requestOpModeStop();
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
-                /*while (odsSensor.getLightDetected() < 0.8) {
+                while (odsSensor.getLightDetected() < 0.8) {
                     set_Motors_Power(0.1, -0.1, -0.1, 0.1);//движение вперёд
-                    telemetry.addData("Line", "(X)NOT VISIBLE");
+                    telemetry.addData("Line", "VISIBLE");
                     telemetry.update();
-                }*/
-                telemetry.addData("Line", "VISIBLE (OK)");
+                }
+                telemetry.addData("Line", "VISIBLE");
                 telemetry.update();
-                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 600);//поворот против часовой
+                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
@@ -368,16 +353,16 @@ public class Auto_Blue_Right extends LinearOpMode {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
                 } else {
-                    telemetry.addData("Vumark", " NOT VISIBLE (X)");
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();
                 }
-                set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
+                telemetry.addData("Line", "VISIBLE (OK)");
+                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);//движение назад
                 sleep(100);
                 set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                 rotate_claw(0);
-                sleep(1000);
                 set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-                set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
+                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 300);//движение назад
                 set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
                 rotate_claw(0.8);
 

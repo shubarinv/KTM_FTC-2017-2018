@@ -27,31 +27,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Alpha;
+package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /*
  * This is an example LinearOpMode that shows how to use
- * a Modern Robotics Optical Distance Sensor
- * It assumes that the ODS sensor is configured with a name of "sensor_ods".
+ * a legacy (NXT-compatible) Touch Sensor.
+ * It assumes that the touch sensor is configured with a name of "sensor_touch".
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "Sensor: MR ODS", group = "Sensor")
+@TeleOp(name = "Sensor: LEGO touch", group = "Sensor")
 //@Disabled
-public class Test_SensorMROpticalDistance extends LinearOpMode {
+public class SensorLEGOTouch extends LinearOpMode {
 
-    OpticalDistanceSensor odsSensor;  // Hardware Device Object
+    TouchSensor touchSensor;  // Hardware Device Object
 
     @Override
     public void runOpMode() {
 
         // get a reference to our Light Sensor object.
-        odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
+        touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
+        int counter = 0;
 
         // wait for the start button to be pressed.
         waitForStart();
@@ -61,8 +62,10 @@ public class Test_SensorMROpticalDistance extends LinearOpMode {
         while (opModeIsActive()) {
 
             // send the info back to driver station using telemetry function.
-            telemetry.addData("Raw", odsSensor.getRawLightDetected());
-            telemetry.addData("Normal", odsSensor.getLightDetected());
+            if (touchSensor.isPressed())
+                telemetry.addData("Touch", "Is Pressed");
+            else
+                telemetry.addData("Touch", "Is Not Pressed");
 
             telemetry.update();
         }
