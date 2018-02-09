@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.Objects;
 
 
-@Autonomous(name = "Blue_RIGHT", group = "WIP")
+@Autonomous(name = "AUTO Blue Right", group = "AutoOP")
 //@Disabled
 public class Auto_Blue_Right extends LinearOpMode {
     /* ADAFRUIT */
