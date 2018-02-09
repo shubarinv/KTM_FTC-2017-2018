@@ -271,10 +271,19 @@ public class OpMode_Linear_2 extends LinearOpMode {
                     m4_Drive.setPower(0);
                     sleep(300);
                     setPower_Timed(s1_Relic_ext_ret, -1, 450);
-                    while (!touchSensor.isPressed()) {
-                        s1_Relic_ext_ret.setPower(-0.5);
+                    for (int tick = 0; tick < 2000; tick += 10) {
+                        s1_Relic_ext_ret.setPower(0.5);
+
+                        if (touchSensor.isPressed() || isStopRequested()) {
+                            s1_Relic_ext_ret.setPower(0);
+                            break;
+                        }
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    s1_Relic_ext_ret.setPower(0);
 
                 }
 
