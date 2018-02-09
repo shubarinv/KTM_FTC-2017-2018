@@ -390,9 +390,9 @@ public class Auto_Red_Left extends LinearOpMode {
                 if (!lineDetected) {
                     telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
                     telemetry.update();
+                    chassis_stop_movement();
                     requestOpModeStop();
-                }
-                if (lineDetected) {
+                } else {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                     if (vuMark == RelicRecoveryVuMark.RIGHT) {
                         telemetry.addData("Vumark", " RIGHT");
