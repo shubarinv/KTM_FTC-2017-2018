@@ -336,7 +336,7 @@ public class Auto_Red_Left extends LinearOpMode {
                         telemetry.addData("Movement", "Line detected");
                         telemetry.addData("Movement", "Centring");
                         telemetry.update();
-                        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 200 + (500 - tick)); // EXPERIMENTAL
+                        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 200); // EXPERIMENTAL
                         telemetry.addData("Centering (L)", "Done (break)");
                         telemetry.update();
                         break;
