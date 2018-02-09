@@ -51,9 +51,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.Objects;
 
 
-@Autonomous(name = "AUTO_Red_Left", group = "WIP")
+@Autonomous(name = "Blue_RIGHT", group = "WIP")
 //@Disabled
-public class Auto_Red_Left extends LinearOpMode {
+public class Auto_Blue_Left extends LinearOpMode {
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
@@ -62,6 +62,11 @@ public class Auto_Red_Left extends LinearOpMode {
     DeviceInterfaceModule cdim;
     // hsvValues is an array that will hold the hue, saturation, and value information.
     float hsvValues[] = {0F, 0F, 0F};
+    // values is a reference to the hsvValues array.
+    final float values[] = hsvValues;
+    // bPrevState and bCurrState represent the previous and current state of the button.
+    boolean bPrevState = false;
+    boolean bCurrState = false;
     // bLedOn represents the state of the LED.
     boolean bLedOn = false;
     OpticalDistanceSensor odsSensor;  // Hardware Device Object
@@ -85,20 +90,13 @@ public class Auto_Red_Left extends LinearOpMode {
     private Servo s3_rotation = null;
     private Servo s5_shovel = null;
     private DcMotor m6_intake = null;
-    private boolean lineDetected = false;
   /*
   * Functions
   */
 
-    void putBox() {
-        set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1200);//движение назад
-        sleep(100);
-        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
-        rotate_claw(0);
-        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-        set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 600);//движение назад
-        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-        rotate_claw(0.8);
+    void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
+        // DEPERECATED
+        assert true;
     }
 
     // Lift claw
@@ -137,10 +135,20 @@ public class Auto_Red_Left extends LinearOpMode {
     }
 
     String get_color() {
+        // check the status of the x button on gamepad.
+        bCurrState = true;
+
+        // check for button-press state transitions.
+
         // button is transitioning to a pressed state. Toggle the LED.
         cdim.setDigitalChannelState(LED_CHANNEL, true);
 
+        // update previous state variable.
+        bPrevState = bCurrState;
+
         double[] hue_arr = new double[5];
+        double[] blue = new double[5];
+        double[] red = new double[5];
         //для точности 4 измерения
         for (int j = 0; j < 4; j++) {
             // convert the RGB values to HSV values.
@@ -149,16 +157,23 @@ public class Auto_Red_Left extends LinearOpMode {
             telemetry.update();
             sleep(500);
             Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
+            red[j] = sensorRGB.red() * 255 / 800;
+            blue[j] = sensorRGB.blue() * 255 / 800;
             double hue = hsvValues[0];
             hue_arr[j] = hue;
         }
 
         //Находим среднее арифметическое
-
+        double red_sr = 0;
+        double blue_sr = 0;
         double hue_sr = 0;
         for (int j = 0; j < 4; j++) {
+            red_sr = red_sr + red[j];
+            blue_sr = blue_sr + blue[j];
             hue_sr = hue_sr + hue_arr[j];
         }
+        red_sr = red_sr / 4;
+        blue_sr = blue_sr / 4;
         hue_sr = hue_sr / 4;
         //
         if (hue_sr > 110 && hue_sr < 290) {
@@ -166,12 +181,19 @@ public class Auto_Red_Left extends LinearOpMode {
         } else if (hue_sr < 110 || hue_sr > 290 && hue_sr <= 360) {
             return "Red";
         }
-        return "Fail";
+        // THIS IS DEPRECATED
+        else if (blue_sr > red_sr) {
+            return "Blue";
+        } else {
+            return "Red";
+        }
     }
 
 
     @Override
     public void runOpMode() {
+        s3_rotation.setPosition(0.8);
+
         s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
         s1_Relic_ext_ret.setPower(0);
     /*
@@ -197,10 +219,8 @@ public class Auto_Red_Left extends LinearOpMode {
     * Initialize the drive system variables.
     * The init() method of the hardware class does all the work here
     */
-
         //Обработка исключений
         // m1_drive
-
         try {
             m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
         } catch (RuntimeException e) {
@@ -257,15 +277,15 @@ public class Auto_Red_Left extends LinearOpMode {
             telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
         }
         odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
-
         s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
         s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
         m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
         // Конец обработки исключений
-        m1_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m2_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m3_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m4_Drive.setDirection(DcMotor.Direction.REVERSE);
+
+        m1_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m2_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m3_Drive.setDirection(DcMotor.Direction.FORWARD);
+        m4_Drive.setDirection(DcMotor.Direction.FORWARD);
     /* AdaFruit */
 
         // get a reference to our DeviceInterfaceModule object.
@@ -283,6 +303,7 @@ public class Auto_Red_Left extends LinearOpMode {
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         telemetry.addData("AdaFruit", "Ready");
         telemetry.update();
+
         waitForStart();
 
         relicTrackables.activate();
@@ -297,12 +318,12 @@ public class Auto_Red_Left extends LinearOpMode {
         /*
         STEP 1 -Trying to kick jewel
         */
-
                 rotate_claw(0.8);// so that boxes won't fall off
                 sleep(800);
                 m6_intake.setPower(0.6);
-                s4_kicker.setPosition(0.75);
+                s4_kicker.setPosition(0.85);
                 sleep(500);
+                grab_box(true, false, true, false);
                 lift_claw(0.1, 250);
 
                 telemetry.addData("Step-1", "Running");
@@ -310,11 +331,11 @@ public class Auto_Red_Left extends LinearOpMode {
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
                 } else if (Objects.equals(jewel_color, "Red")) {
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
                 } else {
                     telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
                     telemetry.addData("Step-1", "FAILED");
@@ -322,98 +343,44 @@ public class Auto_Red_Left extends LinearOpMode {
                 }
                 s4_kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
-                // requestOpModeStop();
+                //requestOpModeStop(); //WARNING THIS WILL STOP OPMODE
+
 
         /*
         STEP 2 -Cryptobox related
         */
+                //requestOpModeStop();
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
-                //
-                Centering:
-                for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.8) {
-                        lineDetected = true;
-                        telemetry.addData("Movement", "Line detected");
-                        telemetry.addData("Movement", "Centring");
-                        telemetry.update();
-                        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 200 + (500 - tick)); // EXPERIMENTAL
-                        telemetry.addData("Centering (L)", "Done (break)");
-                        telemetry.update();
-                        break;
-                    }
-                    if (isStopRequested()) {
-                        telemetry.addData("Centering (L)", "Stop requested");
-                        telemetry.update();
-                        chassis_stop_movement();
-                        break;
-                    } else {
-                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);
-                    }
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        telemetry.addData("Centering (L)", "Exception interrupted");
-                        telemetry.update();
-                    }
-                }
-                if (!lineDetected) {
-                    telemetry.addData("Movement", "Sliding to find line");
+                /*while (odsSensor.getLightDetected() < 0.8) {
+                    set_Motors_Power(0.1, -0.1, -0.1, 0.1);//движение вперёд
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();
-
-                    TooBigDwnRange:
-                    for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.8) {
-                            lineDetected = true;
-                            telemetry.addData("Movement", "Line detected");
-                            telemetry.update();
-
-                            chassis_stop_movement();
-                            break;
-                        }
-                        if (isStopRequested()) {
-                            telemetry.addData("TooBigDwnRange (L)", "Stop requested");
-                            telemetry.update();
-                            chassis_stop_movement();
-                            break;
-                        } else {
-                            set_Motors_Power(0.1, 0.1, -0.1, -0.1);// Slide right
-                        }
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            telemetry.addData("TooBigDwnRange (L)", "Exception interrupted");
-                            telemetry.update();
-                            chassis_stop_movement();
-                        }
-                    }
-                }
-                if (!lineDetected) {
-                    telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
+                }*/
+                telemetry.addData("Line", "VISIBLE (OK)");
+                telemetry.update();
+                set_Motors_Power_timed(0.2, 0.2, 0.2, 0.2, 600);//поворот против часовой
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
-                    requestOpModeStop();
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    telemetry.addData("Vumark", " CENTER");
+                    telemetry.update();
+                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    telemetry.addData("Vumark", " LEFT");
+                    telemetry.update();
+                } else {
+                    telemetry.addData("Vumark", " NOT VISIBLE (X)");
+                    telemetry.update();
                 }
-                if (lineDetected) {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
-                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                        telemetry.addData("Vumark", " RIGHT");
-                        telemetry.update();
-                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
-                    } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                        telemetry.addData("Vumark", " CENTER");
-                        telemetry.update();
-
-                    } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                        telemetry.addData("Vumark", " LEFT");
-                        telemetry.update();
-                        set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
-                    } else {
-                        telemetry.addData("Line", "(X)NOT VISIBLE");
-                        telemetry.update();
-
-                    }
-                    putBox();
-                }
-
+                set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1000);//движение назад
+                sleep(100);
+                set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                rotate_claw(0);
+                sleep(1000);
+                set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 300);//движение назад
+                set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+                rotate_claw(0.8);
 
                 wasExecuted = true;
             }
