@@ -95,13 +95,13 @@ public class Auto_Blue_Left extends LinearOpMode {
   * Functions
   */
   void putBox() {
-      set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1200);//движение назад
+      set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
       sleep(100);
       set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
       rotate_claw(0);
-      set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-      set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 600);//движение назад
-      set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+      set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+      set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
+      set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 500);//движение вперёд
       rotate_claw(0.8);
   }
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
@@ -202,10 +202,8 @@ public class Auto_Blue_Left extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        s3_rotation.setPosition(0.8);
 
         s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
-        s1_Relic_ext_ret.setPower(0);
     /*
     * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
     * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
@@ -318,6 +316,7 @@ public class Auto_Blue_Left extends LinearOpMode {
 
         relicTrackables.activate();
         while (opModeIsActive()) {
+            s3_rotation.setPosition(0.8);
             s1_Relic_ext_ret.setPower(0);
             if (wasExecuted) {
                 telemetry.addData("Autonomous: ", "DONE");
@@ -331,7 +330,7 @@ public class Auto_Blue_Left extends LinearOpMode {
                 rotate_claw(0.8);// so that boxes won't fall off
                 sleep(800);
                 m6_intake.setPower(0.6);
-                s4_kicker.setPosition(0.85);
+                s4_kicker.setPosition(0.75);
                 sleep(500);
                 grab_box(true, false, true, false);
                 lift_claw(0.1, 250);
@@ -359,17 +358,18 @@ public class Auto_Blue_Left extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
-                set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 1500);//Fixing alignment (aka slide right)
-                set_Motors_Power_timed(-0.2, -0.2, 0.2, 0.2, 1500);//Slide left
+                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1250);//движение вперёд
+                set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
+                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
+
                 Centering:
                 for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.8) {
+                    if (odsSensor.getLightDetected() > 0.5) {
                         lineDetected = true;
                         telemetry.addData("Movement", "Line detected");
                         telemetry.addData("Movement", "Centring");
                         telemetry.update();
-                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 200);
+                        set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);
                         telemetry.addData("Centering (L)", "Done (break)");
                         telemetry.update();
                         break;
@@ -380,7 +380,7 @@ public class Auto_Blue_Left extends LinearOpMode {
                         chassis_stop_movement();
                         break;
                     } else {
-                        set_Motors_Power(-0.1, -0.1, 0.1, 0.1);
+                        set_Motors_Power(0.2, -0.2, 0.2, -0.2);
                     }
                     try {
                         Thread.sleep(10);
@@ -395,7 +395,7 @@ public class Auto_Blue_Left extends LinearOpMode {
 
                     TooBigDwnRange:
                     for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.8) {
+                        if (odsSensor.getLightDetected() > 0.5) {
                             lineDetected = true;
                             telemetry.addData("Movement", "Line detected");
                             telemetry.update();
@@ -409,7 +409,7 @@ public class Auto_Blue_Left extends LinearOpMode {
                             chassis_stop_movement();
                             break;
                         } else {
-                            set_Motors_Power(0.1, -0.1, -0.1, 0.1);// Slide right
+                            set_Motors_Power(-0.2, 0.2, -0.2, 0.2);// Slide right
                         }
                         try {
                             Thread.sleep(10);
@@ -426,7 +426,6 @@ public class Auto_Blue_Left extends LinearOpMode {
                     chassis_stop_movement();
                     requestOpModeStop();
                 } else {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                     if (vuMark == RelicRecoveryVuMark.RIGHT) {
                         telemetry.addData("Vumark", " RIGHT");
                         telemetry.update();

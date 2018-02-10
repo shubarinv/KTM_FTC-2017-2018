@@ -91,13 +91,13 @@ public class Auto_Red_Left extends LinearOpMode {
   */
 
     void putBox() {
-        set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1200);//движение назад
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
         sleep(100);
         set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
         rotate_claw(0);
-        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-        set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 600);//движение назад
-        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
+        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 500);//движение вперёд
         rotate_claw(0.8);
     }
 
@@ -327,11 +327,11 @@ public class Auto_Red_Left extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 2100);//движение вперёд
+                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1250);//движение вперёд
                 //
                 Centering:
-                for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.8) {
+                for (int tick = 0; tick < 1000; tick += 5) {
+                    if (odsSensor.getLightDetected() > 0.1) {
                         lineDetected = true;
                         telemetry.addData("Movement", "Line detected");
                         telemetry.addData("Movement", "Centring");
@@ -347,10 +347,10 @@ public class Auto_Red_Left extends LinearOpMode {
                         chassis_stop_movement();
                         break;
                     } else {
-                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);
+                        set_Motors_Power(0.2, -0.2, -0.2, 0.2);
                     }
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(5);
                     } catch (InterruptedException e) {
                         telemetry.addData("Centering (L)", "Exception interrupted");
                         telemetry.update();
@@ -362,7 +362,7 @@ public class Auto_Red_Left extends LinearOpMode {
 
                     TooBigDwnRange:
                     for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.8) {
+                        if (odsSensor.getLightDetected() > 0.1) {
                             lineDetected = true;
                             telemetry.addData("Movement", "Line detected");
                             telemetry.update();
@@ -376,7 +376,7 @@ public class Auto_Red_Left extends LinearOpMode {
                             chassis_stop_movement();
                             break;
                         } else {
-                            set_Motors_Power(0.1, 0.1, -0.1, -0.1);// Slide right
+                            set_Motors_Power(0.2, 0.2, -0.2, -0.2);// Slide right
                         }
                         try {
                             Thread.sleep(10);
@@ -391,7 +391,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
                     telemetry.update();
                     chassis_stop_movement();
-                    requestOpModeStop();
+                    //requestOpModeStop();
                 } else {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                     if (vuMark == RelicRecoveryVuMark.RIGHT) {
@@ -417,7 +417,6 @@ public class Auto_Red_Left extends LinearOpMode {
 
                 wasExecuted = true;
             }
-            telemetry.update();
         }
     }
 }

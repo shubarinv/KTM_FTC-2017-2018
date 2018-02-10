@@ -96,15 +96,16 @@ public class Auto_Red_Right extends LinearOpMode {
     * Functions
     */
     void putBox() {
-        set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 1200);//движение назад
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
         sleep(100);
         set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
         rotate_claw(0);
-        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
-        set_Motors_Power_timed(-0.1, 0.1, 0.1, -0.1, 600);//движение назад
+        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
         set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 300);//движение вперёд
         rotate_claw(0.8);
     }
+
 
     void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
         // DEPERECATED
@@ -351,7 +352,7 @@ public class Auto_Red_Right extends LinearOpMode {
                 set_Motors_Power_timed(-0.2, -0.2, 0.2, 0.2, 1500);//Slide left
                 Centering:
                 for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.8) {
+                    if (odsSensor.getLightDetected() > 0.1) {
                         lineDetected = true;
                         telemetry.addData("Movement", "Line detected");
                         telemetry.addData("Movement", "Centring");
@@ -382,7 +383,7 @@ public class Auto_Red_Right extends LinearOpMode {
 
                     TooBigDwnRange:
                     for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.8) {
+                        if (odsSensor.getLightDetected() > 0.1) {
                             lineDetected = true;
                             telemetry.addData("Movement", "Line detected");
                             telemetry.update();
