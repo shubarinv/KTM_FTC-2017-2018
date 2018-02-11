@@ -297,7 +297,7 @@ public class Auto_Red_Right extends LinearOpMode {
 
         // get a reference to our ColorSensor object.
         sensorRGB = hardwareMap.colorSensor.get("sensor_color");
-
+        int rel_type = 0;
         // turn the LED on in the beginning, just so user will know that the sensor is active.
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         telemetry.addData("AdaFruit", "Ready");
@@ -306,138 +306,159 @@ public class Auto_Red_Right extends LinearOpMode {
 
         relicTrackables.activate();
         while (opModeIsActive()) {
+            s3_rotation.setPosition(0.8);
             s1_Relic_ext_ret.setPower(0);
             if (wasExecuted) {
                 telemetry.addData("Autonomous: ", "DONE");
-            }
+                requestOpModeStop();
+            } else {
 
-            if (!wasExecuted) {
-                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                for (int tick = 0; tick < 4000; tick += 10) {
+                    RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                    telemetry.addData("Vumark", vuMark);
+                    telemetry.update();
+                    if (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                        sleep(10);
+                        continue;
+                    } else {
+                        if (vuMark == RelicRecoveryVuMark.LEFT) {
+                            rel_type = 1;
+                        }
+                        if (vuMark == RelicRecoveryVuMark.CENTER) {
+                            rel_type = 2;
+                        }
+                        if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                            rel_type = 3;
+                        }
+                    }
+
+                }
+            }
         /*
         STEP 1 -Trying to kick jewel
         */
 
-                rotate_claw(0.8);// so that boxes won't fall off
-                sleep(800);
-                m6_intake.setPower(0.6);
-                s4_kicker.setPosition(0.75);
-                sleep(500);
-                grab_box(true, false, true, false);
-                lift_claw(0.1, 250);
+            rotate_claw(0.8);// so that boxes won't fall off
+            sleep(800);
+            m6_intake.setPower(0.6);
+            s4_kicker.setPosition(0.75);
+            sleep(500);
+            grab_box(true, false, true, false);
+            lift_claw(0.1, 250);
 
-                telemetry.addData("Step-1", "Running");
-                String jewel_color = get_color();
-                telemetry.addData("AdaFruit", jewel_color);
+            telemetry.addData("Step-1", "Running");
+            String jewel_color = get_color();
+            telemetry.addData("AdaFruit", jewel_color);
+            telemetry.update();
+            if (Objects.equals(jewel_color, "Blue")) {
+                set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+            } else if (Objects.equals(jewel_color, "Red")) {
+                set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+            } else {
+                telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                telemetry.addData("Step-1", "FAILED");
                 telemetry.update();
-                if (Objects.equals(jewel_color, "Blue")) {
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                } else if (Objects.equals(jewel_color, "Red")) {
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                } else {
-                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-                    telemetry.addData("Step-1", "FAILED");
-                    telemetry.update();
-                }
-                s4_kicker.setPosition(0.1);
-                cdim.setDigitalChannelState(LED_CHANNEL, false);
-                // requestOpModeStop();
+            }
+            s4_kicker.setPosition(0.1);
+            cdim.setDigitalChannelState(LED_CHANNEL, false);
+            // requestOpModeStop();
 
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
-                set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 1500);//Fixing alignment (aka slide right)
-                set_Motors_Power_timed(-0.2, -0.2, 0.2, 0.2, 1500);//Slide left
-                Centering:
+            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
+            set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 1500);//Fixing alignment (aka slide right)
+            set_Motors_Power_timed(-0.2, -0.2, 0.2, 0.2, 1500);//Slide left
+            Centering:
+            for (int tick = 0; tick < 500; tick += 10) {
+                if (odsSensor.getLightDetected() > 0.1) {
+                    lineDetected = true;
+                    telemetry.addData("Movement", "Line detected");
+                    telemetry.addData("Movement", "Centring");
+                    telemetry.update();
+                    set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 200);
+                    telemetry.addData("Centering (L)", "Done (break)");
+                    telemetry.update();
+                    break;
+                }
+                if (isStopRequested()) {
+                    telemetry.addData("Centering (L)", "Stop requested");
+                    telemetry.update();
+                    chassis_stop_movement();
+                    break;
+                } else {
+                    set_Motors_Power(-0.1, -0.1, 0.1, 0.1);
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    telemetry.addData("Centering (L)", "Exception interrupted");
+                    telemetry.update();
+                }
+            }
+            if (!lineDetected) {
+                telemetry.addData("Movement", "Forwarding to find line");
+                telemetry.update();
+
+                TooBigDwnRange:
                 for (int tick = 0; tick < 500; tick += 10) {
                     if (odsSensor.getLightDetected() > 0.1) {
                         lineDetected = true;
                         telemetry.addData("Movement", "Line detected");
-                        telemetry.addData("Movement", "Centring");
                         telemetry.update();
-                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 200);
-                        telemetry.addData("Centering (L)", "Done (break)");
-                        telemetry.update();
+
+                        chassis_stop_movement();
                         break;
                     }
                     if (isStopRequested()) {
-                        telemetry.addData("Centering (L)", "Stop requested");
+                        telemetry.addData("TooBigDwnRange (L)", "Stop requested");
                         telemetry.update();
                         chassis_stop_movement();
                         break;
                     } else {
-                        set_Motors_Power(-0.1, -0.1, 0.1, 0.1);
+                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);// Slide right
                     }
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
-                        telemetry.addData("Centering (L)", "Exception interrupted");
+                        telemetry.addData("TooBigDwnRange (L)", "Exception interrupted");
                         telemetry.update();
+                        chassis_stop_movement();
                     }
                 }
-                if (!lineDetected) {
-                    telemetry.addData("Movement", "Forwarding to find line");
-                    telemetry.update();
-
-                    TooBigDwnRange:
-                    for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.1) {
-                            lineDetected = true;
-                            telemetry.addData("Movement", "Line detected");
-                            telemetry.update();
-
-                            chassis_stop_movement();
-                            break;
-                        }
-                        if (isStopRequested()) {
-                            telemetry.addData("TooBigDwnRange (L)", "Stop requested");
-                            telemetry.update();
-                            chassis_stop_movement();
-                            break;
-                        } else {
-                            set_Motors_Power(0.1, -0.1, -0.1, 0.1);// Slide right
-                        }
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            telemetry.addData("TooBigDwnRange (L)", "Exception interrupted");
-                            telemetry.update();
-                            chassis_stop_movement();
-                        }
-                    }
-                }
-                if (!lineDetected) {
-                    telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
-                    telemetry.update();
-                    chassis_stop_movement();
-                    requestOpModeStop();
-                } else {
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
-                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                        telemetry.addData("Vumark", " RIGHT");
-                        telemetry.update();
-                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
-                    } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                        telemetry.addData("Vumark", " CENTER");
-                        telemetry.update();
-
-                    } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                        telemetry.addData("Vumark", " LEFT");
-                        telemetry.update();
-                        set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
-                    } else {
-                        telemetry.addData("Line", "(X)NOT VISIBLE");
-                        telemetry.update();
-
-                    }
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1600);
-                    putBox();
-                }
-                wasExecuted = true;
             }
-            telemetry.update();
+            if (!lineDetected) {
+                telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
+                telemetry.update();
+                chassis_stop_movement();
+                requestOpModeStop();
+            } else {
+                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
+                if (rel_type == 3) {
+                    telemetry.addData("Vumark", " RIGHT");
+                    telemetry.update();
+                    set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
+                } else if (rel_type == 2) {
+                    telemetry.addData("Vumark", " CENTER");
+                    telemetry.update();
+
+                } else if (rel_type == 1) {
+                    telemetry.addData("Vumark", " LEFT");
+                    telemetry.update();
+                    set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
+                } else {
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
+                    telemetry.update();
+
+                }
+                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1600);
+                putBox();
+            }
+            wasExecuted = true;
         }
+        telemetry.update();
     }
 }
+
