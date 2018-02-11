@@ -311,7 +311,9 @@ public class Auto_Blue_Left extends LinearOpMode {
         cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
         telemetry.addData("AdaFruit", "Ready");
         telemetry.update();
-
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        telemetry.addData("VuMark", "%s visible", vuMark);
+        telemetry.update();
         waitForStart();
 
         relicTrackables.activate();
@@ -322,8 +324,6 @@ public class Auto_Blue_Left extends LinearOpMode {
                 telemetry.addData("Autonomous: ", "DONE");
             }
 
-            if (!wasExecuted) {
-                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         /*
         STEP 1 -Trying to kick jewel
         */
@@ -359,17 +359,17 @@ public class Auto_Blue_Left extends LinearOpMode {
         STEP 2 -Cryptobox related
         */
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1250);//движение вперёд
-                set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
-                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
+            // set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
+            // set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
 
                 Centering:
                 for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.5) {
+                    if (odsSensor.getLightDetected() > 0.75) {
                         lineDetected = true;
                         telemetry.addData("Movement", "Line detected");
                         telemetry.addData("Movement", "Centring");
                         telemetry.update();
-                        set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 200);
+                        set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 200);
                         telemetry.addData("Centering (L)", "Done (break)");
                         telemetry.update();
                         break;
@@ -395,7 +395,7 @@ public class Auto_Blue_Left extends LinearOpMode {
 
                     TooBigDwnRange:
                     for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.5) {
+                        if (odsSensor.getLightDetected() > 0.75) {
                             lineDetected = true;
                             telemetry.addData("Movement", "Line detected");
                             telemetry.update();
@@ -452,4 +452,4 @@ public class Auto_Blue_Left extends LinearOpMode {
             telemetry.update();
         }
     }
-}
+
