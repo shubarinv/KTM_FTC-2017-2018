@@ -27,12 +27,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -49,7 +48,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Autonomous(name = "RED_LEFT", group = "WIP")
+@Autonomous(name = "OUTDATED_RED_LEFT", group = "WIP")
 //@Disabled
 public class Auto_Red_Left extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
@@ -65,47 +64,10 @@ public class Auto_Red_Left extends LinearOpMode {
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
     private DcMotor m4_Drive = null;
-    private DcMotor m5_Lift = null;
-    private Servo s1_top_Claw = null;
-    private Servo s2_bottom_Claw = null;
-    private Servo s3_rotation = null;
-
 
     /*
      * Functions
      */
-
-    void grab_box(boolean top_clamp, boolean top_release, boolean bottom_clamp, boolean bottom_release) {
-        if (top_clamp) {
-            s1_top_Claw.setPosition(0);
-        }
-        if (top_release) {
-            s1_top_Claw.setPosition(0.50);
-        }
-        if (bottom_clamp) {
-            s2_bottom_Claw.setPosition(0);
-        }
-        if (bottom_release) {
-            s2_bottom_Claw.setPosition(0.50);
-        }
-    }
-
-    // Lift claw
-    void lift_claw(double lift_power, long ms) {
-        m5_Lift.setPower(lift_power);
-        sleep(ms);
-        m5_Lift.setPower(0);
-    }
-
-    // Rotate claw
-    void rotate_claw(boolean rotate) { //if rotate true then rotate to  180 . else to 0
-        if (rotate) {
-            s3_rotation.setPosition(1);
-        } else {
-            s3_rotation.setPosition(0);
-        }
-    }
-
     void set_Motors_Power(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
         // Send power to wheels
         m1_Drive.setPower(D1_power);
@@ -166,10 +128,6 @@ public class Auto_Red_Left extends LinearOpMode {
         m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
         m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
         m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        s1_top_Claw = hardwareMap.get(Servo.class, "s1 top claw");
-        s2_bottom_Claw = hardwareMap.get(Servo.class, "s2 bottom claw");
-        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
 
         m1_Drive.setDirection(DcMotor.Direction.FORWARD);
         m2_Drive.setDirection(DcMotor.Direction.FORWARD);
@@ -221,53 +179,19 @@ public class Auto_Red_Left extends LinearOpMode {
                             if (vuMark == RelicRecoveryVuMark.RIGHT) {
                                 telemetry.addData("Vumark", " RIGHT");
                                 telemetry.update();
-                                grab_box(true, false, false, true);
-                                sleep(100);
-                                lift_claw(0.3, 1250);
-                                sleep(100);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2100);//движение вперед
-                                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
-                                lift_claw(-0.3, 1250);
-                                sleep(100);
-                                grab_box(false, true, false, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+
                                 wasExecuted = true;
                             }
                             if (vuMark == RelicRecoveryVuMark.CENTER) {
                                 telemetry.addData("Vumark", " CENTER");
                                 telemetry.update();
 
-                                grab_box(true, false, false, true);
-                                sleep(500);
-                                lift_claw(0.3, 1250);
-                                sleep(100);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 2750);//движение вперед
-                                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой
-                                lift_claw(-0.3, 1250);
-                                sleep(100);
-                                grab_box(false, true, false, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
+
                                 wasExecuted = true;
                             }
                             if (vuMark == RelicRecoveryVuMark.LEFT) {
                                 telemetry.addData("Vumark", " LEFT");
                                 telemetry.update();
-                                grab_box(true, false, false, true);
-                                sleep(500);
-                                lift_claw(0.3, 1250);
-                                sleep(100);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 3400);//движение вперед
-                                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1250);//поворот по часовой на 90 градусов
-                                lift_claw(-0.3, 1250);
-                                sleep(100);
-                                grab_box(false, true, false, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1000);
-                                sleep(100);
-                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 500);//движение назад
                                 wasExecuted = true;
                             }
                         }
