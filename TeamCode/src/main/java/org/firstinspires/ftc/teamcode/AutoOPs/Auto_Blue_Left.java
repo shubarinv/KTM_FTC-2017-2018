@@ -397,12 +397,18 @@ public class Auto_Blue_Left extends LinearOpMode {
             double fieldColorSR;
             int tick = 1;
             while (tick < 600) {
+                if (isStopRequested()) {
+                    break;
+                }
                 fieldColor += odsSensor.getLightDetected();
                 fieldColorSR = fieldColor / (tick / 5);
                 set_Motors_Power(0.15, -0.15, 0.15, -0.15);
                 if (fieldColor - fieldColorSR > fieldColorSR) {
                     int drivetime = 0;
                     while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                        if (isStopRequested()) {
+                            break;
+                        }
                         set_Motors_Power(0.15, -0.15, 0.15, -0.15);
                         drivetime += 5;
                         sleep(5);
