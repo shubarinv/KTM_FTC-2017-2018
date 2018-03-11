@@ -205,7 +205,7 @@ public class Auto_Blue_Left extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws RuntimeException {
 
         s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
     /*
@@ -396,6 +396,8 @@ public class Auto_Blue_Left extends LinearOpMode {
             double fieldColor = 1;
             double fieldColorSR;
             int tick = 1;
+
+
             while (tick < 600) {
                 if (isStopRequested()) {
                     break;
