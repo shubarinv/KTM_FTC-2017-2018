@@ -408,7 +408,7 @@ public class Auto_Blue_Left extends LinearOpMode {
                         sleep(5);
                     }
                     set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
-
+                    break;
                 }
                 tick += 5;
             }
