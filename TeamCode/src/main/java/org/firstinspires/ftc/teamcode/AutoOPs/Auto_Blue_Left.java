@@ -358,7 +358,7 @@ public class Auto_Blue_Left extends LinearOpMode {
         /*
         STEP 1 -Trying to kick jewel
         */
-            cdim.setDigitalChannelState(LED_CHANNEL, true);
+
             rotate_claw(0.8);// so that boxes won't fall off
             sleep(800);
             m6_intake.setPower(0.6);
@@ -393,39 +393,28 @@ public class Auto_Blue_Left extends LinearOpMode {
             set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
             // set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
             // set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
-            telemetry.clear();
-            Centering:
-            for (int tick = 0; tick < 600; tick += 10) {
-                if (odsSensor.getLightDetected() > 0.70) {
-                    chassis_stop_movement();
-                    lineDetected = true;
-                    cdim.setDigitalChannelState(LED_CHANNEL, true);
-                    telemetry.addData("Movement", "Line detected");
-                    telemetry.addData("Movement", "Centring");
-                    telemetry.update();
-                    sleep(500);
-                    break;
-                } else {
-                    set_Motors_Power(0.15, -0.15, 0.15, -0.15);
+            double fieldColor = 1;
+            double fieldColorSR;
+            int tick = 1;
+            while (tick < 600) {
+                fieldColor += odsSensor.getLightDetected();
+                fieldColorSR = fieldColor / (tick / 5);
+                set_Motors_Power(0.15, -0.15, 0.15, -0.15);
+                if (fieldColor - fieldColorSR > fieldColorSR) {
+                    int drivetime = 0;
+                    while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                        set_Motors_Power(0.15, -0.15, 0.15, -0.15);
+                        drivetime += 5;
+                        sleep(5);
+                    }
+                    set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
+
                 }
-                if (isStopRequested()) {
-                    telemetry.addData("Centering (L)", "Stop requested");
-                    telemetry.update();
-                    chassis_stop_movement();
-                    break;
-                }
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    telemetry.addData("Centering (L)", "Exception interrupted");
-                    telemetry.update();
-                }
+                tick += 5;
             }
-            sleep(500);
-            chassis_stop_movement();
+            sleep(200);
             telemetry.addData("Centering (L)", "Done (break)");
             telemetry.update();
-            cdim.setDigitalChannelState(LED_CHANNEL, false);
             /*if (!lineDetected) {
                 telemetry.addData("Movement", "Forwarding to find line");
                 telemetry.update();
@@ -457,29 +446,35 @@ public class Auto_Blue_Left extends LinearOpMode {
                     }
                 }
             }*/
-            if (rel_type == 3) {
-                telemetry.addData("Vumark", " RIGHT");
+            if (!lineDetected) {
+                telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
                 telemetry.update();
-                sleep(500);
-                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 500);// Slide left
-
-            } else if (rel_type == 2) {
-                telemetry.addData("Vumark", " CENTER");
-                telemetry.update();
-
-            } else if (rel_type == 1) {
-                telemetry.addData("Vumark", " LEFT");
-                telemetry.update();
-                sleep(500);
-                set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 500);// Slide right
-
+                chassis_stop_movement();
+                //requestOpModeStop();
             } else {
-                telemetry.addData("Line", "(X)NOT VISIBLE");
-                telemetry.update();
+                if (rel_type == 3) {
+                    telemetry.addData("Vumark", " RIGHT");
+                    telemetry.update();
+                    sleep(200);
+                    set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 500);// Slide left
 
+                } else if (rel_type == 2) {
+                    telemetry.addData("Vumark", " CENTER");
+                    telemetry.update();
+
+                } else if (rel_type == 1) {
+                    telemetry.addData("Vumark", " LEFT");
+                    telemetry.update();
+                    sleep(200);
+                    set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 500);// Slide right
+
+                } else {
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
+                    telemetry.update();
+
+                }
+                putBox();
             }
-            putBox();
-
             wasExecuted = true;
         }
 
