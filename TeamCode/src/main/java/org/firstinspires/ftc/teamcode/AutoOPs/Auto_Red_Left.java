@@ -328,35 +328,48 @@ public class Auto_Red_Left extends LinearOpMode {
         STEP 2 -Cryptobox related
         */
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1250);//движение вперёд
-                //
-                double fieldColor = 0;
+                double fieldColor;
                 double fieldColorSR = odsSensor.getLightDetected();
-                int tick = 1;
+                int tick;
 
-
-                while (tick < 600) {
-                    if (isStopRequested()) {
-                        break;
-                    }
+                cdim.setDigitalChannelState(LED_CHANNEL, true);
+                for (tick = 5; tick < 2000; tick += 5) {
+                    telemetry.addData("Centring loop", "interation: " + tick);
+                    telemetry.update();
+                    sleep(400);
+                    cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
-                    fieldColorSR = fieldColorSR + fieldColor / (tick / 5);
-                    set_Motors_Power(0.15, -0.15, -0.15, 0.15);
-                    if (fieldColor - fieldColorSR > fieldColorSR) {
-                        int drivetime = 0;
-                        while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
-                            if (isStopRequested()) {
+                    fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
+                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                    if (tick > 5) {
+                        if (fieldColor - fieldColorSR > 0.1) {
+                            telemetry.addData("Centring loop", "line Found 1");
+                            telemetry.update();
+                            sleep(400);
+                            int drivetime = 0;
+                            while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                                cdim.setDigitalChannelState(LED_CHANNEL, true);
+                                if (isStopRequested()) {
+                                    break;
+                                }
+                                telemetry.addData("Centring loop", "coasting");
+                                telemetry.update();
+                                sleep(400);
+                                set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                                drivetime += 5;
+                                sleep(5);
+                            }
+                            if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                                telemetry.addData("Centring loop", "line Found 2 (break)");
+                                telemetry.update();
+                                sleep(400);
+                                cdim.setDigitalChannelState(LED_CHANNEL, false);
+                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                                sleep(500);
                                 break;
                             }
-                            set_Motors_Power(0.15, -0.15, -0.15, 0.15);
-                            drivetime += 5;
-                            sleep(5);
-                        }
-                        if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
-                            set_Motors_Power_timed(0.15, 0.15, -0.15, 0.15, (drivetime / 2));
-                            break;
                         }
                     }
-                    tick += 5;
                 }
                 set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
