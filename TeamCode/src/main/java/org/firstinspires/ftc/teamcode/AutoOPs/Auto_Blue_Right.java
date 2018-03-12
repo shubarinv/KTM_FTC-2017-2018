@@ -165,32 +165,19 @@ public class Auto_Blue_Right extends LinearOpMode {
             telemetry.update();
             sleep(500);
             Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-            red[j] = sensorRGB.red() * 255 / 800;
-            blue[j] = sensorRGB.blue() * 255 / 800;
             double hue = hsvValues[0];
             hue_arr[j] = hue;
         }
 
         //Находим среднее арифметическое
-        double red_sr = 0;
-        double blue_sr = 0;
+
         double hue_sr = 0;
         for (int j = 0; j < 4; j++) {
-            red_sr = red_sr + red[j];
-            blue_sr = blue_sr + blue[j];
             hue_sr = hue_sr + hue_arr[j];
         }
-        red_sr = red_sr / 4;
-        blue_sr = blue_sr / 4;
         hue_sr = hue_sr / 4;
         //
         if (hue_sr > 110 && hue_sr < 290) {
-            return "Blue";
-        } else if (hue_sr < 110 || hue_sr > 290 && hue_sr <= 360) {
-            return "Red";
-        }
-        // THIS IS DEPRECATED
-        else if (blue_sr > red_sr) {
             return "Blue";
         } else {
             return "Red";
@@ -358,22 +345,32 @@ public class Auto_Blue_Right extends LinearOpMode {
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
                 // set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
                 // set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
-                int fieldColor = 0;
-                double fieldColorSR;
+                double fieldColor = 0;
+                double fieldColorSR = odsSensor.getLightDetected();
                 int tick = 1;
+                //we might need 90 deg turn here
+
                 while (tick < 600) {
-                    fieldColor += odsSensor.getLightDetected();
-                    fieldColorSR = fieldColor / (tick / 5);
+                    if (isStopRequested()) {
+                        break;
+                    }
+                    fieldColor = odsSensor.getLightDetected();
+                    fieldColorSR = fieldColorSR + fieldColor / (tick / 5);
                     set_Motors_Power(0.15, -0.15, 0.15, -0.15);
                     if (fieldColor - fieldColorSR > fieldColorSR) {
                         int drivetime = 0;
                         while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                            if (isStopRequested()) {
+                                break;
+                            }
                             set_Motors_Power(0.15, -0.15, 0.15, -0.15);
                             drivetime += 5;
                             sleep(5);
                         }
-                        set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
-
+                        if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                            set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
+                            break;
+                        }
                     }
                     tick += 5;
                 }
