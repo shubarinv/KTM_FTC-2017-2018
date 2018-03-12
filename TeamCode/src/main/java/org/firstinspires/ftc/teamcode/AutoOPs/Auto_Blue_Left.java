@@ -393,8 +393,8 @@ public class Auto_Blue_Left extends LinearOpMode {
             set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
             // set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
             // set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
-            double fieldColor = 1;
-            double fieldColorSR;
+            double fieldColor = 0;
+            double fieldColorSR = odsSensor.getLightDetected();
             int tick = 1;
 
 
@@ -402,8 +402,8 @@ public class Auto_Blue_Left extends LinearOpMode {
                 if (isStopRequested()) {
                     break;
                 }
-                fieldColor += odsSensor.getLightDetected();
-                fieldColorSR = fieldColor / (tick / 5);
+                fieldColor = odsSensor.getLightDetected();
+                fieldColorSR = fieldColorSR + fieldColor / (tick / 5);
                 set_Motors_Power(0.15, -0.15, 0.15, -0.15);
                 if (fieldColor - fieldColorSR > fieldColorSR) {
                     int drivetime = 0;
@@ -415,74 +415,38 @@ public class Auto_Blue_Left extends LinearOpMode {
                         drivetime += 5;
                         sleep(5);
                     }
-                    set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
-                    break;
+                    if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                        set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
+                        break;
+                    }
                 }
                 tick += 5;
             }
             sleep(200);
-            telemetry.addData("Centering (L)", "Done (break)");
+            telemetry.addData("AutoOP", "Stage 2");
             telemetry.update();
-            /*if (!lineDetected) {
-                telemetry.addData("Movement", "Forwarding to find line");
+            if (rel_type == 3) {
+                telemetry.addData("Vumark", " RIGHT");
+                telemetry.update();
+                sleep(200);
+                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 500);// Slide left
+
+            } else if (rel_type == 2) {
+                telemetry.addData("Vumark", " CENTER");
                 telemetry.update();
 
-                TooBigDwnRange:
-                for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.75) {
-                        lineDetected = true;
-                        telemetry.addData("Movement", "Line detected");
-                        telemetry.update();
-
-                        chassis_stop_movement();
-                        break;
-                    }
-                    if (isStopRequested()) {
-                        telemetry.addData("TooBigDwnRange (L)", "Stop requested");
-                        telemetry.update();
-                        chassis_stop_movement();
-                        break;
-                    } else {
-                        set_Motors_Power(0.2, -0.2, -0.2, 0.2);//движение вперёд
-                    }
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        telemetry.addData("TooBigDwnRange (L)", "Exception interrupted");
-                        telemetry.update();
-                        chassis_stop_movement();
-                    }
-                }
-            }*/
-            if (!lineDetected) {
-                telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
+            } else if (rel_type == 1) {
+                telemetry.addData("Vumark", " LEFT");
                 telemetry.update();
-                chassis_stop_movement();
-                //requestOpModeStop();
+                sleep(200);
+                set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 500);// Slide right
+
             } else {
-                if (rel_type == 3) {
-                    telemetry.addData("Vumark", " RIGHT");
-                    telemetry.update();
-                    sleep(200);
-                    set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 500);// Slide left
+                telemetry.addData("Line", "(X)NOT VISIBLE");
+                telemetry.update();
 
-                } else if (rel_type == 2) {
-                    telemetry.addData("Vumark", " CENTER");
-                    telemetry.update();
-
-                } else if (rel_type == 1) {
-                    telemetry.addData("Vumark", " LEFT");
-                    telemetry.update();
-                    sleep(200);
-                    set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 500);// Slide right
-
-                } else {
-                    telemetry.addData("Line", "(X)NOT VISIBLE");
-                    telemetry.update();
-
-                }
-                putBox();
             }
+            putBox();
             wasExecuted = true;
         }
 
