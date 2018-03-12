@@ -350,70 +350,35 @@ public class Auto_Red_Right extends LinearOpMode {
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
                 set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 1500);//Fixing alignment (aka slide right)
                 set_Motors_Power_timed(-0.2, -0.2, 0.2, 0.2, 1500);//Slide left
-                Centering:
-                for (int tick = 0; tick < 500; tick += 10) {
-                    if (odsSensor.getLightDetected() > 0.1) {
-                        lineDetected = true;
-                        telemetry.addData("Movement", "Line detected");
-                        telemetry.addData("Movement", "Centring");
-                        telemetry.update();
-                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 200);
-                        telemetry.addData("Centering (L)", "Done (break)");
-                        telemetry.update();
-                        break;
-                    }
+                double fieldColor = 0;
+                double fieldColorSR = odsSensor.getLightDetected();
+                int tick = 1;
+
+
+                while (tick < 600) {
                     if (isStopRequested()) {
-                        telemetry.addData("Centering (L)", "Stop requested");
-                        telemetry.update();
-                        chassis_stop_movement();
                         break;
-                    } else {
-                        set_Motors_Power(-0.1, -0.1, 0.1, 0.1);
                     }
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        telemetry.addData("Centering (L)", "Exception interrupted");
-                        telemetry.update();
-                    }
-                }
-                if (!lineDetected) {
-                    telemetry.addData("Movement", "Forwarding to find line");
-                    telemetry.update();
-
-                    TooBigDwnRange:
-                    for (int tick = 0; tick < 500; tick += 10) {
-                        if (odsSensor.getLightDetected() > 0.1) {
-                            lineDetected = true;
-                            telemetry.addData("Movement", "Line detected");
-                            telemetry.update();
-
-                            chassis_stop_movement();
+                    fieldColor = odsSensor.getLightDetected();
+                    fieldColorSR = fieldColorSR + fieldColor / (tick / 5);
+                    set_Motors_Power(0.15, -0.15, 0.15, -0.15);
+                    if (fieldColor - fieldColorSR > fieldColorSR) {
+                        int drivetime = 0;
+                        while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                            if (isStopRequested()) {
+                                break;
+                            }
+                            set_Motors_Power(0.15, -0.15, 0.15, -0.15);
+                            drivetime += 5;
+                            sleep(5);
+                        }
+                        if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                            set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
                             break;
                         }
-                        if (isStopRequested()) {
-                            telemetry.addData("TooBigDwnRange (L)", "Stop requested");
-                            telemetry.update();
-                            chassis_stop_movement();
-                            break;
-                        } else {
-                            set_Motors_Power(0.1, -0.1, -0.1, 0.1);// Slide right
-                        }
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            telemetry.addData("TooBigDwnRange (L)", "Exception interrupted");
-                            telemetry.update();
-                            chassis_stop_movement();
-                        }
                     }
+                    tick += 5;
                 }
-                if (!lineDetected) {
-                    telemetry.addData("AutoOP", "WE ARE WAY OF COURSE (STOP)");
-                    telemetry.update();
-                    chassis_stop_movement();
-                    requestOpModeStop();
-                } else {
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                     if (vuMark == RelicRecoveryVuMark.RIGHT) {
                         telemetry.addData("Vumark", " RIGHT");
@@ -434,7 +399,6 @@ public class Auto_Red_Right extends LinearOpMode {
                     }
                     set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1600);
                     putBox();
-                }
                 wasExecuted = true;
             }
             telemetry.update();
