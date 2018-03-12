@@ -161,8 +161,6 @@ public class Auto_Blue_Left extends LinearOpMode {
         bPrevState = bCurrState;
 
         double[] hue_arr = new double[5];
-        double[] blue = new double[5];
-        double[] red = new double[5];
         //для точности 4 измерения
         for (int j = 0; j < 4; j++) {
             // convert the RGB values to HSV values.
@@ -171,32 +169,18 @@ public class Auto_Blue_Left extends LinearOpMode {
             telemetry.update();
             sleep(500);
             Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
-            red[j] = sensorRGB.red() * 255 / 800;
-            blue[j] = sensorRGB.blue() * 255 / 800;
             double hue = hsvValues[0];
             hue_arr[j] = hue;
         }
 
         //Находим среднее арифметическое
-        double red_sr = 0;
-        double blue_sr = 0;
         double hue_sr = 0;
         for (int j = 0; j < 4; j++) {
-            red_sr = red_sr + red[j];
-            blue_sr = blue_sr + blue[j];
             hue_sr = hue_sr + hue_arr[j];
         }
-        red_sr = red_sr / 4;
-        blue_sr = blue_sr / 4;
         hue_sr = hue_sr / 4;
         //
         if (hue_sr > 110 && hue_sr < 290) {
-            return "Blue";
-        } else if (hue_sr < 110 || hue_sr > 290 && hue_sr <= 360) {
-            return "Red";
-        }
-        // THIS IS DEPRECATED
-        else if (blue_sr > red_sr) {
             return "Blue";
         } else {
             return "Red";
