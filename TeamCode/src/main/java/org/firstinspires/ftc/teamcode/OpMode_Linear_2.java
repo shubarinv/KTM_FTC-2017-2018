@@ -174,6 +174,8 @@ public class OpMode_Linear_2 extends LinearOpMode {
             boolean slide_right_bump = gamepad1.right_bumper;
             boolean relic_claw_up = gamepad2.dpad_up;
             boolean relic_claw_down = gamepad2.dpad_down;
+            boolean relic_part_ext = gamepad2.left_bumper;
+            boolean relic_part_ret = gamepad2.right_bumper;
 
 
             cdim = hardwareMap.deviceInterfaceModule.get("dim");
@@ -272,8 +274,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
                     sleep(300);
                     setPower_Timed(s1_Relic_ext_ret, -1, 450);
                     for (int tick = 0; tick < 2000; tick += 10) {
-                        s1_Relic_ext_ret.setPower(0.5);
-
+                        s1_Relic_ext_ret.setPower(-0.5);
                         if (touchSensor.isPressed() || isStopRequested()) {
                             s1_Relic_ext_ret.setPower(0);
                             break;
@@ -302,6 +303,13 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 s6_relic_claw.setPosition(0);
                 sleep(300);
                 s7_relic_arm.setPosition(0.9);
+            }
+            if (relic_part_ext) {
+                s7_relic_arm.setPosition(0.8);
+            }
+            if (relic_part_ret) {
+                s7_relic_arm.setPosition(0.3);
+
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
         }
