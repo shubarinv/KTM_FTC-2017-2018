@@ -296,7 +296,7 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
             //Relic arm_small
             if (relic_claw_up) { //DO NOT CHANGE
-                s7_relic_arm.setPosition(1);
+                s7_relic_arm.setPosition(0.85);
                 sleep(200);
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
