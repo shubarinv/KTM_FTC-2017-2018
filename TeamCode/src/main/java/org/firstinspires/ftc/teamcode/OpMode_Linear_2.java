@@ -300,9 +300,10 @@ public class OpMode_Linear_2 extends LinearOpMode {
                 sleep(200);
                 s6_relic_claw.setPosition(1);
             } else if (relic_claw_down) {
+                s7_relic_arm.setPosition(1);
                 s6_relic_claw.setPosition(0);
                 sleep(300);
-                s7_relic_arm.setPosition(0.9);
+                s7_relic_arm.setPosition(0.85);
             }
             if (relic_part_ext) {
                 s7_relic_arm.setPosition(0.8);
