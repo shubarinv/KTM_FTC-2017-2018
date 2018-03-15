@@ -355,50 +355,64 @@ public class Auto_Red_Right extends LinearOpMode {
                 int tick = 1;
 
 
-                while (tick < 600) {
-                    if (isStopRequested()) {
-                        break;
-                    }
+                for (tick = 5; tick < 1000; tick += 1) {
+                    telemetry.addData("Centring loop", "interation: " + tick);
+                    telemetry.update();
+                    sleep(400);
+                    cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
-                    fieldColorSR = fieldColorSR + fieldColor / (tick / 5);
-                    set_Motors_Power(0.15, -0.15, 0.15, -0.15);
-                    if (fieldColor - fieldColorSR > fieldColorSR) {
-                        int drivetime = 0;
-                        while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
-                            if (isStopRequested()) {
+                    fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
+                    set_Motors_Power(0.185, -0.185, -0.185, 0.185);
+                    if (tick > 5) {
+                        if (fieldColor - fieldColorSR > 0.1) {
+                            telemetry.addData("Centring loop", "line Found 1");
+                            telemetry.update();
+                            sleep(200);
+                            int drivetime = 0;
+                            while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                                cdim.setDigitalChannelState(LED_CHANNEL, true);
+                                if (isStopRequested()) {
+                                    break;
+                                }
+                                telemetry.addData("Centring loop", "coasting");
+                                telemetry.update();
+                                sleep(400);
+                                set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                                drivetime += 5;
+                                sleep(5);
+                            }
+                            if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                                telemetry.addData("Centring loop", "line Found 2 (break)");
+                                telemetry.update();
+                                sleep(400);
+                                cdim.setDigitalChannelState(LED_CHANNEL, false);
+                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                                sleep(500);
                                 break;
                             }
-                            set_Motors_Power(0.15, -0.15, 0.15, -0.15);
-                            drivetime += 5;
-                            sleep(5);
-                        }
-                        if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
-                            set_Motors_Power_timed(-0.15, 0.15, -0.15, 0.15, (drivetime / 2));
-                            break;
                         }
                     }
-                    tick += 5;
                 }
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
-                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                        telemetry.addData("Vumark", " RIGHT");
-                        telemetry.update();
-                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
-                    } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                        telemetry.addData("Vumark", " CENTER");
-                        telemetry.update();
+                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    telemetry.addData("Vumark", " RIGHT");
+                    telemetry.update();
+                    set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    telemetry.addData("Vumark", " CENTER");
+                    telemetry.update();
 
-                    } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                        telemetry.addData("Vumark", " LEFT");
-                        telemetry.update();
-                        set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
-                    } else {
-                        telemetry.addData("Line", "(X)NOT VISIBLE");
-                        telemetry.update();
+                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    telemetry.addData("Vumark", " LEFT");
+                    telemetry.update();
+                    set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
+                } else {
+                    telemetry.addData("Line", "(X)NOT VISIBLE");
+                    telemetry.update();
 
-                    }
-                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1600);
-                    putBox();
+                }
+                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 1600);
+                putBox();
                 wasExecuted = true;
             }
             telemetry.update();

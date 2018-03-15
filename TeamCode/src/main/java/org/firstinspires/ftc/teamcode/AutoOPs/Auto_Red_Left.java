@@ -332,20 +332,19 @@ public class Auto_Red_Left extends LinearOpMode {
                 double fieldColorSR = odsSensor.getLightDetected();
                 int tick;
 
-                cdim.setDigitalChannelState(LED_CHANNEL, true);
-                for (tick = 5; tick < 2000; tick += 5) {
+                for (tick = 5; tick < 2000; tick += 1) {
                     telemetry.addData("Centring loop", "interation: " + tick);
                     telemetry.update();
                     sleep(400);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
                     fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
-                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                    set_Motors_Power(0.185, -0.185, -0.185, 0.185);
                     if (tick > 5) {
                         if (fieldColor - fieldColorSR > 0.1) {
                             telemetry.addData("Centring loop", "line Found 1");
                             telemetry.update();
-                            sleep(400);
+                            sleep(200);
                             int drivetime = 0;
                             while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
                                 cdim.setDigitalChannelState(LED_CHANNEL, true);
