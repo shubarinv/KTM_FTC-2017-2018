@@ -27,7 +27,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "KTM TeleOp 2 (ALT)", group = "Linear Opmode")
 
 //@Disabled
-public class OpMode_Linear_2 extends LinearOpMode {
+public class TeleOP extends LinearOpMode {
 
     private static final int LED_CHANNEL = 5;
     TouchSensor touchSensor;  // Hardware Device Object
@@ -67,14 +67,6 @@ public class OpMode_Linear_2 extends LinearOpMode {
 
     void shovel_trigger(double shovel_pos) {
         s5_shovel.setPosition(shovel_pos);
-    }
-
-    void lift_stick(boolean lift) { //if rotate true then rotate to  180 . else to 0
-        if (lift) {
-            s4_kicker.setPosition(1);
-        } else {
-            s4_kicker.setPosition(0);
-        }
     }
 
     void setPower_Timed(DcMotor motor, double power, long milliseconds) {
