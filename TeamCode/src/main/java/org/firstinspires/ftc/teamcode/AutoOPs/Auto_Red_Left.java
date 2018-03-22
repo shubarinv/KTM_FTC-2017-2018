@@ -85,7 +85,7 @@ public class Auto_Red_Left extends LinearOpMode {
     private Servo s3_rotation = null;
     private Servo s5_shovel = null;
     private DcMotor m6_intake = null;
-    private boolean lineDetected = false;
+    private boolean isPositioned= false;
   /*
   * Functions
   */
@@ -345,8 +345,12 @@ public class Auto_Red_Left extends LinearOpMode {
                         if (fieldColor - fieldColorSR > 0.1) {
                             telemetry.addData("Centring loop", "line Found 1");
                             telemetry.update();
+
                             sleep(200);
-                            set_Motors_Power_timed(-0.15, -0.15, -0.15, -0.15, 400);//поворот против часовой
+                            if (!isPositioned) {
+                                set_Motors_Power_timed(-0.15, -0.15, -0.15, -0.15, 400);//поворот против часовой
+                                isPositioned = true;
+                            }
                             sleep(200);
                             int drivetime = 0;
                             while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
