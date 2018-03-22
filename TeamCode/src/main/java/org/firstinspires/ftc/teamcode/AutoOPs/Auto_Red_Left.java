@@ -85,7 +85,7 @@ public class Auto_Red_Left extends LinearOpMode {
     private Servo s3_rotation = null;
     private Servo s5_shovel = null;
     private DcMotor m6_intake = null;
-    private boolean isPositioned= false;
+    private boolean isPositioned = false;
   /*
   * Functions
   */
@@ -202,203 +202,162 @@ public class Auto_Red_Left extends LinearOpMode {
         // m1_drive
 
         try {
+            //Chassis
             m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-        } catch (RuntimeException e) {
-            m1_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m1_Drive");
-        }
-        // m2_drive
-        try {
             m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-        } catch (RuntimeException e) {
-            m2_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m2_Drive");
-        }
-        // m3_drive
-        try {
             m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-        } catch (RuntimeException e) {
-            m3_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m3_Drive");
-        }
-        // m4_drive
-        try {
             m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        } catch (RuntimeException e) {
-            m4_Drive = null;
-            telemetry.addData("EXCEPTION", "Отвалился m4_Drive");
-        }
-        // m5_lift
-        try {
-            m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        } catch (RuntimeException e) {
-            m5_Lift = null;
-            telemetry.addData("EXCEPTION", "Отвалился m5_lift");
-        }
-        // s1_top_Claw
-        try {
-            s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-        } catch (RuntimeException e) {
-            s1_top_Claw = null;
-            telemetry.addData("EXCEPTION", "Отвалился s1 top claw");
-        }
-        // s2_bottom_Claw
-        try {
-            s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-        } catch (RuntimeException e) {
-            s2_bottom_Claw = null;
-            telemetry.addData("EXCEPTION", "Отвалился s2 bottom claw");
-        }
-        //s4_kicker
-        try {
-            s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-        } catch (RuntimeException e) {
-            s4_kicker = null;
-            telemetry.addData("EXCEPTION", "Отвалился s4 kick(палка)");
-        }
-        odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
 
-        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
-        s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
-        m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
-        // Конец обработки исключений
-        m1_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m2_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m3_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m4_Drive.setDirection(DcMotor.Direction.REVERSE);
+            m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+            s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
+            s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+            odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
+            s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
+            s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
+            m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
+        }
+        catch (RuntimeException e){
+            telemetry.addData("INIT","Error occurred during init");
+            telemetry.update();
+        }
+            // Конец обработки исключений
+            m1_Drive.setDirection(DcMotor.Direction.REVERSE);
+            m2_Drive.setDirection(DcMotor.Direction.REVERSE);
+            m3_Drive.setDirection(DcMotor.Direction.REVERSE);
+            m4_Drive.setDirection(DcMotor.Direction.REVERSE);
     /* AdaFruit */
 
-        // get a reference to our DeviceInterfaceModule object.
-        cdim = hardwareMap.deviceInterfaceModule.get("dim");
+            // get a reference to our DeviceInterfaceModule object.
+            cdim = hardwareMap.deviceInterfaceModule.get("dim");
 
-        // set the digital channel to output mode.
-        // remember, the Adafruit sensor is actually two devices.
-        // It's an I2C sensor and it's also an LED that can be turned on or off.
-        cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
+            // set the digital channel to output mode.
+            // remember, the Adafruit sensor is actually two devices.
+            // It's an I2C sensor and it's also an LED that can be turned on or off.
+            cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
 
-        // get a reference to our ColorSensor object.
-        sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+            // get a reference to our ColorSensor object.
+            sensorRGB = hardwareMap.colorSensor.get("sensor_color");
 
-        // turn the LED on in the beginning, just so user will know that the sensor is active.
-        cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
-        telemetry.addData("AdaFruit", "Ready");
-        telemetry.update();
-        waitForStart();
+            // turn the LED on in the beginning, just so user will know that the sensor is active.
+            cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+            telemetry.addData("AdaFruit", "Ready");
+            telemetry.update();
+            waitForStart();
 
-        relicTrackables.activate();
-        while (opModeIsActive()) {
-            s1_Relic_ext_ret.setPower(0);
-            if (wasExecuted) {
-                telemetry.addData("Autonomous: ", "DONE");
-            }
+            relicTrackables.activate();
+            while (opModeIsActive()) {
+                s1_Relic_ext_ret.setPower(0);
+                if (wasExecuted) {
+                    telemetry.addData("Autonomous: ", "DONE");
+                }
 
-            if (!wasExecuted) {
-                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                if (!wasExecuted) {
+                    RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         /*
         STEP 1 -Trying to kick jewel
         */
 
-                rotate_claw(0.8);// so that boxes won't fall off
-                sleep(800);
-                m6_intake.setPower(0.6);
-                s4_kicker.setPosition(0.75);
-                sleep(500);
-                lift_claw(0.1, 250);
+                    rotate_claw(0.8);// so that boxes won't fall off
+                    sleep(800);
+                    m6_intake.setPower(0.6);
+                    s4_kicker.setPosition(0.75);
+                    sleep(500);
+                    lift_claw(0.1, 250);
 
-                telemetry.addData("Step-1", "Running");
-                String jewel_color = get_color();
-                telemetry.addData("AdaFruit", jewel_color);
-                telemetry.update();
-                if (Objects.equals(jewel_color, "Blue")) {
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                } else if (Objects.equals(jewel_color, "Red")) {
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                } else {
-                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-                    telemetry.addData("Step-1", "FAILED");
+                    telemetry.addData("Step-1", "Running");
+                    String jewel_color = get_color();
+                    telemetry.addData("AdaFruit", jewel_color);
                     telemetry.update();
-                }
-                s4_kicker.setPosition(0.1);
-                cdim.setDigitalChannelState(LED_CHANNEL, false);
-                // requestOpModeStop();
+                    if (Objects.equals(jewel_color, "Blue")) {
+                        set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                        set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    } else if (Objects.equals(jewel_color, "Red")) {
+                        set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                        set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                    } else {
+                        telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
+                        telemetry.addData("Step-1", "FAILED");
+                        telemetry.update();
+                    }
+                    s4_kicker.setPosition(0.1);
+                    cdim.setDigitalChannelState(LED_CHANNEL, false);
+                    // requestOpModeStop();
 
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1400);//движение вперёд
-                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
-                double fieldColor;
-                double fieldColorSR = odsSensor.getLightDetected();
-                int tick;
+                    set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1400);//движение вперёд
+                    set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
+                    double fieldColor;
+                    double fieldColorSR = odsSensor.getLightDetected();
+                    int tick;
 
-                for (tick = 5; tick < 2000; tick += 1) {
-                    telemetry.addData("Centring loop", "interation: " + tick);
-                    telemetry.addData(" ", odsSensor.getLightDetected());
-                    telemetry.update();
-                    cdim.setDigitalChannelState(LED_CHANNEL, false);
-                    fieldColor = odsSensor.getLightDetected();
-                    fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
-                    set_Motors_Power(0.1, -0.1, -0.1, 0.1);
-                    if (tick > 4) {
-                        if (fieldColor - fieldColorSR > 0.1) {
+                    for (tick = 5; tick < 2000; tick += 1) {
+                        telemetry.addData("Centring loop", "iteration: " + tick);
+                        telemetry.addData(" ", odsSensor.getLightDetected());
+                        telemetry.update();
+                        cdim.setDigitalChannelState(LED_CHANNEL, false);
+                        fieldColor = odsSensor.getLightDetected();
+                        fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
+                        set_Motors_Power(0.1, -0.1, -0.1, 0.1);
+                        if (tick > 4) {
+                            if (fieldColor - fieldColorSR > 0.1) {
 
-                            telemetry.addData("Centring loop", "line Found 1");
-                            telemetry.update();
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 200);//движение вперёд
-                            sleep(200);
-                            if (!isPositioned) {
-                                set_Motors_Power_timed(-0.15, -0.15, -0.15, -0.15, 400);//поворот против часовой
-                                isPositioned = true;
-                            }
-                            sleep(200);
-                            int drivetime = 0;
-                            while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
-                                cdim.setDigitalChannelState(LED_CHANNEL, true);
-                                if (isStopRequested()) {
+                                telemetry.addData("Centring loop", "line Found 1");
+                                telemetry.update();
+                                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 200);//движение вперёд
+                                sleep(200);
+                                if (!isPositioned) {
+                                    set_Motors_Power_timed(-0.15, -0.15, -0.15, -0.15, 400);//поворот против часовой
+                                    isPositioned = true;
+                                }
+                                sleep(200);
+                                int drivetime = 0;
+                                while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                                    cdim.setDigitalChannelState(LED_CHANNEL, true);
+                                    if (isStopRequested()) {
+                                        break;
+                                    }
+                                    telemetry.addData("Centring loop", "coasting");
+                                    telemetry.update();
+                                    sleep(5);
+                                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                                    drivetime += 5;
+
+                                }
+                                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                                    telemetry.addData("Centring loop", "line Found 2 (break)");
+                                    telemetry.update();
+                                    sleep(400);
+                                    cdim.setDigitalChannelState(LED_CHANNEL, false);
+                                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                                    sleep(500);
                                     break;
                                 }
-                                telemetry.addData("Centring loop", "coasting");
-                                telemetry.update();
-                                sleep(5);
-                                set_Motors_Power(0.2, -0.2, -0.2, 0.2);
-                                drivetime += 5;
-
-                            }
-                            if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
-                                telemetry.addData("Centring loop", "line Found 2 (break)");
-                                telemetry.update();
-                                sleep(400);
-                                cdim.setDigitalChannelState(LED_CHANNEL, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
-                                sleep(500);
-                                break;
                             }
                         }
                     }
-                }
-                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    telemetry.addData("Vumark", " RIGHT");
-                    telemetry.update();
-                    set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    telemetry.addData("Vumark", " CENTER");
-                    telemetry.update();
+                    set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
+                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                        telemetry.addData("Vumark", " RIGHT");
+                        telemetry.update();
+                        set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
+                    } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                        telemetry.addData("Vumark", " CENTER");
+                        telemetry.update();
 
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    telemetry.addData("Vumark", " LEFT");
-                    telemetry.update();
-                    set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
-                } else {
-                    telemetry.addData("Line", "(X)NOT VISIBLE");
-                    telemetry.update();
+                    } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                        telemetry.addData("Vumark", " LEFT");
+                        telemetry.update();
+                        set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
+                    } else {
+                        telemetry.addData("Line", "(X)NOT VISIBLE");
+                        telemetry.update();
 
+                    }
+                    putBox();
+                    wasExecuted = true;
                 }
-                putBox();
-                wasExecuted = true;
             }
         }
     }
-}
