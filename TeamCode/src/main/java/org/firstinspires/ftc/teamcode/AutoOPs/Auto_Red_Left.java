@@ -327,23 +327,26 @@ public class Auto_Red_Left extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1250);//движение вперёд
+                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1400);//движение вперёд
+                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
                 double fieldColor;
                 double fieldColorSR = odsSensor.getLightDetected();
                 int tick;
 
                 for (tick = 5; tick < 2000; tick += 1) {
                     telemetry.addData("Centring loop", "interation: " + tick);
+                    telemetry.addData(" ", odsSensor.getLightDetected());
                     telemetry.update();
-                    sleep(400);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
                     fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
-                    set_Motors_Power(0.185, -0.185, -0.185, 0.185);
-                    if (tick > 5) {
+                    set_Motors_Power(0.1, -0.1, -0.1, 0.1);
+                    if (tick > 4) {
                         if (fieldColor - fieldColorSR > 0.1) {
                             telemetry.addData("Centring loop", "line Found 1");
                             telemetry.update();
+                            sleep(200);
+                            set_Motors_Power_timed(-0.15, -0.15, -0.15, -0.15, 400);//поворот против часовой
                             sleep(200);
                             int drivetime = 0;
                             while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
@@ -353,10 +356,10 @@ public class Auto_Red_Left extends LinearOpMode {
                                 }
                                 telemetry.addData("Centring loop", "coasting");
                                 telemetry.update();
-                                sleep(400);
+                                sleep(5);
                                 set_Motors_Power(0.2, -0.2, -0.2, 0.2);
                                 drivetime += 5;
-                                sleep(5);
+
                             }
                             if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
                                 telemetry.addData("Centring loop", "line Found 2 (break)");
