@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -26,15 +27,7 @@ import java.util.Objects;
  */
 
 public class AutoOPBase extends LinearOpMode {
-    private VuforiaLocalizer vuforia;
-    float hsvValues[] = {0F, 0F, 0F};
-    // bLedOn represents the state of the LED.
-    boolean bLedOn = false;
-    OpticalDistanceSensor odsSensor;  // Hardware Device Object
     private static final int LED_CHANNEL = 5;
-    TouchSensor touchSensor;  // Hardware Device Object
-    ColorSensor sensorRGB;
-    DeviceInterfaceModule cdim;
     // Declare OpMode members.
     protected ElapsedTime runtime = new ElapsedTime();
     //Chassis
@@ -51,38 +44,43 @@ public class AutoOPBase extends LinearOpMode {
     protected Servo s5_shovel = null;
     protected Servo s6_relic_claw = null;
     protected Servo s7_relic_arm = null;
-    VuforiaTrackables relicTrackables = null;
-    VuforiaTrackable relicTemplate = relicTrackables.get(0);
+    float hsvValues[] = {0F, 0F, 0F};
+    // bLedOn represents the state of the LED.
+    boolean bLedOn = false;
+    OpticalDistanceSensor odsSensor;  // Hardware Device Object
+    TouchSensor touchSensor;  // Hardware Device Object
+    ColorSensor sensorRGB;
+    DeviceInterfaceModule cdim;
     boolean wasExecuted = false;
     boolean isPositioned = false;
+    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    VuforiaTrackable relicTemplate = relicTrackables.get(0);
+    private VuforiaLocalizer vuforia;
+    VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
 
     void vuforiaInit() throws RuntimeException {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         //Vuforia API key
         parameters.vuforiaLicenseKey = "AfQcHkL/////AAAAGd5Auzk+t0CxnAw8xKONnjke+r6gFs0KfKK8LsB35FsX6bnhXZmEN+0f3blTVk7nI4xjKNob63Ps1Jpp/JS25hHc083okOZzcTsBlA5qz2hJK3LFNWyZv59kjCUyqbc3qS7dTXJ4i4/JD9t+IeyvGH9G9xPwV7DNmcuNeT7o+YDn3cI7zgUcVcrdFM8t22/wGkmiCz5TfY5A0BMETyriYX6BzlVuwGtMfXdp9CYDQ+ZhZTRNjPfvKlNyLLxVycIiM1p4nprW2UnySO11fmTkUZR9Ofqr+gbHj0VNm7gUEz77s/cHTl+swX84pxpOhm1QJeO0wuNw4c5siQpizcWHPMhJCDRFqRmTQ3LBpcMJWjTx";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
     }
 
-    void initialise() throws RuntimeException {
+    void initialise(HardwareMap hwMap) throws RuntimeException {
         //Chassis
-        m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-        m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-        m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-        m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-        odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
-        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
-        s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
-        m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
-        s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
+        m1_Drive = hwMap.get(DcMotor.class, "m1 drive");
+        m2_Drive = hwMap.get(DcMotor.class, "m2 drive");
+        m3_Drive = hwMap.get(DcMotor.class, "m3 drive");
+        m4_Drive = hwMap.get(DcMotor.class, "m4 drive");
+        m5_Lift = hwMap.get(DcMotor.class, "m5 lift");
+        s1_top_Claw = hwMap.get(CRServo.class, "s1 top claw");
+        s4_kicker = hwMap.get(Servo.class, "s4 kick");
+        odsSensor = hwMap.get(OpticalDistanceSensor.class, "sensor_ods");
+        s3_rotation = hwMap.get(Servo.class, "s3 rotation");
+        s5_shovel = hwMap.get(Servo.class, "s5 shovel");
+        m6_intake = hwMap.get(DcMotor.class, "m6 intake");
+        s1_Relic_ext_ret = hwMap.get(CRServo.class, "s1 top claw");
     }
 
     void preRunVarUpdates() {
@@ -229,8 +227,8 @@ public class AutoOPBase extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //Init and Stuff
-        initialise();
         vuforiaInit();
+        initialise(hardwareMap);
         preRunVarUpdates();
         relicTrackables.activate();
         waitForStart();
