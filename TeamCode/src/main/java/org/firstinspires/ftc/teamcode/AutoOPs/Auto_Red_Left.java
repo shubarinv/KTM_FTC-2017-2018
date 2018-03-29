@@ -1,31 +1,31 @@
 /* Copyright (c) 2017 FIRST. All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted (subject to the limitations in the disclaimer below) provided that
-* the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this list
-* of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of FIRST nor the names of its contributors may be used to endorse or
-* promote products derived from this software without specific prior written permission.
-*
-* NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
-* LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-* ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package org.firstinspires.ftc.teamcode.AutoOPs;
 
@@ -80,15 +80,14 @@ public class Auto_Red_Left extends LinearOpMode {
     private DcMotor m4_Drive = null;
     private DcMotor m5_Lift = null;
     private CRServo s1_top_Claw = null;
-    private CRServo s2_bottom_Claw = null;
     private Servo s4_kicker = null;
     private Servo s3_rotation = null;
     private Servo s5_shovel = null;
     private DcMotor m6_intake = null;
     private boolean isPositioned = false;
-  /*
-  * Functions
-  */
+    /*
+     * Functions
+     */
 
     void putBox() {
         set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
@@ -99,12 +98,6 @@ public class Auto_Red_Left extends LinearOpMode {
         set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
         set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 500);//движение вперёд
         rotate_claw(0.8);
-    }
-
-    // Lift claw
-    void lift_claw(double lift_power, long ms) {
-        // DEPERCATED
-        assert true;
     }
 
     // Rotate claw
@@ -173,29 +166,29 @@ public class Auto_Red_Left extends LinearOpMode {
     public void runOpMode() {
         s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
         s1_Relic_ext_ret.setPower(0);
-    /*
-    * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-    * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
-    */
+        /*
+         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
+         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
+         */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         //Vuforia API key
         parameters.vuforiaLicenseKey = "AfQcHkL/////AAAAGd5Auzk+t0CxnAw8xKONnjke+r6gFs0KfKK8LsB35FsX6bnhXZmEN+0f3blTVk7nI4xjKNob63Ps1Jpp/JS25hHc083okOZzcTsBlA5qz2hJK3LFNWyZv59kjCUyqbc3qS7dTXJ4i4/JD9t+IeyvGH9G9xPwV7DNmcuNeT7o+YDn3cI7zgUcVcrdFM8t22/wGkmiCz5TfY5A0BMETyriYX6BzlVuwGtMfXdp9CYDQ+ZhZTRNjPfvKlNyLLxVycIiM1p4nprW2UnySO11fmTkUZR9Ofqr+gbHj0VNm7gUEz77s/cHTl+swX84pxpOhm1QJeO0wuNw4c5siQpizcWHPMhJCDRFqRmTQ3LBpcMJWjTx";
-    /*
-    * We also indicate which camera on the RC that we wish to use.
-    * Here we chose the back (HiRes) camera (for greater range), but
-    * for a competition robot, the front camera might be more convenient.
-    */
+        /*
+         * We also indicate which camera on the RC that we wish to use.
+         * Here we chose the back (HiRes) camera (for greater range), but
+         * for a competition robot, the front camera might be more convenient.
+         */
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-    /*
-    * Initialize the drive system variables.
-    * The init() method of the hardware class does all the work here
-    */
+        /*
+         * Initialize the drive system variables.
+         * The init() method of the hardware class does all the work here
+         */
 
         //Обработка исключений
         // m1_drive
@@ -223,7 +216,7 @@ public class Auto_Red_Left extends LinearOpMode {
         m2_Drive.setDirection(DcMotor.Direction.REVERSE);
         m3_Drive.setDirection(DcMotor.Direction.REVERSE);
         m4_Drive.setDirection(DcMotor.Direction.REVERSE);
-    /* AdaFruit */
+        /* AdaFruit */
 
         // get a reference to our DeviceInterfaceModule object.
         cdim = hardwareMap.deviceInterfaceModule.get("dim");
@@ -260,7 +253,6 @@ public class Auto_Red_Left extends LinearOpMode {
                 m6_intake.setPower(0.6);
                 s4_kicker.setPosition(0.75);
                 sleep(500);
-                lift_claw(0.1, 250);
 
                 telemetry.addData("Step-1", "Running");
                 String jewel_color = get_color();
@@ -269,13 +261,9 @@ public class Auto_Red_Left extends LinearOpMode {
                 if (Objects.equals(jewel_color, "Blue")) {
                     set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
                     set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                } else if (Objects.equals(jewel_color, "Red")) {
+                } else {
                     set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                     set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                } else {
-                    telemetry.addData("AdaFruit", "ERROR RECOGNISING COLOR");
-                    telemetry.addData("Step-1", "FAILED");
-                    telemetry.update();
                 }
                 s4_kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
@@ -306,31 +294,30 @@ public class Auto_Red_Left extends LinearOpMode {
                             set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 200);//движение вперёд
                             sleep(200);
                             if (!isPositioned) {
-                                set_Motors_Power_timed(-0.15, -0.15, -0.15, -0.15, 400);//поворот против часовой
-                                isPositioned = true;
-                            }
-                            sleep(200);
-                            int drivetime = 0;
-                            while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
-                                cdim.setDigitalChannelState(LED_CHANNEL, true);
-                                if (isStopRequested()) {
+                                sleep(200);
+                                int drivetime = 0;
+                                while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                                    cdim.setDigitalChannelState(LED_CHANNEL, true);
+                                    if (isStopRequested()) {
+                                        break;
+                                    }
+                                    telemetry.addData("Centring loop", "coasting");
+                                    telemetry.update();
+                                    sleep(5);
+                                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                                    drivetime += 5;
+
+                                }
+                                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                                    telemetry.addData("Centring loop", "line Found 2 (break)");
+                                    telemetry.update();
+                                    sleep(400);
+                                    cdim.setDigitalChannelState(LED_CHANNEL, false);
+                                    isPositioned = true;
+                                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                                    sleep(500);
                                     break;
                                 }
-                                telemetry.addData("Centring loop", "coasting");
-                                telemetry.update();
-                                sleep(5);
-                                set_Motors_Power(0.2, -0.2, -0.2, 0.2);
-                                drivetime += 5;
-
-                            }
-                            if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
-                                telemetry.addData("Centring loop", "line Found 2 (break)");
-                                telemetry.update();
-                                sleep(400);
-                                cdim.setDigitalChannelState(LED_CHANNEL, false);
-                                set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
-                                sleep(500);
-                                break;
                             }
                         }
                     }
