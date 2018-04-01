@@ -247,9 +247,9 @@ public class TeleOP extends LinearOpMode {
                         s1_Relic_ext_ret.setPower(0.5);
                     }
                     s1_Relic_ext_ret.setPower(0);
-                    s7_relic_arm.setPosition(0.7);
+                    s7_relic_arm.setPosition(0.6);
                     sleep(500);
-                    s7_relic_arm.setPosition(0.9);
+                    s7_relic_arm.setPosition(0.8);
 
 
                 }
