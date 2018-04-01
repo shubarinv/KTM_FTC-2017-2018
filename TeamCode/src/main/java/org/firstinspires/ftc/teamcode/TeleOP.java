@@ -289,14 +289,17 @@ public class TeleOP extends LinearOpMode {
 
             //Relic arm_small
             if (relic_claw_up) { //DO NOT CHANGE
-                s7_relic_arm.setPosition(0.85);
+                s6_relic_claw.setPosition(0);
                 sleep(200);
+                s7_relic_arm.setPosition(0.95);
                 s6_relic_claw.setPosition(1);
+                sleep(200);
+                s7_relic_arm.setPosition(0.7);
             } else if (relic_claw_down) {
-                s7_relic_arm.setPosition(1);
+                s7_relic_arm.setPosition(0.9);
                 s6_relic_claw.setPosition(0);
                 sleep(300);
-                s7_relic_arm.setPosition(0.85);
+                s7_relic_arm.setPosition(0.7);
             }
             if (relic_part_ext) {
                 s7_relic_arm.setPosition(0.8);
