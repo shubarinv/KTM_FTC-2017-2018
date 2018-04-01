@@ -291,7 +291,7 @@ public class Auto_Red_Left extends LinearOpMode {
 
                             telemetry.addData("Centring loop", "line Found 1");
                             telemetry.update();
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 200);//движение вперёд
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
                             sleep(200);
                             if (!isPositioned) {
                                 sleep(200);
