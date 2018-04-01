@@ -239,7 +239,7 @@ public class TeleOP extends LinearOpMode {
                 lift_claw(-claw_lift_l);
             }
 
-            //Partially AutoOP
+                   //Partially AutoOP
             if (relic == 0) {
                 if (relic_arm_extend) { //DO NOT FORKING CHANGE
                     setPower_Timed(s1_Relic_ext_ret, 1, 450);
