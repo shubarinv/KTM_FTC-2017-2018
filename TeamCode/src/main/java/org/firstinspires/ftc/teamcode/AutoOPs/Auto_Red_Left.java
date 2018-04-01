@@ -288,10 +288,10 @@ public class Auto_Red_Left extends LinearOpMode {
                     set_Motors_Power(0.1, -0.1, -0.1, 0.1);
                     if (tick > 4) {
                         if (fieldColor - fieldColorSR > 0.1) {
-
                             telemetry.addData("Centring loop", "line Found 1");
                             telemetry.update();
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
+                            sleep(500);
+                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 400);//движение назад
                             sleep(200);
                             if (!isPositioned) {
                                 sleep(200);
