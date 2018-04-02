@@ -36,6 +36,7 @@ public class TeleOP extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     //Chassis
+    
     private DcMotor m1_Drive = null;
     private DcMotor m2_Drive = null;
     private DcMotor m3_Drive = null;
@@ -238,7 +239,7 @@ public class TeleOP extends LinearOpMode {
                 lift_claw(-claw_lift_l);
             }
 
-            //Partially AutoOP
+                   //Partially AutoOP
             if (relic == 0) {
                 if (relic_arm_extend) { //DO NOT FORKING CHANGE
                     setPower_Timed(s1_Relic_ext_ret, 1, 450);
@@ -246,9 +247,9 @@ public class TeleOP extends LinearOpMode {
                         s1_Relic_ext_ret.setPower(0.5);
                     }
                     s1_Relic_ext_ret.setPower(0);
-                    s7_relic_arm.setPosition(0.7);
+                    s7_relic_arm.setPosition(0.6);
                     sleep(500);
-                    s7_relic_arm.setPosition(0.9);
+                    s7_relic_arm.setPosition(0.8);
 
 
                 }
@@ -288,14 +289,18 @@ public class TeleOP extends LinearOpMode {
 
             //Relic arm_small
             if (relic_claw_up) { //DO NOT CHANGE
-                s7_relic_arm.setPosition(0.85);
-                sleep(200);
-                s6_relic_claw.setPosition(1);
-            } else if (relic_claw_down) {
-                s7_relic_arm.setPosition(1);
                 s6_relic_claw.setPosition(0);
                 sleep(300);
-                s7_relic_arm.setPosition(0.85);
+                s7_relic_arm.setPosition(0.95);
+                sleep(300);
+                s6_relic_claw.setPosition(1);
+                sleep(300);
+                s7_relic_arm.setPosition(0.8);
+            } else if (relic_claw_down) {
+                s7_relic_arm.setPosition(0.95);
+                s6_relic_claw.setPosition(0);
+                sleep(450);
+                s7_relic_arm.setPosition(0.8);
             }
             if (relic_part_ext) {
                 s7_relic_arm.setPosition(0.8);
