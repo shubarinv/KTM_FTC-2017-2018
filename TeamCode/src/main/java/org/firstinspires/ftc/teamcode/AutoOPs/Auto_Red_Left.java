@@ -286,41 +286,37 @@ public class Auto_Red_Left extends LinearOpMode {
                     fieldColor = odsSensor.getLightDetected();
                     fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
                     set_Motors_Power(0.1, -0.1, -0.1, 0.1);
-                    if (tick > 4) {
-                        if (fieldColor - fieldColorSR > 0.1) {
-
-                            telemetry.addData("Centring loop", "line Found 1");
-                            telemetry.update();
-                            set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
-                            sleep(200);
-                            if (!isPositioned) {
-                                sleep(200);
-                                int drivetime = 0;
-                                while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
-                                    cdim.setDigitalChannelState(LED_CHANNEL, true);
-                                    if (isStopRequested()) {
-                                        break;
-                                    }
-                                    telemetry.addData("Centring loop", "coasting");
-                                    telemetry.update();
-                                    sleep(5);
-                                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
-                                    drivetime += 5;
-
-                                }
-                                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
-                                    telemetry.addData("Centring loop", "line Found 2 (break)");
-                                    telemetry.update();
-                                    sleep(400);
-                                    cdim.setDigitalChannelState(LED_CHANNEL, false);
-                                    isPositioned = true;
-                                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
-                                    sleep(500);
-                                    break;
-                                }
-                            }
-                        }
+                    if (fieldColor - fieldColorSR > 0.1) {
+                        telemetry.addData("Centring loop", "line Found 1");
+                        telemetry.update();
+                        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
+                        sleep(200);
+                        break;
                     }
+                }
+                sleep(200);
+                int drivetime = 0;
+                while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                    cdim.setDigitalChannelState(LED_CHANNEL, true);
+                    if (isStopRequested()) {
+                        break;
+                    }
+                    telemetry.addData("Centring loop", "coasting");
+                    telemetry.update();
+                    sleep(5);
+                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                    drivetime += 5;
+
+                }
+                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                    telemetry.addData("Centring loop", "line Found 2 (break)");
+                    telemetry.update();
+                    sleep(400);
+                    cdim.setDigitalChannelState(LED_CHANNEL, false);
+                    isPositioned = true;
+                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                    sleep(500);
+                    break;
                 }
                 set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
