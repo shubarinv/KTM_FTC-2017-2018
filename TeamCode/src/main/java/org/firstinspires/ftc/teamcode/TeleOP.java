@@ -269,7 +269,10 @@ public class TeleOP extends LinearOpMode {
                     for (int tick = 0; tick < 2000; tick += 10) {
                         s1_Relic_ext_ret.setPower(-0.5);
                         if (touchSensor.isPressed() || isStopRequested()) {
+                            s1_Relic_ext_ret.setPower(0.4);
+                            sleep(150);
                             s1_Relic_ext_ret.setPower(0);
+
                             break;
                         }
                         try {
