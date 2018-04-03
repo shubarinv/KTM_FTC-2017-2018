@@ -53,7 +53,7 @@ import java.util.Objects;
 
 @Autonomous(name = "AUTO Red Left", group = "AutoOP")
 //@Disabled
-public class Auto_Red_Left extends LinearOpMode {
+public class autoRedLeft extends LinearOpMode {
     /* ADAFRUIT */
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
@@ -65,7 +65,7 @@ public class Auto_Red_Left extends LinearOpMode {
     // bLedOn represents the state of the LED.
     boolean bLedOn = false;
     OpticalDistanceSensor odsSensor;  // Hardware Device Object
-    private CRServo s1_Relic_ext_ret = null;
+    private CRServo s1RelicExtRet = null;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -74,62 +74,62 @@ public class Auto_Red_Left extends LinearOpMode {
     private boolean wasExecuted = false;
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor m1_Drive = null;
-    private DcMotor m2_Drive = null;
-    private DcMotor m3_Drive = null;
-    private DcMotor m4_Drive = null;
-    private DcMotor m5_Lift = null;
-    private CRServo s1_top_Claw = null;
-    private Servo s4_kicker = null;
-    private Servo s3_rotation = null;
-    private Servo s5_shovel = null;
-    private DcMotor m6_intake = null;
+    private DcMotor m1Drive = null;
+    private DcMotor m2Drive = null;
+    private DcMotor m3Drive = null;
+    private DcMotor m4Drive = null;
+    private DcMotor m5Lift = null;
+    private CRServo s1TopClaw = null;
+    private Servo s4Kicker = null;
+    private Servo s3Rotation = null;
+    private Servo s5Shovel = null;
+    private DcMotor m6Intake = null;
     private boolean isPositioned = false;
     /*
      * Functions
      */
 
     void putBox() {
-        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
+        setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
         sleep(100);
-        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
-        rotate_claw(0);
-        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
-        set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
-        set_Motors_Power_timed(0.1, -0.1, -0.1, 0.1, 500);//движение вперёд
-        rotate_claw(0.8);
+        setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+        rotateClaw(0);
+        setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+        setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
+        setMotorsPowerTimed(0.1, -0.1, -0.1, 0.1, 500);//движение вперёд
+        rotateClaw(0.8);
     }
 
     // Rotate claw
-    void rotate_claw(double rotate) { //if rotate true then rotate to  180 . else to 0
-        s3_rotation.setPosition(rotate);
+    void rotateClaw(double rotate) { //if rotate true then rotate to  180 . else to 0
+        s3Rotation.setPosition(rotate);
     }
 
-    void set_Motors_Power(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
+    void setMotorsPower(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
         // Send power to wheels
-        m1_Drive.setPower(D1_power);
-        m2_Drive.setPower(D2_power);
-        m3_Drive.setPower(D3_power);
-        m4_Drive.setPower(D4_power);
+        m1Drive.setPower(D1_power);
+        m2Drive.setPower(D2_power);
+        m3Drive.setPower(D3_power);
+        m4Drive.setPower(D4_power);
     }
 
-    void set_Motors_Power_timed(double m1_power, double m2_power, double m3_power, double m4_power, long ms) {
-        m1_Drive.setPower(m1_power);
-        m2_Drive.setPower(m2_power);
-        m3_Drive.setPower(m3_power);
-        m4_Drive.setPower(m4_power);
+    void setMotorsPowerTimed(double m1_power, double m2_power, double m3_power, double m4_power, long ms) {
+        m1Drive.setPower(m1_power);
+        m2Drive.setPower(m2_power);
+        m3Drive.setPower(m3_power);
+        m4Drive.setPower(m4_power);
         sleep(ms);
-        chassis_stop_movement();
+        chassisStopMovement();
     }
 
-    void chassis_stop_movement() {
-        m1_Drive.setPower(0);
-        m2_Drive.setPower(0);
-        m3_Drive.setPower(0);
-        m4_Drive.setPower(0);
+    void chassisStopMovement() {
+        m1Drive.setPower(0);
+        m2Drive.setPower(0);
+        m3Drive.setPower(0);
+        m4Drive.setPower(0);
     }
 
-    String get_color() {
+    String getColor() {
         // button is transitioning to a pressed state. Toggle the LED.
         cdim.setDigitalChannelState(LED_CHANNEL, true);
 
@@ -164,8 +164,8 @@ public class Auto_Red_Left extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
-        s1_Relic_ext_ret.setPower(0);
+        s1RelicExtRet = hardwareMap.get(CRServo.class, "s1 top claw");
+        s1RelicExtRet.setPower(0);
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
@@ -195,27 +195,27 @@ public class Auto_Red_Left extends LinearOpMode {
 
         try {
             //Chassis
-            m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-            m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-            m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-            m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+            m1Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+            m2Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+            m3Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+            m4Drive = hardwareMap.get(DcMotor.class, "m4 drive");
 
-            m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-            s1_top_Claw = hardwareMap.get(CRServo.class, "s1 top claw");
-            s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
+            m5Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+            s1TopClaw = hardwareMap.get(CRServo.class, "s1 top claw");
+            s4Kicker = hardwareMap.get(Servo.class, "s4 kick");
             odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
-            s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
-            s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
-            m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
+            s3Rotation = hardwareMap.get(Servo.class, "s3 rotation");
+            s5Shovel = hardwareMap.get(Servo.class, "s5 shovel");
+            m6Intake = hardwareMap.get(DcMotor.class, "m6 intake");
         } catch (RuntimeException e) {
             telemetry.addData("INIT", "Error occurred during init");
             telemetry.update();
         }
         // Конец обработки исключений
-        m1_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m2_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m3_Drive.setDirection(DcMotor.Direction.REVERSE);
-        m4_Drive.setDirection(DcMotor.Direction.REVERSE);
+        m1Drive.setDirection(DcMotor.Direction.REVERSE);
+        m2Drive.setDirection(DcMotor.Direction.REVERSE);
+        m3Drive.setDirection(DcMotor.Direction.REVERSE);
+        m4Drive.setDirection(DcMotor.Direction.REVERSE);
         /* AdaFruit */
 
         // get a reference to our DeviceInterfaceModule object.
@@ -237,7 +237,7 @@ public class Auto_Red_Left extends LinearOpMode {
 
         relicTrackables.activate();
         while (opModeIsActive()) {
-            s1_Relic_ext_ret.setPower(0);
+            s1RelicExtRet.setPower(0);
             if (wasExecuted) {
                 telemetry.addData("Autonomous: ", "DONE");
             }
@@ -248,32 +248,32 @@ public class Auto_Red_Left extends LinearOpMode {
         STEP 1 -Trying to kick jewel
         */
 
-                rotate_claw(0.8);// so that boxes won't fall off
+                rotateClaw(0.8);// so that boxes won't fall off
                 sleep(800);
-                m6_intake.setPower(0.6);
-                s4_kicker.setPosition(0.75);
+                m6Intake.setPower(0.6);
+                s4Kicker.setPosition(0.75);
                 sleep(500);
 
                 telemetry.addData("Step-1", "Running");
-                String jewel_color = get_color();
+                String jewel_color = getColor();
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                 } else {
-                    set_Motors_Power_timed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
-                    set_Motors_Power_timed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
                 }
-                s4_kicker.setPosition(0.1);
+                s4Kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
                 // requestOpModeStop();
 
         /*
         STEP 2 -Cryptobox related
         */
-                set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1400);//движение вперёд
-                set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
+                setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 1400);//движение вперёд
+                setMotorsPowerTimed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
                 double fieldColor;
                 double fieldColorSR = odsSensor.getLightDetected();
                 int tick;
@@ -285,11 +285,11 @@ public class Auto_Red_Left extends LinearOpMode {
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
                     fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
-                    set_Motors_Power(0.1, -0.1, -0.1, 0.1);
+                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
                     if (fieldColor - fieldColorSR > 0.1) {
                         telemetry.addData("Centring loop", "line Found 1");
                         telemetry.update();
-                        set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
+                        setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
                         sleep(200);
                         break;
                     }
@@ -304,7 +304,7 @@ public class Auto_Red_Left extends LinearOpMode {
                     telemetry.addData("Centring loop", "coasting");
                     telemetry.update();
                     sleep(5);
-                    set_Motors_Power(0.2, -0.2, -0.2, 0.2);
+                    setMotorsPower(0.2, -0.2, -0.2, 0.2);
                     drivetime += 5;
 
                 }
@@ -314,15 +314,15 @@ public class Auto_Red_Left extends LinearOpMode {
                     sleep(400);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
-                    set_Motors_Power_timed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                    setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
                     sleep(500);
                     break;
                 }
-                set_Motors_Power_timed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
+                setMotorsPowerTimed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
-                    set_Motors_Power_timed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
+                    setMotorsPowerTimed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
@@ -330,7 +330,7 @@ public class Auto_Red_Left extends LinearOpMode {
                 } else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
-                    set_Motors_Power_timed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
+                    setMotorsPowerTimed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
                 } else {
                     telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();

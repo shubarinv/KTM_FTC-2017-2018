@@ -343,8 +343,8 @@ public class Auto_Blue_Right extends LinearOpMode {
         STEP 2 -Cryptobox related
         */
                 set_Motors_Power_timed(0.2, -0.2, -0.2, 0.2, 1500);//движение вперёд
-                // set_Motors_Power_timed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
-                // set_Motors_Power_timed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
+                // setMotorsPowerTimed(-0.2, 0.2, -0.2, 0.2, 2000);//Slide left
+                // setMotorsPowerTimed(0.2, -0.2, 0.2, -0.2, 1500);//Fixing alignment (aka slide right)
                 double fieldColor = 0;
                 double fieldColorSR = odsSensor.getLightDetected();
                 int tick = 1;

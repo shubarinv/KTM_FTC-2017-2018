@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,64 +27,50 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 //@Disabled
 public class TeleOP extends LinearOpMode {
-
     private static final int LED_CHANNEL = 5;
-    TouchSensor touchSensor;  // Hardware Device Object
-    ColorSensor sensorRGB;
-    DeviceInterfaceModule cdim;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     //Chassis
-    
-    private DcMotor m1_Drive = null;
-    private DcMotor m2_Drive = null;
-    private DcMotor m3_Drive = null;
-    private DcMotor m4_Drive = null;
-    private DcMotor m5_Lift = null;
-    private DcMotor m6_intake = null;
-    private CRServo s1_Relic_ext_ret = null;
-    //private CRServo s2_bottom_Claw = null;
-    private Servo s3_rotation = null;
-    private Servo s4_kicker = null;
-    private Servo s5_shovel = null;
-    private Servo s6_relic_claw = null;
-    private Servo s7_relic_arm = null;
+
+    private DcMotor m5Lift = null;
+    private Servo s5Shovel = null;
 
     //-------
     double magic(double input) {
         return Math.signum(input) * Math.pow(Math.abs(input), 2);
     }
 
-  /*
-  * Functions declaration
-  */
+    /*
+     * Functions declaration
+     */
 
 
     //Lift claw
-    void lift_claw(double lift_power) {
-        m5_Lift.setPower(lift_power);
+    void liftClaw(double lift_power) {
+        m5Lift.setPower(lift_power);
     }
 
-    void shovel_trigger(double shovel_pos) {
-        s5_shovel.setPosition(shovel_pos);
+    void shovelTrigger(double shovel_pos) {
+        s5Shovel.setPosition(shovel_pos);
     }
 
-    void setPower_Timed(DcMotor motor, double power, long milliseconds) {
+    void setPowerTimed(DcMotor motor, double power, long milliseconds) {
         motor.setPower(power);
         sleep(milliseconds);
         motor.setPower(0);
 
     }
-    void setPower_Timed(CRServo Crservo, double power, long milliseconds) {
+
+    void setPowerTimed(CRServo Crservo, double power, long milliseconds) {
         Crservo.setPower(power);
         sleep(milliseconds);
         Crservo.setPower(0);
 
     }
 
-  /*
-  *Relic related
-  */
+    /*
+     *Relic related
+     */
     // Grab relic
     // Extend grabbing component
     // Retract grabbing component
@@ -106,32 +91,31 @@ public class TeleOP extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
 
         // Chassis
-        m1_Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-        m2_Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-        m3_Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-        m4_Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        m5_Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        m6_intake = hardwareMap.get(DcMotor.class, "m6 intake");
-        s1_Relic_ext_ret = hardwareMap.get(CRServo.class, "s1 top claw");
+        DcMotor m1Drive = hardwareMap.get(DcMotor.class, "m1 drive");
+        DcMotor m2Drive = hardwareMap.get(DcMotor.class, "m2 drive");
+        DcMotor m3Drive = hardwareMap.get(DcMotor.class, "m3 drive");
+        DcMotor m4Drive = hardwareMap.get(DcMotor.class, "m4 drive");
+        m5Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+        DcMotor m6Intake = hardwareMap.get(DcMotor.class, "m6 intake");
+        CRServo s1RelicExtRet = hardwareMap.get(CRServo.class, "s1 top claw");
         //s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-        s3_rotation = hardwareMap.get(Servo.class, "s3 rotation");
-        s4_kicker = hardwareMap.get(Servo.class, "s4 kick");
-        s5_shovel = hardwareMap.get(Servo.class, "s5 shovel");
-        s6_relic_claw = hardwareMap.get(Servo.class, "s6 relic claw");
-        s7_relic_arm = hardwareMap.get(Servo.class, "s7 relic arm");
+        Servo s3Rotation = hardwareMap.get(Servo.class, "s3 rotation");
+        Servo s4Kicker = hardwareMap.get(Servo.class, "s4 kick");
+        s5Shovel = hardwareMap.get(Servo.class, "s5 shovel");
+        Servo s6RelicClaw = hardwareMap.get(Servo.class, "s6 relic claw");
+        Servo s7RelicArm = hardwareMap.get(Servo.class, "s7 relic arm");
 
         //sensor
-        touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
+        TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
 
         //-------
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        m1_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m2_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m3_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m4_Drive.setDirection(DcMotor.Direction.FORWARD);
-        m5_Lift.setDirection(DcMotor.Direction.FORWARD);
-        boolean stick_lifted = false;
+        m1Drive.setDirection(DcMotor.Direction.FORWARD);
+        m2Drive.setDirection(DcMotor.Direction.FORWARD);
+        m3Drive.setDirection(DcMotor.Direction.FORWARD);
+        m4Drive.setDirection(DcMotor.Direction.FORWARD);
+        m5Lift.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -140,138 +124,137 @@ public class TeleOP extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            s4_kicker.setPosition(0.1);
-      /*
-      * Chassis movement
-      */
+            s4Kicker.setPosition(0.1);
+            /*
+             * Chassis movement
+             */
             //Setup a variable for each drive wheel to save power level for telemetry
-            double m1_Drive_Power;
-            double m2_Drive_Power;
-            double m3_Drive_Power;
-            double m4_Drive_Power;
-            double m5_lift_Power;
+            double m1DrivePower;
+            double m2DrivePower;
+            double m3DrivePower;
+            double m4DrivePower;
 
             // POV Mode uses right stick to go forward and right to slide.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive_L = -gamepad1.left_stick_y;
-            double drive_R = -gamepad1.right_stick_y;
-            double claw_lift_l = gamepad2.left_trigger;
-            double claw_lift_r = gamepad2.right_trigger;
-            double claw_rotation = -gamepad2.right_stick_y;
+            double driveL = -gamepad1.left_stick_y;
+            double driveR = -gamepad1.right_stick_y;
+            double clawLiftL = gamepad2.left_trigger;
+            double clawLiftR = gamepad2.right_trigger;
+            double clawRotation = -gamepad2.right_stick_y;
             float relic = gamepad2.left_stick_x;
-            boolean relic_arm_extend = gamepad2.dpad_left;
-            boolean relic_arm_halt = gamepad2.dpad_right;
+            boolean relicArmExtend = gamepad2.dpad_left;
+            boolean relicArmHalt = gamepad2.dpad_right;
 
-            double intake_motor = gamepad2.right_stick_y; // to motor if y<0 p=0 else prop
-            boolean slide_left_bump = gamepad1.left_bumper;
-            boolean slide_right_bump = gamepad1.right_bumper;
-            boolean relic_claw_up = gamepad2.dpad_up;
-            boolean relic_claw_down = gamepad2.dpad_down;
-            boolean relic_part_ext = gamepad2.left_bumper;
-            boolean relic_part_ret = gamepad2.right_bumper;
+            double intakeMotor = gamepad2.right_stick_y; // to motor if y<0 p=0 else prop
+            boolean slideLeftBump = gamepad1.left_bumper;
+            boolean slideRightBump = gamepad1.right_bumper;
+            boolean relicClawUp = gamepad2.dpad_up;
+            boolean relicClawDown = gamepad2.dpad_down;
+            boolean relicPartExt = gamepad2.left_bumper;
+            boolean relicPartRet = gamepad2.right_bumper;
 
 
-            cdim = hardwareMap.deviceInterfaceModule.get("dim");
+            DeviceInterfaceModule cdim = hardwareMap.deviceInterfaceModule.get("dim");
             //Slide Related
             double slide;
-            double slide_L = gamepad1.left_trigger;
-            double slide_R = gamepad1.right_trigger;
-            if (slide_L < slide_R) {
-                slide = slide_R * -1;
+            double slideL = gamepad1.left_trigger;
+            double slideR = gamepad1.right_trigger;
+            if (slideL < slideR) {
+                slide = slideR * -1;
             } else {
-                slide = slide_L;
+                slide = slideL;
             }
-            if (slide_left_bump) {
+            if (slideLeftBump) {
                 slide = 0.3;
             }
-            if (slide_right_bump) {
+            if (slideRightBump) {
                 slide = -0.3;
             }
-            m1_Drive_Power = magic(drive_L - slide);
-            m2_Drive_Power = magic(drive_R - slide);
-            m3_Drive_Power = magic(drive_R + slide);
-            m4_Drive_Power = magic(drive_L + slide);
+            m1DrivePower = magic(driveL - slide);
+            m2DrivePower = magic(driveR - slide);
+            m3DrivePower = magic(driveR + slide);
+            m4DrivePower = magic(driveL + slide);
 
-            double max = Math.max(Math.max(m1_Drive_Power, m2_Drive_Power), Math.max(m3_Drive_Power, m4_Drive_Power));
+            double max = Math.max(Math.max(m1DrivePower, m2DrivePower), Math.max(m3DrivePower, m4DrivePower));
             // Send calculated power to wheels
             if (max >= 1) {
-                m1_Drive.setPower(m1_Drive_Power * -1 / max);
-                m2_Drive.setPower(m2_Drive_Power / max);
-                m3_Drive.setPower(m3_Drive_Power / max);
-                m4_Drive.setPower(m4_Drive_Power * -1 / max);
+                m1Drive.setPower(m1DrivePower * -1 / max);
+                m2Drive.setPower(m2DrivePower / max);
+                m3Drive.setPower(m3DrivePower / max);
+                m4Drive.setPower(m4DrivePower * -1 / max);
             } else {
-                m1_Drive.setPower(m1_Drive_Power * -1);
-                m2_Drive.setPower(m2_Drive_Power);
-                m3_Drive.setPower(m3_Drive_Power);
-                m4_Drive.setPower(m4_Drive_Power * -1);
+                m1Drive.setPower(m1DrivePower * -1);
+                m2Drive.setPower(m2DrivePower);
+                m3Drive.setPower(m3DrivePower);
+                m4Drive.setPower(m4DrivePower * -1);
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "m1_Drive (%.2f), m2_Drive (%.2f), m3_Drive (%.2f), m4_Drive (%.2f)", m1_Drive_Power, m2_Drive_Power, m3_Drive_Power, m4_Drive_Power);
+            telemetry.addData("Motors", "m1Drive (%.2f), m2Drive (%.2f), m3Drive (%.2f), m4Drive (%.2f)", m1DrivePower, m2DrivePower, m3DrivePower, m4DrivePower);
             telemetry.update();
 
-      /*
-      * End of chassis related code.
-      */
+            /*
+             * End of chassis related code.
+             */
 
             // Claw rotation
-            if (claw_rotation > 0) {
-                s3_rotation.setPosition(0.78 - claw_rotation * 0.78);
+            if (clawRotation > 0) {
+                s3Rotation.setPosition(0.78 - clawRotation * 0.78);
             } else {
-                s3_rotation.setPosition(0.78);
+                s3Rotation.setPosition(0.78);
             }
-            shovel_trigger(intake_motor);
-            if (intake_motor>0) {
-                m6_intake.setPower(intake_motor);
+            shovelTrigger(intakeMotor);
+            if (intakeMotor > 0) {
+                m6Intake.setPower(intakeMotor);
             } else {
-                m6_intake.setPower(0);
+                m6Intake.setPower(0);
             }
-            if(gamepad2.left_stick_y<0){
-                m6_intake.setPower(gamepad2.left_stick_y);
+            if (gamepad2.left_stick_y < 0) {
+                m6Intake.setPower(gamepad2.left_stick_y);
             }
 
             // Claw_lift
-            if (claw_lift_l != 0) {
-                lift_claw(-claw_lift_l);
-            } else if (claw_lift_r != 0) {
-                lift_claw(claw_lift_r);
+            if (clawLiftL != 0) {
+                liftClaw(-clawLiftL);
+            } else if (clawLiftR != 0) {
+                liftClaw(clawLiftR);
             } else {
-                lift_claw(-claw_lift_l);
+                liftClaw(-clawLiftL);
             }
 
-                   //Partially AutoOP
+            //Partially AutoOP
             if (relic == 0) {
-                if (relic_arm_extend) { //DO NOT FORKING CHANGE
-                    setPower_Timed(s1_Relic_ext_ret, 1, 450);
+                if (relicArmExtend) { //DO NOT FORKING CHANGE
+                    setPowerTimed(s1RelicExtRet, 1, 450);
                     while (!touchSensor.isPressed()) {
-                        s1_Relic_ext_ret.setPower(0.5);
+                        s1RelicExtRet.setPower(0.5);
                     }
-                    s1_Relic_ext_ret.setPower(0);
-                    s7_relic_arm.setPosition(0.6);
+                    s1RelicExtRet.setPower(0);
+                    s7RelicArm.setPosition(0.6);
                     sleep(500);
-                    s7_relic_arm.setPosition(0.8);
+                    s7RelicArm.setPosition(0.8);
 
 
                 }
-                if (relic_arm_halt) {
-                    s7_relic_arm.setPosition(0.3);
-                    m1_Drive.setPower(-0.5);
-                    m2_Drive.setPower(0.5);
-                    m3_Drive.setPower(-0.1);
-                    m4_Drive.setPower(0.1);
+                if (relicArmHalt) {
+                    s7RelicArm.setPosition(0.3);
+                    m1Drive.setPower(-0.5);
+                    m2Drive.setPower(0.5);
+                    m3Drive.setPower(-0.1);
+                    m4Drive.setPower(0.1);
                     sleep(300);
-                    m1_Drive.setPower(0);
-                    m2_Drive.setPower(0);
-                    m3_Drive.setPower(0);
-                    m4_Drive.setPower(0);
+                    m1Drive.setPower(0);
+                    m2Drive.setPower(0);
+                    m3Drive.setPower(0);
+                    m4Drive.setPower(0);
                     sleep(300);
-                    setPower_Timed(s1_Relic_ext_ret, -1, 450);
+                    setPowerTimed(s1RelicExtRet, -1, 450);
                     for (int tick = 0; tick < 2000; tick += 10) {
-                        s1_Relic_ext_ret.setPower(-0.5);
+                        s1RelicExtRet.setPower(-0.5);
                         if (touchSensor.isPressed() || isStopRequested()) {
-                            s1_Relic_ext_ret.setPower(0.4);
+                            s1RelicExtRet.setPower(0.4);
                             sleep(150);
-                            s1_Relic_ext_ret.setPower(0);
+                            s1RelicExtRet.setPower(0);
 
                             break;
                         }
@@ -287,29 +270,29 @@ public class TeleOP extends LinearOpMode {
             }
             //relic arm
 
-            s1_Relic_ext_ret.setPower(relic * 0.2);
+            s1RelicExtRet.setPower(relic * 0.2);
 
 
             //Relic arm_small
-            if (relic_claw_up) { //DO NOT CHANGE
-                s6_relic_claw.setPosition(0);
+            if (relicClawUp) { //DO NOT CHANGE
+                s6RelicClaw.setPosition(0);
                 sleep(600);
-                s7_relic_arm.setPosition(0.95);
+                s7RelicArm.setPosition(0.95);
                 sleep(600);
-                s6_relic_claw.setPosition(1);
+                s6RelicClaw.setPosition(1);
                 sleep(600);
-                s7_relic_arm.setPosition(0.8);
-            } else if (relic_claw_down) {
-                s7_relic_arm.setPosition(0.95);
-                s6_relic_claw.setPosition(0);
+                s7RelicArm.setPosition(0.8);
+            } else if (relicClawDown) {
+                s7RelicArm.setPosition(0.95);
+                s6RelicClaw.setPosition(0);
                 sleep(600);
-                s7_relic_arm.setPosition(0.8);
+                s7RelicArm.setPosition(0.8);
             }
-            if (relic_part_ext) {
-                s7_relic_arm.setPosition(0.8);
+            if (relicPartExt) {
+                s7RelicArm.setPosition(0.8);
             }
-            if (relic_part_ret) {
-                s7_relic_arm.setPosition(0.3);
+            if (relicPartRet) {
+                s7RelicArm.setPosition(0.3);
 
             }
             cdim.setDigitalChannelState(LED_CHANNEL, false);
