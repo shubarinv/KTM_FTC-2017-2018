@@ -243,7 +243,14 @@ public class autoRedLeft extends LinearOpMode {
             }
 
             if (!wasExecuted) {
-                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                RelicRecoveryVuMark vuMark = null;
+                for (int tick = 5; tick < 2000; tick += 1) {
+                    vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                        break;
+                    }
+                }
+
         /*
         STEP 1 -Trying to kick jewel
         */
@@ -272,51 +279,68 @@ public class autoRedLeft extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
-                setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 1400);//движение вперёд
+                setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
                 setMotorsPowerTimed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
                 double fieldColor;
                 double fieldColorSR = odsSensor.getLightDetected();
                 int tick;
 
-                for (tick = 5; tick < 2000; tick += 1) {
+                for (tick = 5; tick < 2000; tick += 2) {
                     telemetry.addData("Centring loop", "iteration: " + tick);
                     telemetry.addData(" ", odsSensor.getLightDetected());
                     telemetry.update();
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
-                    fieldColorSR = (fieldColorSR + fieldColor) / (tick / 5);
+                    fieldColorSR = (fieldColorSR + fieldColor) / 2;
                     setMotorsPower(0.1, -0.1, -0.1, 0.1);
-                    if (fieldColor - fieldColorSR > 0.1) {
+                    if (fieldColor - fieldColorSR > fieldColorSR && tick > 6) {
                         telemetry.addData("Centring loop", "line Found 1");
                         telemetry.update();
-                        setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 400);//движение вперёд
-                        sleep(200);
                         break;
                     }
+                    if (isStopRequested()) {
+                        break;
+                    }
+                    sleep(2);
                 }
+                setMotorsPower(0, 0, 0, 0);
                 sleep(200);
+                for (tick = 5; tick < 400; tick++) {
+                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
+                    if (tick > 2) {
+                        if (odsSensor.getLightDetected() - fieldColorSR <= fieldColorSR) {
+                            telemetry.addData("LINE", "1 line LOS");
+                            telemetry.update();
+                            chassisStopMovement();
+                            break;
+                        }
+                    }
+                }
+                sleep(1000);
+                chassisStopMovement();
                 int drivetime = 0;
-                while (odsSensor.getLightDetected() - fieldColorSR <= 0.1) {
+                while (odsSensor.getLightDetected() - fieldColorSR <= fieldColorSR) {
                     cdim.setDigitalChannelState(LED_CHANNEL, true);
                     if (isStopRequested()) {
                         break;
                     }
                     telemetry.addData("Centring loop", "coasting");
                     telemetry.update();
-                    sleep(5);
-                    setMotorsPower(0.2, -0.2, -0.2, 0.2);
-                    drivetime += 5;
-
+                    sleep(1);
+                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
+                    drivetime += 1;
+                    if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                        break;
+                    }
                 }
-                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR && !isPositioned) {
                     telemetry.addData("Centring loop", "line Found 2 (break)");
                     telemetry.update();
                     sleep(400);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
-                    setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, (drivetime / 2));
+                    setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, (drivetime / 4));
                     sleep(500);
-                    break;
                 }
                 setMotorsPowerTimed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
