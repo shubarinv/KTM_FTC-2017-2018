@@ -150,7 +150,7 @@ public class autoRedLeft extends LinearOpMode {
 
         double hue_sr = 0;
         for (int j = 0; j < 4; j++) {
-            hue_sr = hue_sr + hue_arr[j];
+            hue_sr += hue_arr[j];
         }
         hue_sr = hue_sr / 4;
         //
@@ -244,20 +244,22 @@ public class autoRedLeft extends LinearOpMode {
 
             if (!wasExecuted) {
                 RelicRecoveryVuMark vuMark = null;
-                for (int tick = 5; tick < 2000; tick += 1) {
+                for (int tick = 5; tick < 4000; tick += 1) {
                     vuMark = RelicRecoveryVuMark.from(relicTemplate);
                     if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                         break;
                     }
+
                 }
 
+                telemetry.addData("VUMARK", vuMark);
+                telemetry.update();
         /*
         STEP 1 -Trying to kick jewel
         */
 
                 rotateClaw(0.8);// so that boxes won't fall off
                 sleep(800);
-                m6Intake.setPower(0.6);
                 s4Kicker.setPosition(0.75);
                 sleep(500);
 
@@ -282,18 +284,20 @@ public class autoRedLeft extends LinearOpMode {
                 setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
                 setMotorsPowerTimed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
                 double fieldColor;
-                double fieldColorSR = odsSensor.getLightDetected();
                 int tick;
-
-                for (tick = 5; tick < 2000; tick += 2) {
+                double fieldColorReadings = 0;
+                chassisStopMovement();
+                for (tick = 0; tick < 1000; tick += 1) {
+                    fieldColorReadings += odsSensor.getLightDetected();
+                }
+                double fieldColorSR = fieldColorReadings / 1000;
+                for (tick = 0; tick < 2000; tick += 2) {
                     telemetry.addData("Centring loop", "iteration: " + tick);
                     telemetry.addData(" ", odsSensor.getLightDetected());
                     telemetry.update();
-                    cdim.setDigitalChannelState(LED_CHANNEL, false);
                     fieldColor = odsSensor.getLightDetected();
-                    fieldColorSR = (fieldColorSR + fieldColor) / 2;
                     setMotorsPower(0.1, -0.1, -0.1, 0.1);
-                    if (fieldColor - fieldColorSR > fieldColorSR && tick > 6) {
+                    if (fieldColor - fieldColorSR > fieldColorSR) {
                         telemetry.addData("Centring loop", "line Found 1");
                         telemetry.update();
                         break;
