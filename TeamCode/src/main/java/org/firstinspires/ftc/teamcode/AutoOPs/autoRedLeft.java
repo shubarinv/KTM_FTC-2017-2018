@@ -212,10 +212,10 @@ public class autoRedLeft extends LinearOpMode {
             telemetry.update();
         }
         // Конец обработки исключений
-        m1Drive.setDirection(DcMotor.Direction.REVERSE);
-        m2Drive.setDirection(DcMotor.Direction.REVERSE);
-        m3Drive.setDirection(DcMotor.Direction.REVERSE);
-        m4Drive.setDirection(DcMotor.Direction.REVERSE);
+        m1Drive.setDirection(DcMotor.Direction.FORWARD);
+        m2Drive.setDirection(DcMotor.Direction.FORWARD);
+        m3Drive.setDirection(DcMotor.Direction.FORWARD);
+        m4Drive.setDirection(DcMotor.Direction.FORWARD);
         /* AdaFruit */
 
         // get a reference to our DeviceInterfaceModule object.
@@ -268,11 +268,11 @@ public class autoRedLeft extends LinearOpMode {
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
                 } else {
-                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                     setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                 }
                 s4Kicker.setPosition(0.1);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
@@ -281,8 +281,8 @@ public class autoRedLeft extends LinearOpMode {
         /*
         STEP 2 -Cryptobox related
         */
-                setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 1000);//движение вперёд
-                setMotorsPowerTimed(0.2, -0.2, 0.2, -0.2, 600);// Slide right
+                setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
+                setMotorsPowerTimed(-0.2, 0.2, -0.2, 0.2, 600);// Slide right
                 double fieldColor;
                 int tick;
                 double fieldColorReadings = 0;
@@ -296,7 +296,7 @@ public class autoRedLeft extends LinearOpMode {
                     telemetry.addData(" ", odsSensor.getLightDetected());
                     telemetry.update();
                     fieldColor = odsSensor.getLightDetected();
-                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
+                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
                     if (fieldColor - fieldColorSR > fieldColorSR) {
                         telemetry.addData("Centring loop", "line Found 1");
                         telemetry.update();
@@ -310,7 +310,7 @@ public class autoRedLeft extends LinearOpMode {
                 setMotorsPower(0, 0, 0, 0);
                 sleep(200);
                 for (tick = 5; tick < 400; tick++) {
-                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
+                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
                     if (tick > 2) {
                         if (odsSensor.getLightDetected() - fieldColorSR <= fieldColorSR) {
                             telemetry.addData("LINE", "1 line LOS");
@@ -331,7 +331,7 @@ public class autoRedLeft extends LinearOpMode {
                     telemetry.addData("Centring loop", "coasting");
                     telemetry.update();
                     sleep(1);
-                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
+                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
                     drivetime += 1;
                     if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
                         break;
@@ -343,14 +343,14 @@ public class autoRedLeft extends LinearOpMode {
                     sleep(400);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
-                    setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, (drivetime / 4));
+                    setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, (drivetime / 4));
                     sleep(500);
                 }
-                setMotorsPowerTimed(-0.2, -0.2, -0.2, -0.2, 800);//поворот против часовой
+                setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 800);//поворот против часовой
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
-                    setMotorsPowerTimed(-0.1, -0.1, 0.1, 0.1, 300);// Slide left
+                    setMotorsPowerTimed(0.1, 0.1, -0.1, -0.1, 300);// Slide left
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
@@ -358,7 +358,7 @@ public class autoRedLeft extends LinearOpMode {
                 } else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
-                    setMotorsPowerTimed(0.1, 0.1, -0.1, -0.1, 300);// Slide right
+                    setMotorsPowerTimed(-0.1, -0.1, 0.1, 0.1, 300);// Slide right
                 } else {
                     telemetry.addData("Line", "(X)NOT VISIBLE");
                     telemetry.update();
