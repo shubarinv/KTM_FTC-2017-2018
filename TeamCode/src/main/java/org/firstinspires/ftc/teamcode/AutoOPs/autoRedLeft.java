@@ -274,7 +274,7 @@ public class autoRedLeft extends LinearOpMode {
                     setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
                     setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                 }
-                s4Kicker.setPosition(0.1);
+                s4Kicker.setPosition(0);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
                 // requestOpModeStop();
 
@@ -282,24 +282,36 @@ public class autoRedLeft extends LinearOpMode {
         STEP 2 -Cryptobox related
         */
                 setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 1000);//движение вперёд
-                setMotorsPowerTimed(-0.2, 0.2, -0.2, 0.2, 600);// Slide right
+
                 double fieldColor;
                 int tick;
                 double fieldColorReadings = 0;
-                chassisStopMovement();
-                for (tick = 0; tick < 1000; tick += 1) {
-                    fieldColorReadings += odsSensor.getLightDetected();
-                }
-                double fieldColorSR = fieldColorReadings / 1000;
-                for (tick = 0; tick < 2000; tick += 2) {
-                    telemetry.addData("Centring loop", "iteration: " + tick);
-                    telemetry.addData(" ", odsSensor.getLightDetected());
-                    telemetry.update();
+                for (tick = 0; tick < 600; tick += 10) {
+                    setMotorsPower(-0.15, 0.15, -0.15, 0.15);
                     fieldColor = odsSensor.getLightDetected();
-                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
-                    if (fieldColor - fieldColorSR > fieldColorSR) {
+                    fieldColorReadings += fieldColor;
+                    //telemetry.addData("Readings ", fieldColor);
+                    //telemetry.update();
+                    sleep(10);
+                }
+                setMotorsPower(0, 0, 0, 0);
+
+                double fieldColorSR = fieldColorReadings / 60;
+                telemetry.addData("SR", fieldColorSR);
+                telemetry.update();
+
+                sleep(3000);
+                for (tick = 0; tick < 2000; tick += 2) {
+                    //telemetry.addData("Centring loop", "iteration: " + tick);
+                    //telemetry.addData(" ", odsSensor.getLightDetected());
+                    //telemetry.update();
+                    fieldColor = odsSensor.getLightDetected();
+                    setMotorsPower(-0.15, 0.15, 0.15, -0.15);
+                    if (fieldColor > fieldColorSR * 1.5) {
                         telemetry.addData("Centring loop", "line Found 1");
+                        //  telemetry.addData("Centring loop", fieldColor);
                         telemetry.update();
+
                         break;
                     }
                     if (isStopRequested()) {
@@ -308,22 +320,22 @@ public class autoRedLeft extends LinearOpMode {
                     sleep(2);
                 }
                 setMotorsPower(0, 0, 0, 0);
+                sleep(1000);
                 sleep(200);
-                for (tick = 5; tick < 400; tick++) {
-                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
-                    if (tick > 2) {
-                        if (odsSensor.getLightDetected() - fieldColorSR <= fieldColorSR) {
-                            telemetry.addData("LINE", "1 line LOS");
-                            telemetry.update();
-                            chassisStopMovement();
-                            break;
-                        }
+                for (tick = 5; tick < 500; tick += 2) {
+                    setMotorsPower(-0.15, 0.15, 0.15, -0.15);
+                    if (odsSensor.getLightDetected() < fieldColorSR * 1.3) {
+                        chassisStopMovement();
+                        break;
                     }
+                    sleep(2);
                 }
+                telemetry.addData("LINE", "1 line LOS");
+                telemetry.update();
                 sleep(1000);
                 chassisStopMovement();
                 int drivetime = 0;
-                while (odsSensor.getLightDetected() - fieldColorSR <= fieldColorSR) {
+                while (odsSensor.getLightDetected() < fieldColorSR * 1.3) {
                     cdim.setDigitalChannelState(LED_CHANNEL, true);
                     if (isStopRequested()) {
                         break;
@@ -331,13 +343,13 @@ public class autoRedLeft extends LinearOpMode {
                     telemetry.addData("Centring loop", "coasting");
                     telemetry.update();
                     sleep(1);
-                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
+                    setMotorsPower(-0.15, 0.15, 0.15, -0.15);
                     drivetime += 1;
-                    if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR) {
+                    if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                         break;
                     }
                 }
-                if (odsSensor.getLightDetected() - fieldColorSR > fieldColorSR && !isPositioned) {
+                if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                     telemetry.addData("Centring loop", "line Found 2 (break)");
                     telemetry.update();
                     sleep(400);
