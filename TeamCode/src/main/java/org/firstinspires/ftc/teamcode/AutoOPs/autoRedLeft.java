@@ -199,13 +199,14 @@ public class autoRedLeft extends robot {
                 /* Если нашли линию */
                 if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                     log("Вторая линия найдена " + odsSensor.getLightDetected(), runtime.seconds());
+                    chassisStopMovement();
                     telemetry.addData("Centring loop", "line Found 2 (break)");
                     telemetry.update();
                     sleep(400);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
 
-                    setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, (drivetime / 4));
+                    setMotorsPowerTimed(-0.2, -0.2, -0.2, -0.2, (drivetime / 2));
                     log("Вернулся к центральной полке ", runtime.seconds());
                     sleep(500);
                 }
