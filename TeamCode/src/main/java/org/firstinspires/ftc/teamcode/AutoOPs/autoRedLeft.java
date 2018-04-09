@@ -208,7 +208,7 @@ public class autoRedLeft extends robot {
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
                 }
-                    setMotorsPowerTimed(-0.2, -0.2, -0.2, -0.2, (drivetime / 2));
+                setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, (drivetime / 2));
                     log("Вернулся к центральной полке ", runtime.seconds());
                     sleep(500);
 
