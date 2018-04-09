@@ -202,14 +202,14 @@ public class autoRedLeft extends robot {
                     chassisStopMovement();
                     telemetry.addData("Centring loop", "line Found 2 (break)");
                     telemetry.update();
-                    sleep(400);
+                    sleep(2500);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
-
+                }
                     setMotorsPowerTimed(-0.2, -0.2, -0.2, -0.2, (drivetime / 2));
                     log("Вернулся к центральной полке ", runtime.seconds());
                     sleep(500);
-                }
+
 
                 /* Начало движения к нужной полке */
                 setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 800);//поворот против часовой
