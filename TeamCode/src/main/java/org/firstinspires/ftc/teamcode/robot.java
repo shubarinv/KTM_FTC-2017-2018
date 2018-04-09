@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -24,7 +23,6 @@ public abstract class robot extends LinearOpMode {
     protected DcMotor m6Intake = null;
     protected ColorSensor sensorRGB;
     protected OpticalDistanceSensor odsSensor;  // Hardware Device Object
-    protected DeviceInterfaceModule cdim;
     protected float hsvValues[] = {0F, 0F, 0F};
     private String log = "";
 
@@ -82,8 +80,6 @@ public abstract class robot extends LinearOpMode {
     }
 
     protected String getColor() {
-        // button is transitioning to a pressed state. Toggle the LED.
-        cdim.setDigitalChannelState(LED_CHANNEL, true);
 
         double[] hue_arr = new double[5];
         //для точности 4 измерения

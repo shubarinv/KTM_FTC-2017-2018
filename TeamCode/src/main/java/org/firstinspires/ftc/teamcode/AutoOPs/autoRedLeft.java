@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.AutoOPs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -55,6 +56,7 @@ public class autoRedLeft extends robot {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private boolean isPositioned = false;
+    DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() {
@@ -67,7 +69,7 @@ public class autoRedLeft extends robot {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-
+        cdim = hardwareMap.deviceInterfaceModule.get("dim");
         //Инициализация наследуется из robot.java
         initHW(hardwareMap);
 
