@@ -109,7 +109,7 @@ public class autoRedLeft extends robot {
                 sleep(800);
                 s4Kicker.setPosition(0.75);
                 sleep(500);
-
+                cdim.setDigitalChannelState(LED_CHANNEL, true);
                 telemetry.addData("Step-1", "Running");
                 String jewel_color = getColor();
                 log("Jewel color: " + jewel_color + "Runtime ", runtime.seconds());
@@ -146,8 +146,6 @@ public class autoRedLeft extends robot {
                 telemetry.addData("SR", fieldColorSR);
                 telemetry.update();
 
-                sleep(2000);
-
                 /* Поиск первой линии */
                 for (tick = 0; tick < 2000; tick += 2) {
                     fieldColor = odsSensor.getLightDetected();
@@ -165,7 +163,6 @@ public class autoRedLeft extends robot {
                     sleep(2);
                 }
                 setMotorsPower(0, 0, 0, 0);
-                sleep(1000);
 
                 /* Пытаемся потерять линию */
                 for (tick = 5; tick < 500; tick += 2) {
@@ -179,7 +176,6 @@ public class autoRedLeft extends robot {
                 log("Потеряна Первая линия ", runtime.seconds());
                 telemetry.addData("LINE", "1 line LOS");
                 telemetry.update();
-                sleep(1000);
                 chassisStopMovement();
                 int drivetime = 0;
 
@@ -204,7 +200,6 @@ public class autoRedLeft extends robot {
                     chassisStopMovement();
                     telemetry.addData("Centring loop", "line Found 2 (break)");
                     telemetry.update();
-                    sleep(2500);
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
                 }
