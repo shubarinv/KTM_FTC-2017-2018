@@ -168,16 +168,14 @@ public class autoRedLeft extends robot {
                 int drivetime = 0;
 
                 /* Едем и ищем вторую линию */
-                while (odsSensor.getLightDetected() < fieldColorSR * 1.3) {
+                for (tick = 0; tick < 1000; tick += 2) {
                     cdim.setDigitalChannelState(LED_CHANNEL, true);
                     if (isStopRequested()) {
                         break;
                     }
-                    telemetry.addData("Centring loop", "coasting");
-                    telemetry.update();
-                    sleep(1);
+                    sleep(2);
                     setMotorsPower(-0.15, 0.15, 0.15, -0.15);
-                    drivetime += 1;
+                    drivetime += 2;
                     if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                         break;
                     }
