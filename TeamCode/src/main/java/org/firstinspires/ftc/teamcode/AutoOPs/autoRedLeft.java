@@ -165,17 +165,17 @@ public class autoRedLeft extends robot {
                 setMotorsPower(0, 0, 0, 0);
 
                 /* Пытаемся потерять линию */
-                for (tick = 5; tick < 500; tick += 2) {
+                for (tick = 0; tick < 500; tick += 2) {
                     setMotorsPower(-0.15, 0.15, 0.15, -0.15);
                     if (odsSensor.getLightDetected() < fieldColorSR * 1.3) {
+                        log("Потеряна Первая линия ", runtime.seconds());
+                        telemetry.addData("LINE", "1 line LOS");
+                        telemetry.update();
                         chassisStopMovement();
                         break;
                     }
                     sleep(2);
                 }
-                log("Потеряна Первая линия ", runtime.seconds());
-                telemetry.addData("LINE", "1 line LOS");
-                telemetry.update();
                 chassisStopMovement();
                 int drivetime = 0;
 
