@@ -317,7 +317,7 @@ public class autoRedLeft extends LinearOpMode {
                     if (isStopRequested()) {
                         break;
                     }
-                    sleep(2);
+                    sleep(1);
                 }
                 setMotorsPower(0, 0, 0, 0);
                 sleep(1000);
