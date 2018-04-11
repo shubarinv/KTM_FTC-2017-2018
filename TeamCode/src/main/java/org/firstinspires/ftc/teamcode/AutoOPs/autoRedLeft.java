@@ -35,7 +35,6 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
@@ -91,18 +90,7 @@ public class autoRedLeft extends robot {
             if (!wasExecuted) {
                 /* Это определение VuMark */
                 log("Смотрим Vumark", runtime.seconds());
-                RelicRecoveryVuMark vuMark = null;
-                for (int tick = 0; tick < 4000; tick++) {
-                    vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                        break;
-                    }
-                }
-
-                telemetry.addData("VUMARK", vuMark);
-                telemetry.update();
-
-                log("VuMark " + String.valueOf(vuMark));
+                int relicType = getRelic(relicTemplate);
 
                 /*  Это для сбития Jewel */
                 rotateClaw(0.8);// so that boxes won't fall off
@@ -204,22 +192,22 @@ public class autoRedLeft extends robot {
                     isPositioned = true;
                 }
                 setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, (drivetime / 2));
-                    log("Вернулся к центральной полке ", runtime.seconds());
-                    sleep(500);
+                log("Вернулся к центральной полке ", runtime.seconds());
+                sleep(500);
 
 
                 /* Начало движения к нужной полке */
                 setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 800);//поворот против часовой
                 log("Повернулся на 90 градусов ", runtime.seconds());
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                if (relicType == 3) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
                     setMotorsPowerTimed(0.1, 0.1, -0.1, -0.1, 300);// Slide left
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                } else if (relicType == 2) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
 
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                } else if (relicType == 1) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
                     setMotorsPowerTimed(-0.1, -0.1, 0.1, 0.1, 300);// Slide right
