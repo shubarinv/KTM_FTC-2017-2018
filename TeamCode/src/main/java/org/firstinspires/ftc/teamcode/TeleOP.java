@@ -32,7 +32,7 @@ public class TeleOP extends robot {
 
     @Override
     public void runOpMode() {
-
+        initHW(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
