@@ -150,27 +150,5 @@ public abstract class robot extends LinearOpMode {
         }
         return 99999;
     }
-
-    protected int getRelic(VuforiaTrackable relicTemplate) {
-        RelicRecoveryVuMark vuMark;
-        for (int tick = 0; tick < 4000; tick += 10) {
-            vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            telemetry.addData("Vumark", vuMark);
-            telemetry.update();
-            if (vuMark == RelicRecoveryVuMark.UNKNOWN) {
-                sleep(10);
-            } else {
-                if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    return 1;
-                }
-                if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    return 2;
-                }
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    return 3;
-                }
-            }
-        }
-        return 99999;
-    }
+    
 }
