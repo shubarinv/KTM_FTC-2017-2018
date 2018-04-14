@@ -43,9 +43,9 @@ import org.firstinspires.ftc.teamcode.robot;
 import java.util.Objects;
 
 
-@Autonomous(name = "AUTO Red Left", group = "AutoOP")
+@Autonomous(name = "A: Blue Right", group = "AutoOP")
 //@Disabled
-public class autoRedLeft extends robot {
+public class autoBlueRight extends robot {
     DeviceInterfaceModule cdim;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -104,11 +104,11 @@ public class autoRedLeft extends robot {
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
-                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
-                } else {
                     setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
                     setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                } else {
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
+                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
                 }
                 s4Kicker.setPosition(0);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
