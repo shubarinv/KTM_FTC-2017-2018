@@ -35,7 +35,6 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
@@ -47,6 +46,7 @@ import java.util.Objects;
 @Autonomous(name = "AUTO Red Left", group = "AutoOP")
 //@Disabled
 public class autoRedLeft extends robot {
+    DeviceInterfaceModule cdim;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -56,7 +56,6 @@ public class autoRedLeft extends robot {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private boolean isPositioned = false;
-    DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() {
@@ -91,18 +90,7 @@ public class autoRedLeft extends robot {
             if (!wasExecuted) {
                 /* Это определение VuMark */
                 log("Смотрим Vumark", runtime.seconds());
-                RelicRecoveryVuMark vuMark = null;
-                for (int tick = 0; tick < 4000; tick++) {
-                    vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                        break;
-                    }
-                }
-
-                telemetry.addData("VUMARK", vuMark);
-                telemetry.update();
-
-                log("VuMark " + String.valueOf(vuMark));
+                int relicType = getRelic(relicTemplate);
 
                 /*  Это для сбития Jewel */
                 rotateClaw(0.8);// so that boxes won't fall off
@@ -127,14 +115,14 @@ public class autoRedLeft extends robot {
                 // requestOpModeStop();
 
                 /*  Это съезд с камня и езда с поиском линии до CryptoBox */
-                setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 1000);// Съезд с камня
+                setMotorsPowerTimed(-0.27, 0.2, 0.2, -0.2, 1150);// Съезд с камня
 
                 /* Поиск Среднего Арифметического FieldColorSR */
                 double fieldColor;
                 int tick;
                 double fieldColorReadings = 0; // эта переменная нужна для хранения суммы показаний датчика линии
                 for (tick = 0; tick < 600; tick += 10) {
-                    setMotorsPower(-0.15, 0.15, -0.15, 0.15);
+                    setMotorsPower(-0.23, 0.2, 0.0, 0.0);
                     fieldColor = odsSensor.getLightDetected();
                     fieldColorReadings += fieldColor;
                     sleep(10);
@@ -149,7 +137,7 @@ public class autoRedLeft extends robot {
                 /* Поиск первой линии */
                 for (tick = 0; tick < 2000; tick += 2) {
                     fieldColor = odsSensor.getLightDetected();
-                    setMotorsPower(-0.15, 0.15, 0.15, -0.15);
+                    setMotorsPower(-0.22, 0.2, 0.2, -0.2);
                     if (fieldColor > fieldColorSR * 1.5) {
                         log("Found First Line " + fieldColor, runtime.seconds());
                         telemetry.addData("Centring loop", "line Found 1");
@@ -160,14 +148,14 @@ public class autoRedLeft extends robot {
                     if (isStopRequested()) {
                         break;
                     }
-                    sleep(1);
+                    sleep(2);
                 }
-                setMotorsPower(0, 0, 0, 0);
+
 
                 /* Пытаемся потерять линию */
                 for (tick = 0; tick < 500; tick += 2) {
-                    setMotorsPower(-0.15, 0.15, 0.15, -0.15);
-                    if (odsSensor.getLightDetected() < fieldColorSR * 1.3) {
+                    setMotorsPower(-0.1, 0.1, 0.1, -0.1);
+                    if (odsSensor.getLightDetected() < fieldColorSR * 1.8 && tick > 100) {
                         log("Потеряна Первая линия ", runtime.seconds());
                         telemetry.addData("LINE", "1 line LOS");
                         telemetry.update();
@@ -177,25 +165,25 @@ public class autoRedLeft extends robot {
                     sleep(2);
                 }
                 chassisStopMovement();
+                sleep(200);
+
                 int drivetime = 0;
 
                 /* Едем и ищем вторую линию */
-                while (odsSensor.getLightDetected() < fieldColorSR * 1.3) {
+                for (tick = 0; tick < 1000; tick += 2) {
                     cdim.setDigitalChannelState(LED_CHANNEL, true);
                     if (isStopRequested()) {
                         break;
                     }
-                    telemetry.addData("Centring loop", "coasting");
-                    telemetry.update();
-                    sleep(1);
-                    setMotorsPower(-0.15, 0.15, 0.15, -0.15);
-                    drivetime += 1;
-                    if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
+                    sleep(2);
+                    setMotorsPower(-0.22, 0.20, 0.20, -0.20);
+                    drivetime += 2;
+                    if (odsSensor.getLightDetected() > fieldColorSR * 1.8) {
                         break;
                     }
                 }
                 /* Если нашли линию */
-                if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
+                if (odsSensor.getLightDetected() > fieldColorSR * 1.8) {
                     log("Вторая линия найдена " + odsSensor.getLightDetected(), runtime.seconds());
                     chassisStopMovement();
                     telemetry.addData("Centring loop", "line Found 2 (break)");
@@ -203,28 +191,73 @@ public class autoRedLeft extends robot {
                     cdim.setDigitalChannelState(LED_CHANNEL, false);
                     isPositioned = true;
                 }
-                setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, (drivetime / 2));
-                    log("Вернулся к центральной полке ", runtime.seconds());
-                    sleep(500);
+
+                sleep(200);
+
+                setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2));
+                log("Вернулся к центральной полке ", runtime.seconds());
+                sleep(200);
 
 
                 /* Начало движения к нужной полке */
-                setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 800);//поворот против часовой
+                setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 900);//поворот против часовой
                 log("Повернулся на 90 градусов ", runtime.seconds());
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                sleep(200);
+
+                if (relicType == 3) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
-                    setMotorsPowerTimed(0.1, 0.1, -0.1, -0.1, 300);// Slide left
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    setMotorsPowerTimed(0.3, -0.3, 0.3, -0.3, 500);// Slide left
+                } else if (relicType == 2) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
-
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                } else if (relicType == 1) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
-                    setMotorsPowerTimed(-0.1, -0.1, 0.1, 0.1, 300);// Slide right
+                    setMotorsPowerTimed(-0.3, 0.3, -0.3, 0.3, 500);// Slide right
                 }
+                sleep(200);
                 putBox();
+
+                putBox();
+                m5Lift.setPower(0);
+                s5Shovel.setPosition(1);
+                s3Rotation.setPosition(0.8);
+                setMotorsPowerTimed(-0.6, 0.6, 0.6, -0.6, 1250);
+                setMotorsPowerTimed(0.3, -0.3, -0.3, 0.3, 700);
+                s5Shovel.setPosition(0.2);
+                sleep(300);
+                // Moved back
+                s5Shovel.setPosition(0.8);
+                sleep(300);
+                s5Shovel.setPosition(0);
+                sleep(700);
+                // Закинули кубы
+                setMotorsPower(0.2, -0.2, -0.2, 0.2);
+                m5Lift.setPower(0.22);
+                sleep(800);
+                m5Lift.setPower(0);
+
+                sleep(500);
+                chassisStopMovement();
+                // Finished platform and backward movement
+                sleep(300);
+                setMotorsPower(0.3, -0.3, -0.3, 0.3);
+                sleep(1000);
+                chassisStopMovement();
+                // Finished moving back
+                s3Rotation.setPosition(0);
+                putBox();
+                chassisStopMovement();
+                s3Rotation.setPosition(0.8);
+                sleep(1000);
+                m5Lift.setPower(-0.22);
+                sleep(600);
+                m5Lift.setPower(0);
+                s3Rotation.setPosition(0.8);
+                requestOpModeStop();
+
+
                 wasExecuted = true;
                 telemetry.clearAll();
                 telemetry.addData("LOG", printLog());

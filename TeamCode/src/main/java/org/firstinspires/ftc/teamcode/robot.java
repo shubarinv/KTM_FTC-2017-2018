@@ -10,6 +10,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+
 public abstract class robot extends LinearOpMode {
     protected static final int LED_CHANNEL = 5;
     protected DcMotor m1Drive = null;
@@ -21,6 +24,7 @@ public abstract class robot extends LinearOpMode {
     protected Servo s3Rotation = null;
     protected Servo s5Shovel = null;
     protected DcMotor m6Intake = null;
+    protected DcMotor m5Lift = null;
     protected ColorSensor sensorRGB;
     protected OpticalDistanceSensor odsSensor;  // Hardware Device Object
     protected float hsvValues[] = {0F, 0F, 0F};
@@ -28,13 +32,12 @@ public abstract class robot extends LinearOpMode {
 
 
     protected void putBox() {
-        setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 1200);//движение назад
-        sleep(100);
-        setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
+        setMotorsPowerTimed(0.15, -0.15, -0.15, 0.15, 800);//движение назад
+        setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 300);//движение вперёд
         rotateClaw(0);
+        sleep(500);
         setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
         setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
-        setMotorsPowerTimed(0.1, -0.1, -0.1, 0.1, 500);//движение вперёд
         rotateClaw(0.8);
     }
 
@@ -45,7 +48,7 @@ public abstract class robot extends LinearOpMode {
 
     protected void setMotorsPower(double D1_power, double D2_power, double D3_power, double D4_power) { //Warning: Эта функция включит моторы но, выключить их надо будет после выполнения какого либо условия
         // Send power to wheels
-        m1Drive.setPower(D1_power);
+        m1Drive.setPower(D1_power * 1.1);
         m2Drive.setPower(D2_power);
         m3Drive.setPower(D3_power);
         m4Drive.setPower(D4_power);
@@ -122,5 +125,29 @@ public abstract class robot extends LinearOpMode {
         s5Shovel = hardwMap.get(Servo.class, "s5 shovel");
         m6Intake = hardwMap.get(DcMotor.class, "m6 intake");
         sensorRGB = hardwMap.get(ColorSensor.class, "sensor_color");
+        m5Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+    }
+
+    protected int getRelic(VuforiaTrackable relicTemplate) {
+        RelicRecoveryVuMark vuMark;
+        for (int tick = 0; tick < 4000; tick += 10) {
+            vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            telemetry.addData("Vumark", vuMark);
+            telemetry.update();
+            if (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                sleep(10);
+            } else {
+                if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    return 1;
+                }
+                if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    return 2;
+                }
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    return 3;
+                }
+            }
+        }
+        return 99999;
     }
 }
