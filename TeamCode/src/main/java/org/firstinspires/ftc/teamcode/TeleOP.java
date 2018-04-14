@@ -1,12 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -26,59 +21,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "KTM TeleOp 2 (ALT)", group = "Linear Opmode")
 
 //@Disabled
-public class TeleOP extends LinearOpMode {
-    private static final int LED_CHANNEL = 5;
+public class TeleOP extends robot {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    //Chassis
-
-    private DcMotor m5Lift = null;
-    private Servo s5Shovel = null;
 
     //-------
     double magic(double input) {
         return Math.signum(input) * Math.pow(Math.abs(input), 2);
     }
-
-    /*
-     * Functions declaration
-     */
-
-
-    //Lift claw
-    void liftClaw(double lift_power) {
-        m5Lift.setPower(lift_power);
-    }
-
-    void shovelTrigger(double shovel_pos) {
-        s5Shovel.setPosition(shovel_pos);
-    }
-
-    void setPowerTimed(DcMotor motor, double power, long milliseconds) {
-        motor.setPower(power);
-        sleep(milliseconds);
-        motor.setPower(0);
-
-    }
-
-    void setPowerTimed(CRServo Crservo, double power, long milliseconds) {
-        Crservo.setPower(power);
-        sleep(milliseconds);
-        Crservo.setPower(0);
-
-    }
-
-    /*
-     *Relic related
-     */
-    // Grab relic
-    // Extend grabbing component
-    // Retract grabbing component
-
-
-    /**
-     * End of functions declaration
-     */
 
     @Override
     public void runOpMode() {
@@ -86,36 +36,6 @@ public class TeleOP extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-
-        // Chassis
-        DcMotor m1Drive = hardwareMap.get(DcMotor.class, "m1 drive");
-        DcMotor m2Drive = hardwareMap.get(DcMotor.class, "m2 drive");
-        DcMotor m3Drive = hardwareMap.get(DcMotor.class, "m3 drive");
-        DcMotor m4Drive = hardwareMap.get(DcMotor.class, "m4 drive");
-        m5Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        DcMotor m6Intake = hardwareMap.get(DcMotor.class, "m6 intake");
-        CRServo s1RelicExtRet = hardwareMap.get(CRServo.class, "s1 top claw");
-        //s2_bottom_Claw = hardwareMap.get(CRServo.class, "s2 bottom claw");
-        Servo s3Rotation = hardwareMap.get(Servo.class, "s3 rotation");
-        Servo s4Kicker = hardwareMap.get(Servo.class, "s4 kick");
-        s5Shovel = hardwareMap.get(Servo.class, "s5 shovel");
-        Servo s6RelicClaw = hardwareMap.get(Servo.class, "s6 relic claw");
-        Servo s7RelicArm = hardwareMap.get(Servo.class, "s7 relic arm");
-
-        //sensor
-        TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
-
-        //-------
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        m1Drive.setDirection(DcMotor.Direction.FORWARD);
-        m2Drive.setDirection(DcMotor.Direction.FORWARD);
-        m3Drive.setDirection(DcMotor.Direction.FORWARD);
-        m4Drive.setDirection(DcMotor.Direction.FORWARD);
-        m5Lift.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -204,14 +124,6 @@ public class TeleOP extends LinearOpMode {
                 s3Rotation.setPosition(0.78);
             }
             shovelTrigger(intakeMotor);
-            if (intakeMotor > 0) {
-                m6Intake.setPower(intakeMotor);
-            } else {
-                m6Intake.setPower(0);
-            }
-            if (gamepad2.left_stick_y < 0) {
-                m6Intake.setPower(gamepad2.left_stick_y);
-            }
 
             // Claw_lift
             if (clawLiftL != 0) {

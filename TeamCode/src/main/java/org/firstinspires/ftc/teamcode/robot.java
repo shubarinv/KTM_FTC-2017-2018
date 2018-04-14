@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -23,8 +24,11 @@ public abstract class robot extends LinearOpMode {
     protected Servo s4Kicker = null;
     protected Servo s3Rotation = null;
     protected Servo s5Shovel = null;
-    protected DcMotor m6Intake = null;
     protected DcMotor m5Lift = null;
+    protected Servo s6RelicClaw = null;
+    protected Servo s7RelicArm = null;
+    protected CRServo s1RelicExtRet;
+    protected TouchSensor touchSensor;
     protected ColorSensor sensorRGB;
     protected OpticalDistanceSensor odsSensor;  // Hardware Device Object
     protected float hsvValues[] = {0F, 0F, 0F};
@@ -123,9 +127,12 @@ public abstract class robot extends LinearOpMode {
         odsSensor = hardwMap.get(OpticalDistanceSensor.class, "sensor_ods");
         s3Rotation = hardwMap.get(Servo.class, "s3 rotation");
         s5Shovel = hardwMap.get(Servo.class, "s5 shovel");
-        m6Intake = hardwMap.get(DcMotor.class, "m6 intake");
         sensorRGB = hardwMap.get(ColorSensor.class, "sensor_color");
         m5Lift = hardwareMap.get(DcMotor.class, "m5 lift");
+        Servo s6RelicClaw = hardwareMap.get(Servo.class, "s6 relic claw");
+        Servo s7RelicArm = hardwareMap.get(Servo.class, "s7 relic arm");
+        CRServo s1RelicExtRet = hardwareMap.get(CRServo.class, "s1 top claw");
+        TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
     }
 
     protected int getRelic(VuforiaTrackable relicTemplate) {
@@ -149,6 +156,22 @@ public abstract class robot extends LinearOpMode {
             }
         }
         return 99999;
+    }
+
+    //Lift claw
+    protected void liftClaw(double lift_power) {
+        m5Lift.setPower(lift_power);
+    }
+
+    protected void shovelTrigger(double shovel_pos) {
+        s5Shovel.setPosition(shovel_pos);
+    }
+
+    protected void setPowerTimed(CRServo Crservo, double power, long milliseconds) {
+        Crservo.setPower(power);
+        sleep(milliseconds);
+        Crservo.setPower(0);
+
     }
 
     protected void goForMoreBoxes() {
@@ -188,5 +211,5 @@ public abstract class robot extends LinearOpMode {
         m5Lift.setPower(0);
         s3Rotation.setPosition(0.8);
     }
-    
+
 }
