@@ -116,8 +116,9 @@ public class autoRedLeft extends robot {
 
                 /*  Это съезд с камня и езда с поиском линии до CryptoBox */
                 setMotorsPowerTimed(-0.24, 0.2, 0.2, -0.2, 1150);// Съезд с камня
-                
-                goToCryptoBox(getFieldColorSR(-0.22, 0.2, 0.0, 0.0), runtime);
+
+                goToCryptoBoxRED(getFieldColorSR(-0.22, 0.2, 0.0, 0.0), runtime);
+                //goToCryptoBoxBLUE(getFieldColorSR(-0.22, 0.2, 0.0, 0.0), runtime);
 
                 /* Начало движения к нужной полке */
                 setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 900);//поворот против часовой
