@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -198,5 +199,89 @@ public abstract class robot extends LinearOpMode {
         m5Lift.setPower(0);
         s3Rotation.setPosition(0.8);
 
+    }
+
+    protected double getFieldColorSR(double m1, double m2, double m3, double m4) {
+        double fieldColor;
+        int tick;
+        double fieldColorReadings = 0; // эта переменная нужна для хранения суммы показаний датчика линии
+        for (tick = 0; tick < 600; tick += 10) {
+            setMotorsPower(m1, m2, m3, m4);
+            fieldColor = odsSensor.getLightDetected();
+            fieldColorReadings += fieldColor;
+            sleep(10);
+        }
+        setMotorsPower(0, 0, 0, 0);
+
+        double fieldColorSR = fieldColorReadings / 60; //Среднее арифметическое
+        log("Среднее арифметическое", fieldColorSR);
+        telemetry.addData("SR", fieldColorSR);
+        telemetry.update();
+        return fieldColorSR;
+    }
+
+    protected void goToCryptoBox(double fieldColorSR, ElapsedTime runtime) {
+        int tick;
+        double fieldColor;
+        /* Поиск первой линии */
+        for (tick = 0; tick < 2000; tick += 2) {
+            fieldColor = odsSensor.getLightDetected();
+            setMotorsPower(-0.2, 0.2, 0.2, -0.2);
+            if (fieldColor > fieldColorSR * 1.5) {
+                log("Found First Line " + fieldColor, runtime.seconds());
+                telemetry.addData("Centring loop", "line Found 1");
+                //  telemetry.addData("Centring loop", fieldColor);
+                telemetry.update();
+                break;
+            }
+            if (isStopRequested()) {
+                break;
+            }
+            sleep(2);
+        }
+        /* Пытаемся потерять линию */
+        setMotorsPower(-0.1, 0.1, 0.1, -0.1);
+        sleep(100);
+        for (tick = 0; tick < 500; tick += 2) {
+            setMotorsPower(-0.1, 0.1, 0.1, -0.1);
+            if (odsSensor.getLightDetected() < fieldColorSR * 1.5 && tick > 100) {
+                log("Потеряна Первая линия ", runtime.seconds());
+                telemetry.addData("LINE", "1 line LOS");
+                telemetry.update();
+                chassisStopMovement();
+                break;
+            }
+            sleep(2);
+        }
+        chassisStopMovement();
+        sleep(200);
+
+        int drivetime = 0;
+
+        /* Едем и ищем вторую линию */
+        for (tick = 0; tick < 1000; tick += 2) {
+            if (isStopRequested()) {
+                break;
+            }
+            sleep(2);
+            setMotorsPower(-0.20, 0.20, 0.20, -0.20);
+            drivetime += 2;
+            if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
+                break;
+            }
+        }
+        /* Если нашли линию */
+        if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
+            log("Вторая линия найдена " + odsSensor.getLightDetected(), runtime.seconds());
+            chassisStopMovement();
+            telemetry.addData("Centring loop", "line Found 2 (break)");
+            telemetry.update();
+        }
+
+        sleep(200);
+
+        setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2));
+        log("Вернулся к центральной полке ", runtime.seconds());
+        sleep(200);
     }
 }
