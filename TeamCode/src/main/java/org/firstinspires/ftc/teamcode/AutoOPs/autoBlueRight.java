@@ -43,9 +43,9 @@ import org.firstinspires.ftc.teamcode.robot;
 import java.util.Objects;
 
 
-@Autonomous(name = "Red Left", group = "AutoOP")
+@Autonomous(name = "Blue Right", group = "AutoOP")
 //@Disabled
-public class autoRedLeft extends robot {
+public class autoBlueRight extends robot {
     DeviceInterfaceModule cdim;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -115,10 +115,10 @@ public class autoRedLeft extends robot {
                 // requestOpModeStop();
 
                 /*  Это съезд с камня и езда с поиском линии до CryptoBox */
-                setMotorsPowerTimed(-0.22, 0.2, 0.2, -0.2, 1150);// Съезд с камня
+                setMotorsPowerTimed(0.2, -0.2, -0.22, 0.2, 1150);// Съезд с камня
 
-                goToCryptoBoxRED(getFieldColorSR(-0.21, 0.2, 0.0, 0.0), runtime);
-                //goToCryptoBoxBLUE(getFieldColorSR(-0.22, 0.2, 0.0, 0.0), runtime);
+                //goToCryptoBoxRED(getFieldColorSR(-0.21, 0.2, 0.0, 0.0), runtime);
+                goToCryptoBoxBLUE(getFieldColorSR(0, 0, -0.22, 0.2), runtime);
 
                 /* Начало движения к нужной полке */
                 setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 800);//поворот против часовой

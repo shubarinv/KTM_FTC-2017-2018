@@ -156,35 +156,30 @@ public abstract class robot extends LinearOpMode {
         m5Lift.setPower(0);
         s5Shovel.setPosition(1);
         s3Rotation.setPosition(0.8);
-        setMotorsPowerTimed(-0.6, 0.6, 0.6, -0.6, 900);
-// Moving back
-        setMotorsPower(0.1, -0.1, -0.1, 0.1);
-        sleep(120);
-        setMotorsPower(0.2, -0.2, -0.2, 0.2);
+        setMotorsPowerTimed(-0.6, 0.5, 0.5, -0.5, 980);
+
 // collecting glyphs
         s5Shovel.setPosition(0.5);
-        sleep(300);
+        sleep(400);
+        // Moving back
+        setMotorsPower(0, -0.1, -0.1, 0.1);
+        sleep(120);
+        setMotorsPower(0.09, -0.18, -0.18, 0.18);
+
         s5Shovel.setPosition(0.8);
         sleep(200);
         s5Shovel.setPosition(0.2);
         sleep(400);
         s5Shovel.setPosition(0.8);
-        sleep(400);
+        sleep(500);
         s5Shovel.setPosition(0);
-//lifting up wiggle
-        m5Lift.setPower(0.6);
-        sleep(300);
-        m5Lift.setPower(0);
-        sleep(100);
-        m5Lift.setPower(-0.6);
-        sleep(290);
-        m5Lift.setPower(0);
-        //for safety shovel down
-        s5Shovel.setPosition(0.9);
-        sleep(100);
+//lifting up
+        sleep(700);
         m5Lift.setPower(0.4);
         sleep(500);
         m5Lift.setPower(0);
+        //for safety shovel down
+        s5Shovel.setPosition(0.9);
 //time to get crypto box
         sleep(100);
         chassisStopMovement();
@@ -194,8 +189,8 @@ public abstract class robot extends LinearOpMode {
         putBox();
         chassisStopMovement();
         sleep(1000);
-        m5Lift.setPower(-0.22);
-        sleep(600);
+        m5Lift.setPower(-0.3);
+        sleep(400);
         m5Lift.setPower(0);
         s3Rotation.setPosition(0.8);
 
@@ -240,8 +235,7 @@ public abstract class robot extends LinearOpMode {
             sleep(2);
         }
         /* Пытаемся потерять линию */
-        setMotorsPower(-0.1, 0.1, 0.1, -0.1);
-        sleep(100);
+
         for (tick = 0; tick < 500; tick += 2) {
             setMotorsPower(-0.1, 0.1, 0.1, -0.1);
             if (odsSensor.getLightDetected() < fieldColorSR * 1.5 && tick > 100) {
@@ -280,7 +274,7 @@ public abstract class robot extends LinearOpMode {
 
         sleep(200);
 
-        setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2));
+        setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2)+200);
         log("Вернулся к центральной полке ", runtime.seconds());
         sleep(200);
     }
@@ -291,7 +285,7 @@ public abstract class robot extends LinearOpMode {
         /* Поиск первой линии */
         for (tick = 0; tick < 2000; tick += 2) {
             fieldColor = odsSensor.getLightDetected();
-            setMotorsPower(-0.2, 0.2, 0.2, -0.2);
+            setMotorsPower(0.2, -0.2, -0.2, 0.2);
             if (fieldColor > fieldColorSR * 1.5) {
                 log("Found First Line " + fieldColor, runtime.seconds());
                 telemetry.addData("Centring loop", "line Found 1");
@@ -305,10 +299,9 @@ public abstract class robot extends LinearOpMode {
             sleep(2);
         }
         /* Пытаемся потерять линию */
-        setMotorsPower(-0.1, 0.1, 0.1, -0.1);
-        sleep(100);
+
         for (tick = 0; tick < 500; tick += 2) {
-            setMotorsPower(-0.1, 0.1, 0.1, -0.1);
+            setMotorsPower(0.1, -0.1, -0.1, 0.1);
             if (odsSensor.getLightDetected() < fieldColorSR * 1.5 && tick > 100) {
                 log("Потеряна Первая линия ", runtime.seconds());
                 telemetry.addData("LINE", "1 line LOS");
@@ -329,7 +322,7 @@ public abstract class robot extends LinearOpMode {
                 break;
             }
             sleep(2);
-            setMotorsPower(-0.20, 0.20, 0.20, -0.20);
+            setMotorsPower(0.20, -0.20, -0.20, 0.20);
             drivetime += 2;
             if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                 break;
@@ -345,7 +338,7 @@ public abstract class robot extends LinearOpMode {
 
         sleep(200);
 
-        setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2));
+        setMotorsPowerTimed(-0.25, 0.25, 0.25, -0.25, (drivetime / 2));
         log("Вернулся к центральной полке ", runtime.seconds());
         sleep(200);
     }

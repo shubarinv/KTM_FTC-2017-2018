@@ -131,6 +131,7 @@ public class TeleOP extends LinearOpMode {
             //Setup a variable for each drive wheel to save power level for telemetry
             double m1DrivePower;
             double m2DrivePower;
+
             double m3DrivePower;
             double m4DrivePower;
 
