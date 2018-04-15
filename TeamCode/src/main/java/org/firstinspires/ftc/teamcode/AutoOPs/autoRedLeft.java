@@ -166,6 +166,7 @@ public class autoRedLeft extends robot {
                         break;
                     }
                 }
+                chassisStopMovement();
                 /* Если нашли линию */
                 if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                     log("Вторая линия найдена " + odsSensor.getLightDetected(), runtime.seconds());
@@ -200,7 +201,6 @@ public class autoRedLeft extends robot {
                 sleep(200);
                 putBox();
                 goForMoreBoxes();
-                requestOpModeStop();
                 wasExecuted = true;
                 telemetry.clearAll();
                 telemetry.addData("LOG", printLog());
