@@ -110,19 +110,19 @@ public class autoRedLeft extends robot {
                     setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
                     setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
                 }
-                s4Kicker.setPosition(0);
+                s4Kicker.setPosition(0.05);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
                 // requestOpModeStop();
 
                 /*  Это съезд с камня и езда с поиском линии до CryptoBox */
-                setMotorsPowerTimed(-0.27, 0.2, 0.2, -0.2, 1150);// Съезд с камня
+                setMotorsPowerTimed(-0.24, 0.2, 0.2, -0.2, 1150);// Съезд с камня
 
                 /* Поиск Среднего Арифметического FieldColorSR */
                 double fieldColor;
                 int tick;
                 double fieldColorReadings = 0; // эта переменная нужна для хранения суммы показаний датчика линии
                 for (tick = 0; tick < 600; tick += 10) {
-                    setMotorsPower(-0.23, 0.2, 0.0, 0.0);
+                    setMotorsPower(-0.22, 0.2, 0.0, 0.0);
                     fieldColor = odsSensor.getLightDetected();
                     fieldColorReadings += fieldColor;
                     sleep(10);
@@ -137,7 +137,7 @@ public class autoRedLeft extends robot {
                 /* Поиск первой линии */
                 for (tick = 0; tick < 2000; tick += 2) {
                     fieldColor = odsSensor.getLightDetected();
-                    setMotorsPower(-0.22, 0.2, 0.2, -0.2);
+                    setMotorsPower(-0.2, 0.2, 0.2, -0.2);
                     if (fieldColor > fieldColorSR * 1.5) {
                         log("Found First Line " + fieldColor, runtime.seconds());
                         telemetry.addData("Centring loop", "line Found 1");
@@ -150,12 +150,12 @@ public class autoRedLeft extends robot {
                     }
                     sleep(2);
                 }
-
-
                 /* Пытаемся потерять линию */
+                setMotorsPower(-0.1, 0.1, 0.1, -0.1);
+                sleep(100);
                 for (tick = 0; tick < 500; tick += 2) {
                     setMotorsPower(-0.1, 0.1, 0.1, -0.1);
-                    if (odsSensor.getLightDetected() < fieldColorSR * 1.8 && tick > 100) {
+                    if (odsSensor.getLightDetected() < fieldColorSR * 1.5 && tick > 100) {
                         log("Потеряна Первая линия ", runtime.seconds());
                         telemetry.addData("LINE", "1 line LOS");
                         telemetry.update();
@@ -176,14 +176,14 @@ public class autoRedLeft extends robot {
                         break;
                     }
                     sleep(2);
-                    setMotorsPower(-0.22, 0.20, 0.20, -0.20);
+                    setMotorsPower(-0.20, 0.20, 0.20, -0.20);
                     drivetime += 2;
-                    if (odsSensor.getLightDetected() > fieldColorSR * 1.8) {
+                    if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                         break;
                     }
                 }
                 /* Если нашли линию */
-                if (odsSensor.getLightDetected() > fieldColorSR * 1.8) {
+                if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
                     log("Вторая линия найдена " + odsSensor.getLightDetected(), runtime.seconds());
                     chassisStopMovement();
                     telemetry.addData("Centring loop", "line Found 2 (break)");

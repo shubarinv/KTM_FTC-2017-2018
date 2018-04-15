@@ -155,37 +155,48 @@ public abstract class robot extends LinearOpMode {
         m5Lift.setPower(0);
         s5Shovel.setPosition(1);
         s3Rotation.setPosition(0.8);
-        setMotorsPowerTimed(-0.6, 0.6, 0.6, -0.6, 1250);
-        setMotorsPowerTimed(0.3, -0.3, -0.3, 0.3, 700);
-        s5Shovel.setPosition(0.2);
-        sleep(300);
-        // Moved back
-        s5Shovel.setPosition(0.8);
-        sleep(300);
-        s5Shovel.setPosition(0);
-        sleep(700);
-        // Закинули кубы
+        setMotorsPowerTimed(-0.6, 0.6, 0.6, -0.6, 900);
+// Moving back
+        setMotorsPower(0.1, -0.1, -0.1, 0.1);
+        sleep(120);
         setMotorsPower(0.2, -0.2, -0.2, 0.2);
-        m5Lift.setPower(0.22);
-        sleep(800);
-        m5Lift.setPower(0);
-
-        sleep(500);
-        chassisStopMovement();
-        // Finished platform and backward movement
+// collecting glyphs
+        s5Shovel.setPosition(0.5);
         sleep(300);
-        setMotorsPower(0.3, -0.3, -0.3, 0.3);
-        sleep(1000);
+        s5Shovel.setPosition(0.8);
+        sleep(200);
+        s5Shovel.setPosition(0.2);
+        sleep(400);
+        s5Shovel.setPosition(0.8);
+        sleep(400);
+        s5Shovel.setPosition(0);
+//lifting up wiggle
+        m5Lift.setPower(0.6);
+        sleep(300);
+        m5Lift.setPower(0);
+        sleep(100);
+        m5Lift.setPower(-0.6);
+        sleep(290);
+        m5Lift.setPower(0);
+        //for safety shovel down
+        s5Shovel.setPosition(0.9);
+        sleep(100);
+        m5Lift.setPower(0.4);
+        sleep(500);
+        m5Lift.setPower(0);
+//time to get crypto box
+        sleep(100);
         chassisStopMovement();
-        // Finished moving back
-        s3Rotation.setPosition(0);
+        sleep(200);
+// Finished platform and backward movement
+
         putBox();
         chassisStopMovement();
-        s3Rotation.setPosition(0.8);
         sleep(1000);
         m5Lift.setPower(-0.22);
         sleep(600);
         m5Lift.setPower(0);
         s3Rotation.setPosition(0.8);
+
     }
 }

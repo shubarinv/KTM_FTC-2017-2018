@@ -124,7 +124,7 @@ public class TeleOP extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            s4Kicker.setPosition(0.1);
+            s4Kicker.setPosition(0.05);
             /*
              * Chassis movement
              */
@@ -224,15 +224,21 @@ public class TeleOP extends LinearOpMode {
 
             //Partially AutoOP
             if (relic == 0) {
-                if (relicArmExtend) { //DO NOT FORKING CHANGE
+                if (relicArmExtend) {
                     setPowerTimed(s1RelicExtRet, 1, 450);
                     while (!touchSensor.isPressed()) {
                         s1RelicExtRet.setPower(0.5);
                     }
                     s1RelicExtRet.setPower(0);
-                    s7RelicArm.setPosition(0.6);
-                    sleep(500);
-                    s7RelicArm.setPosition(0.8);
+                    s7RelicArm.setPosition(0.62);
+                    sleep(380);
+                    s7RelicArm.setPosition(0.72);
+                    sleep(100);
+                    s7RelicArm.setPosition(0.785);
+                    sleep(100);
+                    s7RelicArm.setPosition(0.81);
+                    sleep(100);
+                    s7RelicArm.setPosition(0.82);
 
 
                 }
@@ -242,18 +248,18 @@ public class TeleOP extends LinearOpMode {
                     m2Drive.setPower(0.5);
                     m3Drive.setPower(-0.1);
                     m4Drive.setPower(0.1);
-                    sleep(300);
+                    sleep(500);
                     m1Drive.setPower(0);
                     m2Drive.setPower(0);
                     m3Drive.setPower(0);
                     m4Drive.setPower(0);
-                    sleep(300);
+                    sleep(200);
                     setPowerTimed(s1RelicExtRet, -1, 450);
                     for (int tick = 0; tick < 2000; tick += 10) {
                         s1RelicExtRet.setPower(-0.5);
                         if (touchSensor.isPressed() || isStopRequested()) {
-                            s1RelicExtRet.setPower(0.2);
-                            sleep(100);
+                            s1RelicExtRet.setPower(0.1);
+                            sleep(200);
                             s1RelicExtRet.setPower(0);
 
                             break;
@@ -270,26 +276,24 @@ public class TeleOP extends LinearOpMode {
             }
             //relic arm
 
-            s1RelicExtRet.setPower(relic * 0.2);
+            s1RelicExtRet.setPower(relic * 0.1);
 
 
             //Relic arm_small
             if (relicClawUp) { //DO NOT CHANGE
-                s6RelicClaw.setPosition(0);
-                sleep(600);
-                s7RelicArm.setPosition(0.95);
-                sleep(600);
+                s7RelicArm.setPosition(0.93);
+                sleep(300);
                 s6RelicClaw.setPosition(1);
                 sleep(600);
-                s7RelicArm.setPosition(0.8);
             } else if (relicClawDown) {
-                s7RelicArm.setPosition(0.95);
+                s7RelicArm.setPosition(0.93);
+                sleep(300);
                 s6RelicClaw.setPosition(0);
                 sleep(600);
-                s7RelicArm.setPosition(0.8);
+                s7RelicArm.setPosition(0.82);
             }
             if (relicPartExt) {
-                s7RelicArm.setPosition(0.8);
+                s7RelicArm.setPosition(0.82);
             }
             if (relicPartRet) {
                 s7RelicArm.setPosition(0.3);
