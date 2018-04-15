@@ -129,10 +129,10 @@ public abstract class robot extends LinearOpMode {
         s5Shovel = hardwMap.get(Servo.class, "s5 shovel");
         sensorRGB = hardwMap.get(ColorSensor.class, "sensor_color");
         m5Lift = hardwareMap.get(DcMotor.class, "m5 lift");
-        Servo s6RelicClaw = hardwareMap.get(Servo.class, "s6 relic claw");
-        Servo s7RelicArm = hardwareMap.get(Servo.class, "s7 relic arm");
-        CRServo s1RelicExtRet = hardwareMap.get(CRServo.class, "s1 top claw");
-        TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
+        s6RelicClaw = hardwareMap.get(Servo.class, "s6 relic claw");
+        s7RelicArm = hardwareMap.get(Servo.class, "s7 relic arm");
+        s1RelicExtRet = hardwareMap.get(CRServo.class, "s1 top claw");
+        touchSensor = hardwareMap.get(TouchSensor.class, "sensor touch");
     }
 
     protected int getRelic(VuforiaTrackable relicTemplate) {
