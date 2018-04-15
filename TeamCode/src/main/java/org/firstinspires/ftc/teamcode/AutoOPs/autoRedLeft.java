@@ -220,8 +220,43 @@ public class autoRedLeft extends robot {
                 putBox();
 
                 putBox();
-                goForMoreBoxes();
+                m5Lift.setPower(0);
+                s5Shovel.setPosition(1);
+                s3Rotation.setPosition(0.8);
+                setMotorsPowerTimed(-0.6, 0.6, 0.6, -0.6, 1250);
+                setMotorsPowerTimed(0.3, -0.3, -0.3, 0.3, 700);
+                s5Shovel.setPosition(0.2);
+                sleep(300);
+                // Moved back
+                s5Shovel.setPosition(0.8);
+                sleep(300);
+                s5Shovel.setPosition(0);
+                sleep(700);
+                // Закинули кубы
+                setMotorsPower(0.2, -0.2, -0.2, 0.2);
+                m5Lift.setPower(0.22);
+                sleep(800);
+                m5Lift.setPower(0);
+
+                sleep(500);
+                chassisStopMovement();
+                // Finished platform and backward movement
+                sleep(300);
+                setMotorsPower(0.3, -0.3, -0.3, 0.3);
+                sleep(1000);
+                chassisStopMovement();
+                // Finished moving back
+                s3Rotation.setPosition(0);
+                putBox();
+                chassisStopMovement();
+                s3Rotation.setPosition(0.8);
+                sleep(1000);
+                m5Lift.setPower(-0.22);
+                sleep(600);
+                m5Lift.setPower(0);
+                s3Rotation.setPosition(0.8);
                 requestOpModeStop();
+
 
                 wasExecuted = true;
                 telemetry.clearAll();
