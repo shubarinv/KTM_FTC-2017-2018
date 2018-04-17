@@ -43,9 +43,9 @@ import org.firstinspires.ftc.teamcode.robot;
 import java.util.Objects;
 
 
-@Autonomous(name = "bl R", group = "AutoOP")
+@Autonomous(name = "BL L", group = "AutoOP")
 //@Disabled
-public class autoBlueRight extends robot {
+public class autoBlueLeft extends robot {
     DeviceInterfaceModule cdim;
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -103,7 +103,6 @@ public class autoBlueRight extends robot {
                 log("Jewel color: " + jewel_color + "Runtime ", runtime.seconds());
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
-
                 if (Objects.equals(jewel_color, "Blue")) {
                     setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
                     setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
@@ -117,15 +116,15 @@ public class autoBlueRight extends robot {
                 // requestOpModeStop();
 
                 /*  Это съезд с камня и езда с поиском линии до CryptoBox */
-                setMotorsPowerTimed(0.18, -0.2, -0.2, 0.2, 1150);// Съезд с камня
-                double fieldColorSR = getFieldColorSR(0.0, 0.0, -0.22, 0.2);
+                setMotorsPowerTimed(0.22, -0.2, -0.2, 0.2, 1300);// Съезд с камня
+                double fieldColorSR = getFieldColorSR(0.22, -0.2, 0, 0);
 
                 int tick;
                 double fieldColor;
                 /* Поиск первой линии */
                 for (tick = 0; tick < 1000; tick += 2) {
                     fieldColor = odsSensor.getLightDetected();
-                    setMotorsPower(0.2, -0.2, -0.2, 0.2);
+                    setMotorsPower(0.2, -0.2, 0.2, -0.2);
                     if (fieldColor > fieldColorSR * shininessCoefficient) {
                         log("Found First Line " + fieldColor, runtime.seconds());
                         telemetry.addData("Centring loop", "line Found 1");
@@ -141,7 +140,7 @@ public class autoBlueRight extends robot {
                 /* Пытаемся потерять линию */
 
                 for (tick = 0; tick < 500; tick += 2) {
-                    setMotorsPower(0.1, -0.1, -0.1, 0.1);
+                    setMotorsPower(0.1, -0.1, 0.1, -0.1);
                     if (odsSensor.getLightDetected() < fieldColorSR * shininessCoefficient && tick > 100) {
                         log("Потеряна Первая линия ", runtime.seconds());
                         telemetry.addData("LINE", "1 line LOS");
@@ -162,7 +161,7 @@ public class autoBlueRight extends robot {
                         break;
                     }
                     sleep(2);
-                    setMotorsPower(0.20, -0.20, -0.20, 0.20);
+                    setMotorsPower(0.20, -0.20, 0.20, -0.20);
                     drivetime += 2;
                     if (odsSensor.getLightDetected() > fieldColorSR * shininessCoefficient) {
                         break;
@@ -179,13 +178,13 @@ public class autoBlueRight extends robot {
 
                 sleep(200);
 
-                setMotorsPowerTimed(-0.25, 0.25, 0.25, -0.25, (drivetime / 2) + 100);
+                setMotorsPowerTimed(-0.25, 0.25, -0.25, 0.25, (drivetime / 2) + 100);
+
                 log("Вернулся к центральной полке ", runtime.seconds());
                 sleep(200);
 
                 /* Начало движения к нужной полке */
-                setMotorsPowerTimed(0.2, 0.2, 0.2, 0.2, 800);//поворот против часовой
-                log("Повернулся на 90 градусов ", runtime.seconds());
+                log("Повернулся на 180 градусов ", runtime.seconds());
                 sleep(200);
 
                 if (relicType == 3) {
@@ -202,7 +201,7 @@ public class autoBlueRight extends robot {
                 }
                 sleep(200);
                 putBox();
-                goForMoreBoxes();
+
                 wasExecuted = true;
                 telemetry.clearAll();
                 telemetry.addData("LOG", printLog());

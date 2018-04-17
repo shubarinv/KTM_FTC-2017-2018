@@ -27,13 +27,14 @@ public abstract class robot extends LinearOpMode {
     protected DcMotor m6Intake = null;
     protected DcMotor m5Lift = null;
     protected ColorSensor sensorRGB;
+    protected Double shininessCoefficient = 1.8;
     protected OpticalDistanceSensor odsSensor;  // Hardware Device Object
     protected float hsvValues[] = {0F, 0F, 0F};
     private String log = "";
 
 
     protected void putBox() {
-        setMotorsPowerTimed(0.15, -0.15, -0.15, 0.15, 800);//движение назад
+        setMotorsPowerTimed(0.15, -0.15, -0.15, 0.15, 950);//движение назад
         setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 300);//движение вперёд
         rotateClaw(0);
         sleep(500);
@@ -156,27 +157,27 @@ public abstract class robot extends LinearOpMode {
         m5Lift.setPower(0);
         s5Shovel.setPosition(1);
         s3Rotation.setPosition(0.8);
-        setMotorsPowerTimed(-0.6, 0.5, 0.5, -0.5, 980);
+        setMotorsPowerTimed(-1, 0.9, 0.9, -0.9, 800);
 
 // collecting glyphs
         s5Shovel.setPosition(0.5);
-        sleep(400);
+        sleep(500);
         // Moving back
         setMotorsPower(0, -0.1, -0.1, 0.1);
         sleep(120);
-        setMotorsPower(0.09, -0.18, -0.18, 0.18);
+        setMotorsPower(0.18, -0.22, -0.18, 0.18);
 
         s5Shovel.setPosition(0.8);
-        sleep(200);
+        sleep(150);
         s5Shovel.setPosition(0.2);
-        sleep(400);
+        sleep(300);
         s5Shovel.setPosition(0.8);
-        sleep(500);
+        sleep(400);
         s5Shovel.setPosition(0);
 //lifting up
         sleep(700);
-        m5Lift.setPower(0.4);
-        sleep(500);
+        m5Lift.setPower(0.8);
+        sleep(250);
         m5Lift.setPower(0);
         //for safety shovel down
         s5Shovel.setPosition(0.9);
@@ -225,3 +226,4 @@ public abstract class robot extends LinearOpMode {
         assert true;
     }
 }
+

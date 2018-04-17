@@ -104,11 +104,11 @@ public class autoRedLeft extends robot {
                 telemetry.addData("AdaFruit", jewel_color);
                 telemetry.update();
                 if (Objects.equals(jewel_color, "Blue")) {
-                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот против часовой
-                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот по часовой
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 225);//поворот против часовой
+                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 225);//поворот по часовой
                 } else {
-                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 300);//поворот против часовой
-                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 300);//поворот по часовой
+                    setMotorsPowerTimed(-0.1, -0.1, -0.1, -0.1, 225);//поворот против часовой
+                    setMotorsPowerTimed(0.1, 0.1, 0.1, 0.1, 225);//поворот по часовой
                 }
                 s4Kicker.setPosition(0.05);
                 cdim.setDigitalChannelState(LED_CHANNEL, false);
@@ -121,10 +121,10 @@ public class autoRedLeft extends robot {
                 int tick;
                 double fieldColor;
                 /* Поиск первой линии */
-                for (tick = 0; tick < 2000; tick += 2) {
+                for (tick = 0; tick < 1000; tick += 2) {
                     fieldColor = odsSensor.getLightDetected();
                     setMotorsPower(-0.2, 0.2, 0.2, -0.2);
-                    if (fieldColor > fieldColorSR * 1.5) {
+                    if (fieldColor > fieldColorSR * shininessCoefficient) {
                         log("Found First Line " + fieldColor, runtime.seconds());
                         telemetry.addData("Centring loop", "line Found 1");
                         //  telemetry.addData("Centring loop", fieldColor);
@@ -140,7 +140,7 @@ public class autoRedLeft extends robot {
 
                 for (tick = 0; tick < 500; tick += 2) {
                     setMotorsPower(-0.1, 0.1, 0.1, -0.1);
-                    if (odsSensor.getLightDetected() < fieldColorSR * 1.5 && tick > 100) {
+                    if (odsSensor.getLightDetected() < fieldColorSR * shininessCoefficient && tick > 100) {
                         log("Потеряна Первая линия ", runtime.seconds());
                         telemetry.addData("LINE", "1 line LOS");
                         telemetry.update();
@@ -162,13 +162,13 @@ public class autoRedLeft extends robot {
                     sleep(2);
                     setMotorsPower(-0.20, 0.20, 0.20, -0.20);
                     drivetime += 2;
-                    if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
+                    if (odsSensor.getLightDetected() > fieldColorSR * shininessCoefficient) {
                         break;
                     }
                 }
                 chassisStopMovement();
                 /* Если нашли линию */
-                if (odsSensor.getLightDetected() > fieldColorSR * 1.5) {
+                if (odsSensor.getLightDetected() > fieldColorSR * shininessCoefficient) {
                     log("Вторая линия найдена " + odsSensor.getLightDetected(), runtime.seconds());
                     chassisStopMovement();
                     telemetry.addData("Centring loop", "line Found 2 (break)");
@@ -177,7 +177,7 @@ public class autoRedLeft extends robot {
 
                 sleep(200);
 
-                setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2) + 200);
+                setMotorsPowerTimed(0.25, -0.25, -0.25, 0.25, (drivetime / 2) + 100);
                 log("Вернулся к центральной полке ", runtime.seconds());
                 sleep(200);
 
@@ -189,14 +189,14 @@ public class autoRedLeft extends robot {
                 if (relicType == 3) {
                     telemetry.addData("Vumark", " RIGHT");
                     telemetry.update();
-                    setMotorsPowerTimed(0.3, -0.3, 0.3, -0.3, 400);// Slide left
+                    setMotorsPowerTimed(0.3, -0.3, 0.3, -0.3, 500);// Slide left
                 } else if (relicType == 2) {
                     telemetry.addData("Vumark", " CENTER");
                     telemetry.update();
                 } else if (relicType == 1) {
                     telemetry.addData("Vumark", " LEFT");
                     telemetry.update();
-                    setMotorsPowerTimed(-0.3, 0.3, -0.3, 0.3, 400);// Slide right
+                    setMotorsPowerTimed(-0.3, 0.3, -0.3, 0.3, 500);// Slide right
                 }
                 sleep(200);
                 putBox();
