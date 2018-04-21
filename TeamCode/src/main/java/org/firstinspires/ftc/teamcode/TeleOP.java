@@ -225,6 +225,12 @@ public class TeleOP extends LinearOpMode {
 
             //Partially AutoOP
             if (relic == 0) {
+
+                m1Drive.setPower(0);
+                m2Drive.setPower(0);
+                m3Drive.setPower(0);
+                m4Drive.setPower(0);
+
                 if (relicArmExtend) {
                     setPowerTimed(s1RelicExtRet, 1, 450);
                     while (!touchSensor.isPressed()) {

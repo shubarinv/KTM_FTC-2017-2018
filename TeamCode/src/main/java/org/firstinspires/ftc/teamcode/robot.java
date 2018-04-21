@@ -34,10 +34,10 @@ public abstract class robot extends LinearOpMode {
 
 
     protected void putBox() {
-        setMotorsPowerTimed(0.15, -0.15, -0.15, 0.15, 950);//движение назад
+        setMotorsPowerTimed(0.15, -0.15, -0.15, 0.15, 1200);//движение назад
         setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 300);//движение вперёд
         rotateClaw(0);
-        sleep(500);
+        sleep(700);
         setMotorsPowerTimed(0.2, -0.2, -0.2, 0.2, 300);//движение вперёд
         setMotorsPowerTimed(-0.2, 0.2, 0.2, -0.2, 600);//движение назад
         rotateClaw(0.8);
@@ -157,41 +157,41 @@ public abstract class robot extends LinearOpMode {
         m5Lift.setPower(0);
         s5Shovel.setPosition(1);
         s3Rotation.setPosition(0.8);
-        setMotorsPowerTimed(-1, 0.9, 0.9, -0.9, 800);
+        setMotorsPowerTimed(-1, 0.85, 0.9, -0.9, 800);
 
 // collecting glyphs
         s5Shovel.setPosition(0.5);
-        sleep(500);
+        sleep(350);
+        setMotorsPower(0, 0, 0, 0);
+        sleep(350);
         // Moving back
-        setMotorsPower(0, -0.1, -0.1, 0.1);
-        sleep(120);
         setMotorsPower(0.18, -0.22, -0.18, 0.18);
-
-        s5Shovel.setPosition(0.8);
-        sleep(150);
+        s5Shovel.setPosition(0.6);
+        sleep(200);
         s5Shovel.setPosition(0.2);
-        sleep(300);
+        sleep(200);
+        setMotorsPower(0, 0, 0, 0);
+        sleep(200);
         s5Shovel.setPosition(0.8);
-        sleep(400);
+        sleep(500);
         s5Shovel.setPosition(0);
+        sleep(580);
 //lifting up
-        sleep(700);
+
         m5Lift.setPower(0.8);
-        sleep(250);
+        sleep(500);
         m5Lift.setPower(0);
-        //for safety shovel down
-        s5Shovel.setPosition(0.9);
-//time to get crypto box
-        sleep(100);
+        setMotorsPower(0.17, -0.2, -0.18, 0.18);
+        sleep(1500);
         chassisStopMovement();
         sleep(200);
-// Finished platform and backward movement
 
         putBox();
+        //for safety shovel down
+        s5Shovel.setPosition(0.9);
         chassisStopMovement();
-        sleep(1000);
         m5Lift.setPower(-0.3);
-        sleep(400);
+        sleep(500);
         m5Lift.setPower(0);
         s3Rotation.setPosition(0.8);
 

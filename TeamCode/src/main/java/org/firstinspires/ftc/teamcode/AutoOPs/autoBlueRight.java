@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.robot;
 import java.util.Objects;
 
 
-@Autonomous(name = "bl R", group = "AutoOP")
+@Autonomous(name = "Blue Right", group = "AutoOP")
 //@Disabled
 public class autoBlueRight extends robot {
     DeviceInterfaceModule cdim;
@@ -179,7 +179,7 @@ public class autoBlueRight extends robot {
 
                 sleep(200);
 
-                setMotorsPowerTimed(-0.25, 0.25, 0.25, -0.25, (drivetime / 2) + 100);
+                setMotorsPowerTimed(-0.25, 0.25, 0.25, -0.25, (drivetime / 2)+100);
                 log("Вернулся к центральной полке ", runtime.seconds());
                 sleep(200);
 
